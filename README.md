@@ -1,3 +1,5 @@
+# 𝐃𝐀𝐕𝐄-𝐌𝐃  
+
 <p align="center">
   <img src="https://files.catbox.moe/u1hquf.jpg" alt="DAVE-MD" width="500"/>
 </p>
@@ -17,7 +19,7 @@
 1. **Fork the Repository**  
    [FORK DAVE-MD](https://github.com/giftdee/DAVE-MD/fork)
 
-2. **Pair Code / Creds Setup**  
+2. **Pair Code / Session Setup**  
    <p align="center">
      <a href="https://dave-pair-jvo0.onrender.com">
        <img src="https://img.shields.io/badge/Get-Session--ID-green?style=for-the-badge" alt="Session ID">
@@ -46,7 +48,7 @@
 
 <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/Step--1-Fork-green?style=for-the-badge"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Step--2-Pair--Code-blue?style=for-the-badge"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Step--2-Session--Setup-blue?style=for-the-badge"></a>
   <a href="#"><img src="https://img.shields.io/badge/Step--3-Deploy-purple?style=for-the-badge"></a>
   <a href="#"><img src="https://img.shields.io/badge/Step--4-Enjoy-red?style=for-the-badge"></a>
 </p>
