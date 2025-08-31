@@ -1,7 +1,7 @@
 # 𝐃𝐀𝐕𝐄-𝐌𝐃  
 
 <p align="center">
-  <img src="https://files.catbox.moe/u1hquf.jpg" alt="DAVE-MD" width="500"/>
+  <img src="https://files.catbox.moe/u1hquf.jpg" alt="DAVE-MD" width="300"/>
 </p>
 
 <p align="center">
