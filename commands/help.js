@@ -29,15 +29,13 @@ async function helpCommand(sock, chatId, message) {
         const uptimeInSeconds = process.uptime();
         const uptimeFormatted = formatTime(uptimeInSeconds);
     const helpMessage = `
-
-┏▣ ◈ *DAVE-MD* ◈
+┏▣ ◈ *𝐃𝐀𝐕𝐄-𝐌𝐃* ◈
 ┃ *ᴏᴡɴᴇʀ* : ${settings.botOwner}
 ┃ *ᴜᴘᴛɪᴍᴇ* : ${uptimeFormatted}
 ┃ *ᴛɪᴍᴇ* : ${new Date().toLocaleString()}
 ┃ *sᴘᴇᴇᴅ* : ${ping} ms
 ┃ *ᴠᴇʀsɪᴏɴ* : ${settings.version}
 ┗▣ 
-
 ┏▣ ◈ *AI MENU* ◈
 │➤ analyze
 │➤ blackbox
