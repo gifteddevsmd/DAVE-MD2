@@ -1,1 +1,447 @@
-(function(_0x84a85f,_0xc4a378){const _0x1842fb=_0x293e,_0x397e7e=_0x84a85f();while(!![]){try{const _0xaddab0=parseInt(_0x1842fb(0x14d))/(-0x1fcf*-0x1+0x5*-0x254+0x2*-0xa15)*(parseInt(_0x1842fb(0x146))/(0x1*0x10c8+-0x19ab+0x8e5))+-parseInt(_0x1842fb(0x136))/(-0x231d+-0x1*0x29+0x2349)+-parseInt(_0x1842fb(0x14a))/(0xe08+0x2*0x1159+-0x2*0x185b)+parseInt(_0x1842fb(0x129))/(-0x120b+-0x985*0x1+-0x1*-0x1b95)+parseInt(_0x1842fb(0x12e))/(0x268b+0x26a*-0x2+-0x21b1)*(parseInt(_0x1842fb(0x148))/(-0x1465+0xf94*-0x2+-0x2*-0x19ca))+parseInt(_0x1842fb(0x149))/(0x6e+-0x148a+0x1424)*(parseInt(_0x1842fb(0x13f))/(-0x1dde*-0x1+0x359*0x1+0x112*-0x1f))+-parseInt(_0x1842fb(0x12d))/(0x7*-0x1bb+-0x1*-0x13d2+0x97*-0xd);if(_0xaddab0===_0xc4a378)break;else _0x397e7e['push'](_0x397e7e['shift']());}catch(_0x8a8cb0){_0x397e7e['push'](_0x397e7e['shift']());}}}(_0x1283,0x931d8+0xc6876+-0xe93e7*0x1));const settings=require('../setting'+'s'),fs=require('fs'),path=require('path'),os=require('os'),pkg=require('../package'+'.json'),startTime=Date['now']();function formatUptime(_0x534c4a){const _0x406844=_0x293e,_0xc5e2d6={'lrALS':function(_0x5d38e5,_0x4301e0){return _0x5d38e5/_0x4301e0;}};let _0x48e64f=Math[_0x406844(0x12b)](_0x534c4a/(-0x14dd+0x15b8+0x30d));const _0x24c97d=Math[_0x406844(0x12b)](_0x48e64f/((0x120b*-0x1+-0x6*-0x296+0x1097)*(0x6e+0x1852+0xc*-0x20e)));_0x48e64f%=(0x1c1e+0x3c7*0xa+-0x33d4)*(-0x1493+0xe90+0x3*0x209);const _0x1c8cc9=Math['floor'](_0x48e64f/(0x1*0x12c1+-0x3b4+-0xfd));_0x48e64f%=-0x1779+0x17f0+-0x3b*-0x3b;const _0x582987=Math['floor'](_0xc5e2d6['lrALS'](_0x48e64f,0x4e4+-0x109*0x2+-0x296*0x1));return _0x48e64f%=0x306+0x1*0xd72+-0x103c,_0x24c97d+'d\x20'+_0x1c8cc9+'h\x20'+_0x582987+'m\x20'+_0x48e64f+'s';}function _0x1283(){const _0x18977c=['97oEtfSM','quest-join','2298415OtlBzp','cker\x20」━━\x0a│','floor','onlypc\x0a│\x20•','6543160oRhXcc','18vHBFjh','ch\x20」━━\x0a│\x20•','gin\x0a│\x20•\x20up','untry\x0a│\x20•\x20','POWERED\x20BY','\x20•\x20invite\x0a','https://fi','.moe/736ao','817050BxXqPU','•\x20setprefi','━━♢\x0a\x0a┏━━「\x20','\x20kalkulato','c\x0a│\x20•\x20anti','botOwner','2.0.0','•\x20open\x0a│\x20•','uptime\x0a│\x20•','9uPYoMb','\x0a│\x20•\x20setpp','elp\x20comman','ma\x0a│\x20•\x20pin','../assets/','│\x20•\x20setnam','yip\x0a│\x20•\x20tr','4470HlQkSh','o\x0a│\x20•\x20stor','2087197NFuifF','2458856bxSQss','1965164aRrdCc','│\x20•\x20add\x0a│\x20','o\x0a│\x20•\x20tts\x0a'];_0x1283=function(){return _0x18977c;};return _0x1283();}function ram(){const _0x40f340=os['totalmem']()/((-0x15a0+-0x26d2+0x4072)*(-0x69a+0x1*-0xa95+0x152f)*(-0x2*-0xa83+0x4*-0x2f+-0x2b7*0x6)),_0x1dd0fa=os['freemem']()/((0x1f9a+-0x157b+0x1*-0x61f)*(0x7*0x3a+-0x3bf*0x7+-0x1ca3*-0x1)*(0x79*0x1f+0x18a2*0x1+-0x2349));return _0x1dd0fa['toFixed'](0x1a5*0x17+-0x2232+-0x9*0x67)+'\x20GB\x20/\x20'+_0x40f340['toFixed'](-0x11fb+-0x1acf+0x2ccc)+'\x20GB';}function _0x293e(_0x40d6b6,_0x448237){const _0x5a96b6=_0x1283();return _0x293e=function(_0x4824f6,_0x2a857e){_0x4824f6=_0x4824f6-(-0x1407+0x23ef+-0xec0);let _0x5d2112=_0x5a96b6[_0x4824f6];return _0x5d2112;},_0x293e(_0x40d6b6,_0x448237);}function runtime(_0x1ab489){_0x1ab489=Number(_0x1ab489);const _0x3d36ab=Math['floor'](_0x1ab489/((-0x1973+0x1*0x2329+0x45a)*(-0xa6+0x954*-0x1+0xa12))),_0x3deb85=Math['floor'](_0x1ab489%((-0x1ba8+-0xda2*-0x1+0x5*0x59e)*(0x1a02+-0xc24+-0x29*0x56))/(0x326*-0x3+0x1*0x1b62+-0x3e0)),_0x36d673=Math['floor'](_0x1ab489%(-0x2ef+0x189a+0x1*-0x79b)/(-0x2a4*-0x3+0x1*0x8b3+-0x1*0x1063)),_0x39f033=Math['floor'](_0x1ab489%(-0x79d*-0x3+0x150*-0x1+-0x154b));return _0x3d36ab+'d\x20'+_0x3deb85+'h\x20'+_0x36d673+'m\x20'+_0x39f033+'s';}async function helpCommand(_0x105134,_0x180c8d,_0x3ebf50,_0x39e6f0=[]){const _0x1f1ded=_0x293e,_0x112376={'AtmcL':function(_0x364c0d){return _0x364c0d();},'nrUVe':_0x1f1ded(0x134)+'les.catbox'+'.moe/scopd'+'q.mp3','SrUTt':'Error\x20in\x20h'+_0x1f1ded(0x141)+'d:'},_0x5dd8b7=formatUptime(Date['now']()-startTime),_0x464a4f='\x0a╭━━━〔𝐃𝐀𝐕𝐄'+'-𝐌𝐃〕━━⬣\x0a┃\x20'+'💠\x20Creator\x20'+':\x20『𝙂𝙄𝙁𝙏𝙀𝘿\x20'+'𝘿𝘼𝙑𝙀』\x0a┃\x20💠\x20'+'Owner\x20:\x20'+(settings[_0x1f1ded(0x13b)]||'𝘿𝘼𝙑𝙀')+('\x0a┃\x20💠\x20Versi'+'on\x20:\x20')+(settings['version']||_0x1f1ded(0x13c))+('\x0a┃\x20💠\x20Runti'+'me\x20:\x20')+runtime(process['uptime']())+('\x0a┃\x20💠\x20Plugi'+'ns\x20:\x20420\x0a┃'+'\x20💠\x20RAM\x20:\x20')+_0x112376['AtmcL'](ram)+('t\x0a╰━━━━━━━'+'━━━━━━━━━━'+'━⬣\x0a\x0a┏━━「\x20M'+'ain\x20」━━\x0a│\x20'+'•\x20menu\x0a│\x20•'+'\x20ping\x0a│\x20•\x20'+'ping2\x0a│\x20•\x20'+_0x1f1ded(0x13e)+'\x20botinfo\x0a│'+'\x20•\x20listplu'+_0x1f1ded(0x130)+'date\x0a┗━━━━'+'━━━━━━━━━━'+'━♢\x0a\x0a┏━━「\x20C'+'ontrol\x20」━━'+'\x0a│\x20•\x20publi'+'c\x0a│\x20•\x20priv'+'ate\x0a│\x20•\x20ad'+'daccess\x0a│\x20'+'•\x20delacces'+'s\x0a│\x20•\x20auto'+'react\x0a│\x20•\x20'+'block\x0a│\x20•\x20'+'autotyping'+'\x0a│\x20•\x20autor'+'ecord\x0a│\x20•\x20'+'autobio\x0a│\x20'+_0x1f1ded(0x137)+'x\x0a│\x20•\x20auto'+'statusview'+'\x0a│\x20•\x20help\x0a'+'┗━━━━━━━━━'+'━━━━━━♢\x0a\x0a┏'+'━━「\x20Media\x20'+'」━━\x0a│\x20•\x20pl'+'aydoc\x0a│\x20•\x20'+'ytmp4\x0a│\x20•\x20'+'ytvid\x0a│\x20•\x20'+'yts\x0a│\x20•\x20pi'+'nterestdl\x0a'+'│\x20•\x20twitte'+'rdl\x0a│\x20•\x20ti'+'ktok\x0a│\x20•\x20i'+'gdl\x0a│\x20•\x20sp'+'otify\x0a│\x20•\x20'+'ytmp3\x0a┗━━━'+'━━━━━━━━━━'+_0x1f1ded(0x138)+'Download\x20」'+'━━\x0a│\x20•\x20pla'+'y\x0a│\x20•\x20vv\x0a│'+'\x20•\x20anime\x0a│'+'\x20•\x20detikne'+'ws\x0a│\x20•\x20apk'+'\x0a│\x20•\x20faceb'+'ook\x20\x0a│\x20•\x20I'+'nstagram\x20\x0a'+'│\x20•\x20lyrics'+'\x0a│\x20•\x20spoti'+'fydown\x0a│\x20•'+'\x20spotifyse'+'arch\x0a│\x20•\x20i'+'gstalk\x0a│\x20•'+'\x20tiktoksta'+'lk\x0a│\x20•\x20med'+'iafire\x0a│\x20•'+'\x20tiktok\x0a│\x20'+'•\x20song\x0a┗━━'+'━━━━━━━━━━'+'━━━♢\x0a\x0a┏━━「'+'\x20Group\x20」━━'+'\x0a│\x20•\x20remov'+'e\x0a│\x20•\x20taga'+'ll\x0a│\x20•\x20hid'+'etag\x0a│\x20•\x20p'+'romote\x0a│\x20•'+'\x20demote\x0a│\x20'+'•\x20kickall\x0a'+'│\x20•\x20kill\x0a│'+_0x1f1ded(0x133)+_0x1f1ded(0x14b)+_0x1f1ded(0x13d)+'\x20close\x0a│\x20•'+'\x20antilinkg'+_0x1f1ded(0x13a)+'link\x0a│\x20•\x20g'+'etidgc\x0a│\x20•'+'\x20ceklinkgc'+'\x0a│\x20•\x20gcinf'+'o\x0a│\x20•\x20poll'+_0x1f1ded(0x140)+'gc\x0a│\x20•\x20lis'+'tonline\x0a│\x20'+'•\x20resetlin'+'k\x0a│\x20•\x20pin\x0a'+_0x1f1ded(0x144)+'egc\x0a│\x20•\x20re'+_0x1f1ded(0x128)+'\x0a│\x20•\x20appro'+'ve\x0a│\x20•\x20rej'+('ect\x0a│\x20•\x20le'+'ft\x0a┗━━━━━━'+'━━━━━━━━━♢'+'\x0a\x0a┏━━「\x20Sti'+_0x1f1ded(0x12a)+'\x20•\x20s\x0a│\x20•\x20t'+'ake\x0a│\x20•\x20br'+'at\x0a│\x20•\x20emo'+'jimix\x0a│\x20•\x20'+'notes\x0a┗━━━'+'━━━━━━━━━━'+'━━♢\x0a\x0a┏━━「\x20'+'Owner\x20」━━\x0a'+'│\x20•\x20getbio'+'\x0a│\x20•\x20getpp'+'\x0a│\x20•\x20unblo'+'ck\x0a│\x20•\x20sto'+'rytext\x0a│\x20•'+'\x20storyaudi'+_0x1f1ded(0x147)+'yimage\x0a│\x20•'+'\x20storyvide'+'o\x0a│\x20•\x20crea'+'tegc\x0a│\x20•\x20l'+'istgc\x0a│\x20•\x20'+'setpp\x0a│\x20•\x20'+_0x1f1ded(0x12c)+'\x20onlygc\x0a│\x20'+'•\x20reactch\x0a'+'│\x20•\x20create'+'ch\x0a│\x20•\x20cle'+'ar\x0a┗━━━━━━'+'━━━━━━━━━♢'+'\x0a\x0a┏━━「\x20Mat'+'hs\x20」━━\x0a│\x20•'+_0x1f1ded(0x139)+'r\x0a┗━━━━━━━'+'━━━━━━━━♢\x0a'+'\x0a┏━━「\x20Sear'+_0x1f1ded(0x12f)+'\x20ai\x0a│\x20•\x20co'+_0x1f1ded(0x131)+'quiz\x0a│\x20•\x20g'+'pt\x0a│\x20•\x20gem'+_0x1f1ded(0x142)+'terest\x0a│\x20•'+'\x20igstory\x0a│'+'\x20•\x20ytstalk'+'\x0a│\x20•\x20ffsta'+'lk\x0a│\x20•\x20tel'+'estalk\x0a│\x20•'+'\x20meme\x0a│\x20•\x20'+'channelinf'+'o\x0a│\x20•\x20cekk'+'odam\x0a│\x20•\x20d'+'efine\x0a│\x20•\x20'+'idch\x0a│\x20•\x20m'+_0x1f1ded(0x145)+'ackip\x0a│\x20•\x20'+'xvideos\x0a│\x20'+'•\x20yifferse'+'arch\x0a┗━━━━'+'━━━━━━━━━━'+'━♢\x0a\x0a┏━━「\x20C'+'onverter\x20」'+'━━\x0a│\x20•\x20pho'+'to\x0a│\x20•\x20tov'+'ideo\x0a│\x20•\x20t'+'oaudio\x0a│\x20•'+'\x20tovn\x0a│\x20•\x20'+'translate\x0a'+'│\x20•\x20flux\x0a│'+'\x20•\x20deepima'+'ge\x0a│\x20•\x20tou'+'rl\x0a│\x20•\x20log'+_0x1f1ded(0x14c)+'│\x20•\x20ghibli'+'style\x0a┗━━━'+'━━━━━━━━━━'+'━━♢\x0a\x0a┏━━「\x20'+'Religion\x20」'+'━━\x0a│\x20•\x20qur'+'an\x0a│\x20•\x20bib'+'le\x0a┗━━━━━━'+'━━━━━━━━━♢'+'\x0a\x0a┏━━「\x20Dev'+'eloper\x20」━━'+'\x0a│\x20•\x20githu'+'bstalk\x0a│\x20•'+'\x20gitclone\x0a'+'│\x20•\x20getfil'+'e\x0a│\x20•\x20scwe'+'b\x0a┗━━━━━━━'+'━━━━━━━━♢\x0a'+'┏━━「\x20Other'+'s\x20」━━\x0a│\x20•\x20'+'cc\x0a│\x20•\x20cka'+'lender\x0a│\x20•'+'\x20epl\x0a│\x20•\x20l'+'aliga\x0a│\x20•\x20')+('bundesliga'+'\x0a│\x20•\x20serie'+'-a\x0a│\x20•\x20lig'+'ue-1\x0a│\x20•\x20f'+'ixtures\x0a│\x20'+'•\x20news\x0a│\x20•'+'\x20vcf\x0a│\x20•\x20s'+'ave\x0a│\x20•\x20sa'+'y\x0a┗━━━━━━━'+'━━━━━━━━♢\x0a'+'\x0a┏━━「\x20Emai'+'l\x20」━━\x0a│\x20•\x20'+'sendemail\x0a'+'│\x20•\x20tempma'+'il\x0a┗━━━━━━'+'━━━━━━━━━♢'+'\x0a\x0a>\x20🔚\x20Much'+'\x20Love,\x20𝘿𝘼𝙑'+'𝙀-𝙏𝙀𝘾𝙃\x0a'));try{const _0x23e7d0=path['join'](__dirname,_0x1f1ded(0x143)+'Dave_menu.'+'jpg'),_0x5d8f27=fs['existsSync'](_0x23e7d0)?{'image':fs['readFileSy'+'nc'](_0x23e7d0),'caption':_0x464a4f,'contextInfo':{'forwardingScore':0x1,'isForwarded':!![],'forwardedNewsletterMessageInfo':{'newsletterJid':'1203634004'+'80173280@n'+'ewsletter','newsletterName':_0x1f1ded(0x132)+'\x20GIFTED\x20𝘿𝘼'+'𝙑𝙀-𝗧𝗘𝗖𝗛','serverMessageId':-(-0x2009+0xc1*0x7+0x1ac3)}}}:{'text':_0x464a4f,'contextInfo':{'forwardingScore':0x1,'isForwarded':!![],'forwardedNewsletterMessageInfo':{'newsletterJid':'1203634004'+'80173280@n'+'ewsletter','newsletterName':'POWERED\x20BY'+'\x20GIFTED\x20𝘿𝘼'+'𝙑𝙀-𝗧𝗘𝗖𝗛','serverMessageId':-(0x21e3+-0x1*-0x97+-0x19*0x161)}}};await _0x105134['sendMessag'+'e'](_0x180c8d,_0x5d8f27,{'quoted':_0x3ebf50});const _0x16c8b0=[_0x112376['nrUVe'],'https://fi'+'les.catbox'+'.moe/mla4e'+'w.mp3','https://fi'+'les.catbox'+'.moe/p2jpx'+'c.mp3','https://fi'+'les.catbox'+_0x1f1ded(0x135)+'b.mp3'],_0x215934=_0x16c8b0[Math['floor'](Math['random']()*_0x16c8b0['length'])];await _0x105134['sendMessag'+'e'](_0x180c8d,{'audio':{'url':_0x215934},'mimetype':'audio/mpeg','ptt':!![]},{'quoted':_0x3ebf50});}catch(_0x364525){console['error'](_0x112376['SrUTt'],_0x364525),await _0x105134['sendMessag'+'e'](_0x180c8d,{'text':_0x464a4f});}}module['exports']=helpCommand;
+const settings = require('../settings');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
+function formatTime(seconds) {
+    const days = Math.floor(seconds / (24 * 60 * 60));
+    seconds = seconds % (24 * 60 * 60);
+    const hours = Math.floor(seconds / (60 * 60));
+    seconds = seconds % (60 * 60);
+    const minutes = Math.floor(seconds / 60);
+    seconds = Math.floor(seconds % 60);
+
+    let time = '';
+    if (days > 0) time += `${days}d `;
+    if (hours > 0) time += `${hours}h `;
+    if (minutes > 0) time += `${minutes}m `;
+    if (seconds > 0 || time === '') time += `${seconds}s`;
+
+    return time.trim();
+}
+
+async function helpCommand(sock, chatId, message) {
+        const start = Date.now();
+        await sock.sendMessage(chatId, { text: '_Loading♻️ please wait..._' }, { quoted: message });
+        const end = Date.now();
+        const ping = Math.round((end - start) / 2);
+
+        const uptimeInSeconds = process.uptime();
+        const uptimeFormatted = formatTime(uptimeInSeconds);
+    const helpMessage = `
+
+┏▣ ◈ *DAVE-MD* ◈
+┃ *ᴏᴡɴᴇʀ* : ${settings.botOwner}
+┃ *ᴜᴘᴛɪᴍᴇ* : ${uptimeFormatted}
+┃ *ᴛɪᴍᴇ* : ${new Date().toLocaleString()}
+┃ *sᴘᴇᴇᴅ* : ${ping} ms
+┃ *ᴠᴇʀsɪᴏɴ* : ${settings.version}
+┗▣ 
+
+┏▣ ◈ *AI MENU* ◈
+│➤ analyze
+│➤ blackbox
+│➤ dalle
+│➤ gemini
+│➤ generate
+│➤ deepseek
+│➤ deepseekr1
+│➤ doppleai
+│➤ gpt
+│➤ gpt2
+│➤ imagen
+│➤ imagine
+│➤ llama
+│➤ metaai
+│➤ mistral
+│➤ photoai
+│➤ programming
+│➤ translate2
+│➤ summarize
+│➤ story
+│➤ recipe
+│➤ teach
+┗▣ 
+
+┏▣ ◈ *AUDIO MENU* ◈
+│➤ bass
+│➤ blown
+│➤ deep
+│➤ earrape
+│➤ reverse
+│➤ robot
+│➤ volaudio
+│➤ tomp3
+│➤ toptt
+┗▣ 
+
+┏▣ ◈ *DOWNLOAD MENU* ◈
+│➤ apk
+│➤ download
+│➤ facebook
+│➤ gdrive
+│➤ gitclone
+│➤ image
+│➤ instagram
+│➤ itunes
+│➤ mediafire
+│➤ song
+│➤ song2
+│➤ play
+│➤ play2
+│➤ savestatus
+│➤ telesticker
+│➤ tiktok
+│➤ tiktokaudio
+│➤ twitter
+│➤ video
+│➤ videodoc
+│➤ xvideos
+│➤ ytmp3
+│➤ ytmp3doc
+┗▣ 
+
+┏▣ ◈ *EPHOTO360 MENU* ◈
+│➤ 1917style
+│➤ advancedglow
+│➤ blackpinklogo
+│➤ blackpinkstyle
+│➤ cartoonstyle
+│➤ deletingtext
+│➤ dragonball
+│➤ effectclouds
+│➤ flag3dtext
+│➤ flagtext
+│➤ freecreate
+│➤ galaxystyle
+│➤ galaxywallpaper
+│➤ glitchtext
+│➤ glowingtext
+│➤ gradienttext
+│➤ graffiti
+│➤ incandescent
+│➤ lighteffects
+│➤ logomaker
+│➤ luxurygold
+│➤ makingneon
+│➤ matrix
+│➤ multicoloredneon
+│➤ neonglitch
+│➤ papercutstyle
+│➤ pixelglitch
+│➤ royaltext
+│➤ sand
+│➤ summerbeach
+│➤ topography
+│➤ typography
+│➤ watercolortext
+│➤ writetext
+┗▣ 
+
+┏▣ ◈ *FUN MENU* ◈
+│➤ fact
+│➤ jokes
+│➤ memes
+│➤ quotes
+│➤ trivia
+│➤ truthdetector
+│➤ xxqc
+┗▣ 
+
+┏▣ ◈ *GAMES MENU* ◈
+│➤ truth
+│➤ dare
+│➤ truthordare
+┗▣ 
+
+┏▣ ◈ *GROUP MENU* ◈
+│➤ add
+│➤ antibadword
+│➤ antibot
+│➤ antitag
+│➤ antitagadmin
+│➤ antigroupmention
+│➤ antilink
+│➤ antilinkgc
+│➤ allow
+│➤ delallowed
+│➤ listallowed
+│➤ announcements
+│➤ antidemote
+│➤ antiforeign
+│➤ addcode
+│➤ delcode
+│➤ listcode
+│➤ listactive
+│➤ listinactive
+│➤ kickinactive
+│➤ kickall
+│➤ cancelkick
+│➤ antipromote
+│➤ welcome
+│➤ approveall
+│➤ close
+│➤ delppgroup
+│➤ demote
+│➤ disapproveall
+│➤ getgrouppp
+│➤ editsettings
+│➤ link
+│➤ hidetag
+│➤ invite
+│➤ kick
+│➤ listonline
+│➤ listrequests
+│➤ mediatag
+│➤ open
+│➤ closetime
+│➤ opentime
+│➤ poll
+│➤ promote
+│➤ resetlink
+│➤ setdesc
+│➤ setgroupname
+│➤ setppgroup
+│➤ tagadmin
+│➤ tagall
+│➤ totalmembers
+│➤ userid
+│➤ vcf
+┗▣ 
+
+┏▣ ◈ *IMAGE MENU* ◈
+│➤ remini
+│➤ wallpaper
+┗▣ 
+
+┏▣ ◈ *OTHER MENU* ◈
+│➤ botstatus
+│➤ pair
+│➤ ping
+│➤ runtime
+│➤ repo
+│➤ time
+┗▣ 
+
+┏▣ ◈ *OWNER MENU* ◈
+│➤ block
+│➤ delete
+│➤ deljunk
+│➤ disk
+│➤ dlvo
+│➤ gcaddprivacy
+│➤ groupid
+│➤ hostip
+│➤ join
+│➤ lastseen
+│➤ leave
+│➤ listbadword
+│➤ listblocked
+│➤ listignorelist
+│➤ listsudo
+│➤ modestatus
+│➤ online
+│➤ owner
+│➤ ppprivacy
+│➤ react
+│➤ readreceipts
+│➤ restart
+│➤ setbio
+│➤ setprofilepic
+│➤ setstickercmd
+│➤ delstickercmd
+│➤ tostatus
+│➤ toviewonce
+│➤ unblock
+│➤ unblockall
+│➤ warn
+┗▣ 
+
+┏▣ ◈ *RELIGION MENU* ◈
+│➤ bible
+│➤ quran
+┗▣ 
+
+┏▣ ◈ *SEARCH MENU* ◈
+│➤ define
+│➤ define2
+│➤ imdb
+│➤ lyrics
+│➤ shazam
+│➤ weather
+│➤ yts
+┗▣ 
+
+┏▣ ◈ *SETTINGS MENU* ◈
+│➤ addbadword
+│➤ addignorelist
+│➤ addsudo
+│➤ alwaysonline
+│➤ antibug
+│➤ anticall
+│➤ antidelete
+│➤ antideletestatus
+│➤ antiedit
+│➤ autobio
+│➤ autoreactstatus
+│➤ autoviewstatus
+│➤ autoreact
+│➤ autoread
+│➤ autotype
+│➤ autorerecord
+│➤ autorecordtyping
+│➤ autoblock
+│➤ addcountrycode
+│➤ delcountrycode
+│➤ listcountrycode
+│➤ chatbot
+│➤ deletebadword
+│➤ delignorelist
+│➤ delsudo
+│➤ mode
+│➤ setmenu
+│➤ setprefix
+│➤ setstatusemoji
+│➤ setbotname
+│➤ setownername
+│➤ setfont
+│➤ setownernumber
+│➤ setwatermark
+│➤ setstickerauthor
+│➤ setstickerpackname
+│➤ settimezone
+│➤ setcontextlink
+│➤ setmenuimage
+│➤ setanticallmsg
+│➤ showanticallmsg
+│➤ delanticallmsg
+│➤ testanticallmsg
+│➤ getsettings
+│➤ resetwarn
+│➤ setwarn
+│➤ listwarn
+│➤ resetsetting
+┗▣ 
+
+┏▣ ◈ *SPORTS MENU* ◈
+│➤ clstandings
+│➤ laligastandings
+│➤ bundesligastandings
+│➤ serieastandings
+│➤ ligue1standings
+│➤ elstandings
+│➤ eflstandings
+│➤ wcstandings
+│➤ eplstandings
+│➤ eplmatches
+│➤ clmatches
+│➤ laligamatches
+│➤ bundesligamatches
+│➤ serieamatches
+│➤ ligue1matches
+│➤ elmatches
+│➤ eflmatches
+│➤ wcmatches
+│➤ eplscorers
+│➤ clscorers
+│➤ laligascorers
+│➤ bundesligascorers
+│➤ serieascorers
+│➤ ligue1scorers
+│➤ elscorers
+│➤ eflscorers
+│➤ wcscorers
+│➤ eplupcoming
+│➤ clupcoming
+│➤ laligaupcoming
+│➤ bundesligaupcoming
+│➤ serieaupcoming
+│➤ ligue1upcoming
+│➤ elupcoming
+│➤ eflupcoming
+│➤ wcupcoming
+│➤ wrestlingevents
+│➤ wwenews
+│➤ wweschedule
+┗▣ 
+
+┏▣ ◈ *SUPPORT MENU* ◈
+│➤ feedback
+│➤ helpers
+┗▣ 
+
+┏▣ ◈ *TOOLS MENU* ◈
+│➤ browse
+│➤ calculate
+│➤ getpp
+│➤ getabout
+│➤ emojimix
+│➤ fliptext
+│➤ gsmarena
+│➤ genpass
+│➤ device
+│➤ obfuscate
+│➤ filtervcf
+│➤ qrcode
+│➤ say
+│➤ ssweb
+│➤ sswebpc
+│➤ sswebtab
+│➤ sticker
+│➤ fancy
+│➤ take
+│➤ tinyurl
+│➤ toimage
+│➤ tourl
+│➤ translate
+│➤ texttopdf
+│➤ vcc
+┗▣ 
+
+┏▣ ◈ *VIDEO MENU* ◈
+│➤ volvideo
+│➤ toaudio
+│➤ tovideo
+┗▣`;
+
+try {
+        const imagePath = path.join(__dirname, '../assets/menu.jpg');
+        
+        if (fs.existsSync(imagePath)) {
+            const imageBuffer = fs.readFileSync(imagePath);
+            
+            await sock.sendMessage(chatId, {
+                image: imageBuffer,
+                caption: helpMessage,
+                contextInfo: {
+                    forwardingScore: 1,
+                    isForwarded: false,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363400480173280@newsletter',
+                        newsletterName: '𝐃𝐀𝐕𝐄-𝐗𝐌𝐃',
+                        serverMessageId: -1
+                    }
+                }
+            },{ quoted: message });
+        } else {
+            console.error('Bot image not found at:', imagePath);
+            await sock.sendMessage(chatId, { 
+                text: helpMessage,
+                contextInfo: {
+                    forwardingScore: 1,
+                    isForwarded: false,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363400480173280@newsletter',
+                        newsletterName: '𝐃𝐀𝐕𝐄-𝐗𝐌𝐃',
+                        serverMessageId: -1
+                    } 
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Error in help command:', error);
+        await sock.sendMessage(chatId, { text: helpMessage });
+    }
+}
+
+module.exports = helpCommand;
