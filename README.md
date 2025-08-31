@@ -29,7 +29,7 @@
      </a>
    </p>
 
-3. **Other Deployment Platforms**  
+3. **Deployment Platforms**  
    <p align="center">
      <a href="https://bot-hosting.net/?aff=1370480585960587298">
        <img src="https://img.shields.io/badge/Premium--Hosting-blue?style=for-the-badge" alt="Premium Hosting">
@@ -47,10 +47,8 @@
 ## Tutorial
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Step--1-Fork-green?style=for-the-badge"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Step--2-Session--Setup-blue?style=for-the-badge"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Step--3-Deploy-purple?style=for-the-badge"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Step--4-Enjoy-red?style=for-the-badge"></a>
+  <a href="https://youtu.be/oewdMmpkUCM?si=o6vdNtDCX0R5O_re"><img src="https://img.shields.io/badge/Tutorial-1-red?style=for-the-badge&logo=youtube" alt="YouTube Tutorial 1"></a>
+  <a href="https://youtu.be/94V78PGHn7Q?si=vnaTpq85xPvLHQeD"><img src="https://img.shields.io/badge/Tutorial-2-red?style=for-the-badge&logo=youtube" alt="YouTube Tutorial 2"></a>
 </p>
 
 ---
