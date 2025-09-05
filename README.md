@@ -21,7 +21,7 @@
 
 2. **Pair Code / Session Setup**  
    <p align="center">
-     <a href="https://cypherxdomini-93c190b43dce.herokuapp.com/">
+     <a href="https://dacmvexmd-pair-site.onrender.com/">
        <img src="https://img.shields.io/badge/Get-Session--ID-green?style=for-the-badge" alt="Session ID">
      </a>
      <a href="https://source-codes-5tm6.onrender.com/">
