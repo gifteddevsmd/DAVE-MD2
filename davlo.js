@@ -255,11 +255,13 @@ let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 	      break; 
 	      
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//	           
-    case 'uptime':
-    case 'runtime': {
-      m.reply(`🔸 *${runtime(process.uptime())}*`)
-    }
-    break;
+ 
+case "uptime":
+ case 'runtime': { 
+
+         reply (`━━━━━━━━━━━━━━━━━\n\◉‿◉Welcome ${m.pushName}\n\━━━━━━━━━━━━━━━━━\n\*💚 𝗱𝗮𝘃𝗲 has been running for*  : ${runtime(process.uptime())} \n\━━━━━━━━━━━━━━━━━`); 
+}
+break;
    
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//       
      
@@ -304,7 +306,13 @@ return reply(teks)
 break;     */
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
   
-  
+  case 'p':
+  const start = Date.now();
+  const msg = await m.reply('⚡ checking speed...');
+  const end = Date.now();
+  const latency = end - start;
+  m.reply(`𝙳𝙰𝚅𝙴-𝙼𝙳 speed: ${latency}ms`);
+  break;
         
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//       
         
