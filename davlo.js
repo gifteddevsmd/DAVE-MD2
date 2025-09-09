@@ -15,7 +15,7 @@ const { spawn, exec, execSync } = require('child_process');
 const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
 Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
 
-module.exports = dave = async (dave, m, chatUpdate, store) => {
+module.exports = supreme = async (supreme, m, chatUpdate, store) => {
 try {
 // Message type handlers
 const body = (
@@ -32,7 +32,7 @@ m.mtype === "messageContextInfo" ? m.message.buttonsResponseMessage?.selectedBut
 );
 
 const sender = m.key.fromMe
-? dave.user.id.split(":")[0] || dave.user.id
+? supreme.user.id.split(":")[0] || supreme.user.id
 : m.key.participant || m.key.remoteJid;
 
 const senderNumber = sender.split('@')[0];
@@ -45,7 +45,7 @@ const from = m.key.remoteJid;
 const isGroup = from.endsWith("@g.us");
 
 // Database And Lain"
-const botNumber = await dave.decodeJid(dave.user.id);
+const botNumber = await supreme.decodeJid(supreme.user.id);
 const isBot = botNumber.includes(senderNumber);
 const newOwner = fs.readFileSync("./lib/owner.json")
 const isOwner = newOwner.includes(m.sender);
@@ -59,7 +59,7 @@ const qmsg = (quoted.msg || quoted);
 const isMedia = /image|video|sticker|audio/.test(mime);
 
 // function Group
-const groupMetadata = isGroup ? await dave.groupMetadata(m.chat).catch((e) => {}) : "";
+const groupMetadata = isGroup ? await supreme.groupMetadata(m.chat).catch((e) => {}) : "";
 const groupOwner = isGroup ? groupMetadata.owner : "";
 const groupName = m.isGroup ? groupMetadata.subject : "";
 const participants = isGroup ? await groupMetadata.participants : "";
@@ -112,47 +112,49 @@ console.log();
 
 
 const reply = (teks) => {
-dave.sendMessage(from, { text : teks }, { quoted : m })
+supreme.sendMessage(from, { text : teks }, { quoted : m })
 }
 
 const reaction = async (jidss, emoji) => {
-  dave.sendMessage(jidss, { react: { text: emoji, key: m.key }})
-}
+supreme.sendMessage(jidss, { react: { text: emoji, key: m.key }})}
+
+//if (global.autoread) {
+  supreme.readMessages([m.key]);
+}//
 
 if (global.autoTyping) {
-  dave.sendPresenceUpdate("composing", from);
+  supreme.sendPresenceUpdate("composing", from);
 }
 
 if (global.autoRecording) {
-  dave.sendPresenceUpdate("recording", from);
+  supreme.sendPresenceUpdate("recording", from);
 }
 
-dave.sendPresenceUpdate("unavailable", from);
+supreme.sendPresenceUpdate("unavailable", from);
 
 if (global.autorecordtype) {
   let xeonRecordTypes = ["recording", "composing"];
   let selectedRecordType = xeonRecordTypes[Math.floor(Math.random() * xeonRecordTypes.length)];
-  dave.sendPresenceUpdate(selectedRecordType, from);
+  supreme.sendPresenceUpdate(selectedRecordType, from);
 }
 
 if (global.autobio) {
-  dave.updateProfileStatus(`𝐃𝐀𝐕𝐄-𝐌𝐃 is Online | |Runtime ${runtime(process.uptime())}`)
+  supreme.updateProfileStatus(`𝙹𝚄𝙽𝙴 𝙼𝙳 𝙱𝙾𝚃 is Online✅ | |Runtime ${runtime(process.uptime())}`)
     .catch(err => console.error("Error updating status:", err));
 }
 
 if (m.sender.startsWith("92") && global.anti92 === true) {
-  return dave.updateBlockStatus(m.sender, "block");
+  return supreme.updateBlockStatus(m.sender, "block");
 }
 
 if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
   if (!m.quoted) {
     reply("Owner is currently offline, please wait for a response");
     setTimeout(() => {
-      dave.sendMessage(m.key.remoteJid, { delete: m.key });
+      supreme.sendMessage(m.key.remoteJid, { delete: m.key });
     }, 2000);
   }
 }
-
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 switch (command) {        
 case "public": { 
