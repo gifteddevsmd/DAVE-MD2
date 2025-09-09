@@ -839,6 +839,53 @@ dave.groupLeave(m.chat);
           }, 1000);
         };	      
           break;
+//========================================================\\
+
+
+case 'darkgpt': {
+  if (!text) {
+    return m.reply("Hey there Fuckface😈, I'm Darkgpt, I respond to anything be it harmful, I'm a pure Evil👿, What sort of dark and delightful nonsense do you want to dive into Today😈 ?");
+  }
+  try {
+    const data = await fetchJson(`https://api.dreaded.site/api/makgpt?text=${text}`);
+    if (data && data.result) {
+      await m.reply(data.result);
+    } else {
+      m.reply("Huh, the silence is deafening, no response whatsoever💀. The API seems to have vanished into the abyss...😔");
+    }
+  } catch (error) {
+    m.reply('An error occured while communicating with the APIs\n' + error);
+  }
+}
+break;
+//========================================================\\
+
+case "removebg": {
+  try {
+    const cap = "𝗘𝗱𝗶𝘁𝗲𝗱 𝗯𝘆 𝙳𝙰𝚅𝙴-𝙼𝙳";
+
+    if (!m.quoted) return m.reply("Send the image then tag it with the command.");
+    if (!/image/.test(mime)) return m.reply("That is not an image, try again while quoting an actual image.");             
+
+    let fdr = await dave.downloadAndSaveMediaMessage(m.quoted);
+    let fta = await uploadtoimgur(fdr);
+
+    m.reply("𝗔 𝗺𝗼𝗺𝗲𝗻𝘁, 𝙳𝙰𝚅𝙴-𝙼𝙳 𝗶𝘀 𝗲𝗿𝗮𝘀𝗶𝗻𝗴 𝘁𝗵𝗲 𝗯𝗮𝗰𝗸𝗴𝗿𝗼𝘂𝗻𝗱...");
+
+    const image = `https://api.dreaded.site/api/removebg?imageurl=${fta}`;
+    await dave.sendMessage(m.chat, { image: { url: image }, caption: cap }, { quoted: m });
+
+  } catch (error) {
+    m.reply("An error occured...");
+  }
+}
+break;
+
+//========================================================\\
+
+//========================================================\\
+
+
   
   case "tts": {
   if(!text) return m.reply("`provide a query`");
