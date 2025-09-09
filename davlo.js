@@ -883,32 +883,258 @@ break;
 
 //========================================================\\
 
+case "compile-js": {
+  if (!text && !m.quoted) throw 'Quote or tag a JavaScript code to compile.';
+
+  const sourcecode1 = m.quoted ? (m.quoted.text ? m.quoted.text : text ? text : m.text) : m.text;
+
+  let resultPromise1 = node.runSource(sourcecode1);
+  resultPromise1
+    .then(resultt1 => {
+      console.log(resultt1);
+      if (resultt1.stdout) reply(resultt1.stdout);
+      if (resultt1.stderr) reply(resultt1.stderr);
+    })
+    .catch(err => {
+      console.error(err);
+      reply(err.toString());
+    });
+}
+break;
 //========================================================\\
 
 
-  
-  case "tts": {
-  if(!text) return m.reply("`provide a query`");
-  m.reply(`processing your query`);
-  try {
-    let anu = `https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}&voice=jv-ID-DimasNeural&rate=0%&pitch=0Hz&volume=0%`;
-    const response = await axios.get(anu, {
-      responseType: 'arraybuffer'
-    });
-    let buffer = response.data;
-    
-    dave.sendMessage(m.chat, {
-      audio: buffer,
-      mimetype: "audio/mpeg",
-      ptt: true
+//========================================================================================================================//
+case "compile-c": {
+  if (!text && !m.quoted) return m.reply("❌ Quote or provide a C code to compile.");
+
+  const sourceCodeC = m.quoted?.text || text || m.text;
+
+  c.runSource(sourceCodeC)
+    .then(result => {
+      if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
+      if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
+      console.log(result);
     })
+    .catch(err => {
+      console.error(err);
+      await reply(`❌ Compilation error:\n${err}`);
+    });
+}
+break;
+
+//========================================================================================================================//
+case "compile-c++": {
+  if (!text && !m.quoted) return m.reply("❌ Quote or provide a C++ code to compile.");
+
+  const sourceCodeCPP = m.quoted?.text || text || m.text;
+
+  cpp.runSource(sourceCodeCPP)
+    .then(result => {
+      if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
+      if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
+      console.log(result);
+    })
+    .catch(err => {
+      console.error(err);
+      await reply(`❌ Compilation error:\n${err}`);
+    });
+}
+break;
+
+//========================================================================================================================//
+case "eval": {
+  if (!Owner) throw NotOwner;
+  if (!text) return m.reply("❌ Provide a valid bot function or code to evaluate.");
+
+  try {
+    let evaled = await eval(budy.slice(2));
+    if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+    await reply(`✅ Eval Result:\n${evaled}`);
   } catch (err) {
-    console.log(err);
-    return err;
+    console.error(err);
+    await reply(`❌ Eval Error:\n${err}`);
+  }
+}
+break;
+//========================================================\\
+
+case "fullpp": {
+  if (!Owner) throw NotOwner;
+
+  const { S_WHATSAPP_NET } = require('@whiskeysockets/baileys');
+  const fs = require("fs");
+
+  try {
+    if (!msgR) {
+      m.reply('Quote an image to set as profile picture.');
+      return;
+    }
+
+    let media;
+    if (msgR.imageMessage) {
+      media = msgR.imageMessage;
+    } else {
+      m.reply('This is not an image.');
+      return;
+    }
+
+    // Download the quoted image
+    const mediaPath = await dave.downloadAndSaveMediaMessage(media);
+
+    // Generate profile picture buffer
+    const { img } = await generateProfilePicture(mediaPath);
+
+    // Update WhatsApp profile picture
+    await dave.query({
+      tag: 'iq',
+      attrs: {
+        target: undefined,
+        to: S_WHATSAPP_NET,
+        type: 'set',
+        xmlns: 'w:profile:picture'
+      },
+      content: [
+        {
+          tag: 'picture',
+          attrs: { type: 'image' },
+          content: img
+        }
+      ]
+    });
+
+    // Remove temporary file
+    fs.unlinkSync(mediaPath);
+
+    m.reply("Profile picture updated successfully.");
+
+  } catch (error) {
+    console.error(error);
+    m.reply("An error occurred while updating profile picture:\n" + error);
+  }
+}
+break;
+//========================================================\\
+
+case "vcf": case "group-vcf": {
+    if (!m.isGroup) return m.reply("This command is meant for groups.");
+
+    const fs = require("fs");
+    let gcdata = await dave.groupMetadata(m.chat);
+    let gcmem = gcdata.participants.map(a => a.id);
+
+    let vcard = '';
+    let noPort = 0;
+
+    for (let a of gcdata.participants) {
+        vcard += `BEGIN:VCARD\nVERSION:3.0\nFN:[${noPort++}] +${a.id.split("@")[0]}\nTEL;type=CELL;type=VOICE;waid=${a.id.split("@")[0]}:+${a.id.split("@")[0]}\nEND:VCARD\n`;
+    }
+
+    const cont = './contacts.vcf';
+
+    await m.reply('Compiling ' + gcdata.participants.length + ' contacts into a VCF file...');
+
+    fs.writeFileSync(cont, vcard.trim());
+
+    await dave.sendMessage(m.chat, {
+        document: fs.readFileSync(cont),
+        mimetype: 'text/vcard',
+        fileName: 'Group contacts.vcf',
+        caption: 'VCF for ' + gcdata.subject + '\n' + gcdata.participants.length + ' contacts'
+    }, { ephemeralExpiration: 86400, quoted: m });
+
+    fs.unlinkSync(cont);
+}
+break;
+
+//========================================================================================================================//
+
+case "compile-c": {
+  if (!text && !m.quoted) return m.reply("❌ Quote or provide a C code to compile.");
+
+  const sourceCodeC = m.quoted?.text || text || m.text;
+
+  c.runSource(sourceCodeC)
+    .then(result => {
+      if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
+      if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
+      console.log(result);
+    })
+    .catch(err => {
+      console.error(err);
+      await reply(`❌ Compilation error:\n${err}`);
+    });
+}
+break;
+
+//========================================================================================================================//
+case "compile-c++": {
+  if (!text && !m.quoted) return m.reply("❌ Quote or provide a C++ code to compile.");
+
+  const sourceCodeCPP = m.quoted?.text || text || m.text;
+
+  cpp.runSource(sourceCodeCPP)
+    .then(result => {
+      if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
+      if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
+      console.log(result);
+    })
+    .catch(err => {
+      console.error(err);
+      await reply(`❌ Compilation error:\n${err}`);
+    });
+}
+break;
+
+//========================================================================================================================//
+case "eval": {
+  if (!Owner) throw NotOwner;
+  if (!text) return m.reply("❌ Provide a valid bot function or code to evaluate.");
+
+  try {
+    let evaled = await eval(budy.slice(2));
+    if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+    await reply(`✅ Eval Result:\n${evaled}`);
+  } catch (err) {
+    console.error(err);
+    await reply(`❌ Eval Error:\n${err}`);
+  }
+}
+break;
+  
+  case 'catfact': {
+  try {
+    const data = await fetchJson('https://api.dreaded.site/api/catfact');
+    const fact = data.fact;
+    await m.reply(fact);
+  } catch (error) {
+    m.reply('❌ Something went wrong while fetching the cat fact.');
+    console.error(error);
   }
 }
 break;
 
+//========================================================================================================================//		      
+ 
+case 'say': {
+  try {
+    const googleTTS = require('google-tts-api');
+
+    if (!text) return m.reply("❌ Provide a text for conversion!");
+
+    const url = googleTTS.getAudioUrl(text, {
+      lang: 'hi-IN',
+      slow: false,
+      host: 'https://translate.google.com',
+    });
+
+    await dave.sendMessage(m.chat, { audio: { url: url }, mimetype: 'audio/mp4', ptt: true }, { quoted: m });
+  } catch (error) {
+    m.reply('❌ An error occurred while generating TTS.');
+    console.error(error);
+  }
+}
+break;
  //=======================================================\\     
                 
      case "fixtures": case "matches": {
