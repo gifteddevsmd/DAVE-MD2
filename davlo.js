@@ -1209,57 +1209,6 @@ break;
 
 
 //========================================================================================================================//
-case "compile-c": {
-  if (!text && !m.quoted) return m.reply("❌ Quote or provide a C code to compile.");
-
-  const sourceCodeC = m.quoted?.text || text || m.text;
-
-  try {
-    const result = await c.runSource(sourceCodeC); // requires enclosing function to be async
-    if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
-    if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
-    console.log(result);
-  } catch (err) {
-    console.error(err);
-    await reply(`❌ Compilation error:\n${err}`);
-  }
-}
-break;
-
-//========================================================================================================================//
-case "compile-c++": {
-  if (!text && !m.quoted) return m.reply("❌ Quote or provide a C++ code to compile.");
-
-  const sourceCodeCPP = m.quoted?.text || text || m.text;
-
-  try {
-    const result = await cpp.runSource(sourceCodeCPP); // requires enclosing function to be async
-    if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
-    if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
-    console.log(result);
-  } catch (err) {
-    console.error(err);
-    await reply(`❌ Compilation error:\n${err}`);
-  }
-}
-break;
-
-//========================================================================================================================//
-case "eval": {
-  if (!Owner) throw NotOwner;
-  if (!text) return m.reply("❌ Provide a valid bot function or code to evaluate.");
-
-  try {
-    let evaled = await eval(budy.slice(2));
-    if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
-    await reply(`✅ Eval Result:\n${evaled}`);
-  } catch (err) {
-    console.error(err);
-    await reply(`❌ Eval Error:\n${err}`);
-  }
-}
-break;
-//========================================================\\
 
 case "fullpp": {
   if (!Owner) throw NotOwner;
