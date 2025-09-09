@@ -3495,40 +3495,65 @@ break
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//     
 default:
-if (budy.startsWith('>')) {
-if (!isBot) return;
-try {
-let evaled = await eval(budy.slice(2));
-if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
-await m.reply(evaled);
-} catch (err) {
-m.reply(String(err));
-}
-}
+                if (budy.startsWith('=>')) {
+                    if (!Owner) return reply(mess.owner)
+                    function Return(sul) {
+                        sat = JSON.stringify(sul, null, 2)
+                        bang = util.format(sat)
+                        if (sat == undefined) {
+                            bang = util.format(sul)
+                        }
+                        return reply(bang)
+                    }
+                    try {
+                        reply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)))
+                    } catch (e) {
+                        reply(String(e))
+                    }
+                }
 
-if (budy.startsWith('<')) {
-if (!isBot) return
-let kode = budy.trim().split(/ +/)[0]
-let teks
-try {
-teks = await eval(`(async () => { ${kode == ">>" ? "return" : ""} ${q}})()`)
-} catch (e) {
-teks = e
-} finally {
-await m.reply(require('util').format(teks))
+                if (budy.startsWith('>')) {
+                    if (!Owner) return reply(mess.owner)
+                    try {
+                        let evaled = await eval(budy.slice(2))
+                        if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
+                        await reply(evaled)
+                    } catch (err) {
+                        await reply(String(err))
+                    }
+                }
+                if (budy.startsWith('$')) {
+                    if (!Owner) return reply(mess.owner)
+                    exec(budy.slice(2), (err, stdout) => {
+                        if (err) return reply(err)
+                        if (stdout) return reply(stdout)
+                    })
+                }
+                if (isCmd && budy.toLowerCase() != undefined) {
+if (m.chat.endsWith('broadcast')) return
+if (m.isBaileys) return
+let msgs = global.db.data.database
+if (!(budy.toLowerCase() in msgs)) return
+Bellah.copyNForward(m.chat, msgs[budy.toLowerCase()], true, {quoted: m})
 }
-}
+            }
+    } catch (err) {
+          console.log(util.format(err))
+        let e = String(err)
+console.log({ text: "Hello developer, there seems to be an error, please fix it " + util.format(e), 
+contextInfo:{
+forwardingScore: 9999999, 
+isForwarded: true    
 
-}
-} catch (err) {
-console.log(require("util").format(err));
-}
-};
-
-let file = require.resolve(__filename);
-require('fs').watchFile(file, () => {
-require('fs').unwatchFile(file);
-console.log('\x1b[0;32m' + __filename + ' \x1b[1;32mupdated!\x1b[0m');
-delete require.cache[file];
-require(file);
-});
+}})
+if (e.includes("conflict")) return
+if (e.includes("not-authorized")) return
+if (e.includes("already-exists")) return
+if (e.includes("rate-overlimit")) return
+if (e.includes("Connection Closed")) return
+if (e.includes("Timed Out")) return
+if (e.includes("Value not found")) return
+if (e.includes("Socket connection timeout")) return
+    }
+} 
+    
