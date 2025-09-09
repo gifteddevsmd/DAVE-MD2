@@ -2414,90 +2414,33 @@ case "sa-table": {
 break;
 
 //==================================================//
-case "enc":
-case "obfuscate": {
-  const JsConfuser = require('js-confuser');
 
-  if (
-    !m.message.extendedTextMessage ||
-    !m.message.extendedTextMessage.contextInfo.quotedMessage
-  ) {
-    return reply('Please reply to a file to be obfuscated.');
-  }
+case "enc": case "obf": {
+	const Obf = require("javascript-obfuscator");
 
-  const quotedMessage = m.message.extendedTextMessage.contextInfo.quotedMessage;
-  const quotedDocument = quotedMessage.documentMessage;
+    // Check if the quoted message has text
+    if (m.quoted && m.quoted.text) {
+        const forq = m.quoted.text;
 
-  if (!quotedDocument || !quotedDocument.fileName.endsWith('.js')) {
-    return reply('Please reply to a file to be obfuscated.');
-  }
+        // Obfuscate the JavaScript code
+        const obfuscationResult = Obf.obfuscate(forq, {
+            compact: true,
+            controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 1,
+            numbersToExpressions: true,
+            simplify: true,
+            stringArrayShuffle: true,
+            splitStrings: true,
+            stringArrayThreshold: 1
+        });
 
-  try {
-    const fileName = quotedDocument.fileName;
-    const docBuffer = await m.quoted.download();
-    if (!docBuffer) return reply('Please reply to a file to be obfuscated.');
-
-    await dave.sendMessage(m.chat, {
-      react: { text: '🕛', key: m.key }
-    });
-
-    const obfuscatedCode = await JsConfuser.obfuscate(docBuffer.toString(), {
-      target: "node",
-      preset: "high",
-      compact: true,
-      minify: true,
-      flatten: true,
-      identifierGenerator: function () {
-        const originalString = "素GIFTED晴DAVE晴" + "素GIFTED晴DAVE晴";
-        const removeUnwantedChars = (input) => input.replace(/[^a-zA-Z素GIDDY晴TENNOR晴]/g, "");
-        const randomString = (length) => {
-          let result = "";
-          const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-          for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-          }
-          return result;
-        };
-        return removeUnwantedChars(originalString) + randomString(2);
-      },
-      renameVariables: true,
-      renameGlobals: true,
-      stringEncoding: true,
-      stringSplitting: 0.0,
-      stringConcealing: true,
-      stringCompression: true,
-      duplicateLiteralsRemoval: 1.0,
-      shuffle: { hash: 0.0, true: 0.0 },
-      stack: true,
-      controlFlowFlattening: 1.0,
-      opaquePredicates: 0.9,
-      deadCode: 0.0,
-      dispatcher: true,
-      rgf: false,
-      calculator: true,
-      hexadecimalNumbers: true,
-      movedDeclarations: true,
-      objectExtraction: true,
-      globalConcealing: true
-    });
-
-    await dave.sendMessage(
-      m.chat,
-      {
-        document: Buffer.from(obfuscatedCode, "utf-8"),
-        mimetype: "application/javascript",
-        fileName: fileName,
-        caption: `•Successful Encrypt\n•Type: Hard Code\n•@Tennormodz`
-      },
-      { quoted: fkontak }
-    );
-  } catch (err) {
-    console.error('I encountered an error during encryption:', err);
-    await reply(`❌ An error occurred: ${err.message}`);
-  }
+        console.log("Successfully encrypted the code");
+        m.reply(obfuscationResult.getObfuscatedCode());
+    } else {
+        m.reply("Quote/Tag a valid JavaScript code to encrypt!");
+    }
 }
-break;
-
+	break;
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//      
 case 'listblock':{
 if (!isBot) return m.reply(mess.owner)
