@@ -85,7 +85,7 @@
     "imgur": "2.3.0",
     "javascript-obfuscator": "^4.1.0",
     "luxon": "^3.4.4",
-    "megajs": "^1.1.0",
+    "heroku-client": "3.1.0",
     "node-catbox": "3.2.0",
     "openai": "^3.1.0",
     "path": "^0.12.7",
