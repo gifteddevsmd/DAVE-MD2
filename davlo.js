@@ -969,7 +969,28 @@ break
     
         
 
-//========================================================\\                      
+//========================================================\\ 
+
+case 'dalle': case 'createimage': {
+    if (!text) return m.reply(`*This command generates images from text prompts*\n\n*𝙴xample usage*\n*${prefix + command} Beautiful anime girl*\n*${prefix + command} girl in pink dress*`);
+    try {
+        m.reply('Please wait, I am generating your image...');
+        const endpoint = `https://www.arch2devs.ct.ws/api/fluxaws?query=${encodeURIComponent(text)}`;
+        const response = await fetch(endpoint);
+        if (response.ok) {
+            const imageBuffer = await response.buffer();
+            // 🔥 client → dave
+            await dave.sendMessage(m.chat, { image: imageBuffer }, { quoted: m });
+        } else {
+            throw '*Aarrhhhg Image generation failed*';
+        }
+    } catch {
+        m.reply('Oops! Something went wrong while generating your image. Please try again later.');
+    }
+}
+break;
+
+                     
 case "xvideos":{
     if (!q) return m.reply(`Example: ${prefix + command} anime`);
     m.reply(mess.wait);
