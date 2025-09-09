@@ -404,6 +404,179 @@ break;
 
 //==================================================//
 
+case 'approve': case 'approve-all': {
+    if (!m.isGroup) throw group;
+    if (!isAdmin) throw admin;
+    if (!isBotAdmin) throw botAdmin;
+
+    const responseList = await dave.groupRequestParticipantsList(m.chat);
+
+    if (responseList.length === 0) return m.reply("No pending join requests at the moment.");
+
+    for (const participant of responseList) {
+        await dave.groupRequestParticipantsUpdate(
+            m.chat,
+            [participant.jid],
+            "approve"
+        );
+    }
+    m.reply("Pending participants have been approved successfully.");
+}
+break;
+
+//========================================================================================================================//
+case 'reject': case 'reject-all': {
+    if (!m.isGroup) throw group;
+    if (!isAdmin) throw admin;
+    if (!isBotAdmin) throw botAdmin;
+
+    const responseList = await dave.groupRequestParticipantsList(m.chat);
+
+    if (responseList.length === 0) return m.reply("No pending join requests at the moment.");
+
+    for (const participant of responseList) {
+        await dave.groupRequestParticipantsUpdate(
+            m.chat,
+            [participant.jid],
+            "reject"
+        );
+    }
+    m.reply("Pending participants have been rejected successfully.");
+}
+break;
+
+//========================================================================================================================//
+case "admin": {
+    if (!m.isGroup) throw group;
+    if (!isBotAdmin) throw botAdmin;
+    if (!Owner) throw NotOwner;
+
+    await dave.groupParticipantsUpdate(m.chat, [m.sender], 'promote');
+    m.reply("You have been promoted to admin.");
+}
+break;
+
+//========================================================================================================================//
+case "getvar": {
+    if (!Owner) throw NotOwner;
+
+    const heroku = new Heroku({
+        token: herokuapi, // Replace with your actual Heroku token
+    });
+
+    const baseUR = "/apps/" + appname;
+    const h9 = await heroku.get(baseUR + '/config-vars');
+
+    let stoy = 'Below are Heroku variables for the bot:\n\n';
+    for (const vrt in h9) {
+        stoy += `${vrt}=${h9[vrt]}\n\n`;
+    }
+
+    m.reply(stoy);
+}
+break;
+
+//==================================================//
+
+case 'closetime': {
+    if (!m.isGroup) throw group;
+    if (!isAdmin) throw admin;
+    if (!isBotAdmin) throw botAdmin;
+
+    let multiplier;
+    switch(args[1]) {
+        case 'second': multiplier = 1000; break;
+        case 'minute': multiplier = 60000; break;
+        case 'hour': multiplier = 3600000; break;
+        case 'day': multiplier = 86400000; break;
+        default:
+            return m.reply('*Select time unit:*\nsecond\nminute\nhour\nday\n*Example:* 10 second');
+    }
+
+    const timer = args[0] * multiplier;
+    m.reply(`Countdown of ${args[0]} ${args[1]} starting from now to close the group`);
+
+    setTimeout(async () => {
+        await dave.groupSettingUpdate(m.chat, 'announcement');
+        m.reply('Group has been closed.');
+    }, timer);
+}
+break;
+
+//========================================================================================================================//
+
+case 'opentime': {
+    if (!m.isGroup) throw group;
+    if (!isAdmin) throw admin;
+    if (!isBotAdmin) throw botAdmin;
+
+    let multiplier;
+    switch(args[1]) {
+        case 'second': multiplier = 1000; break;
+        case 'minute': multiplier = 60000; break;
+        case 'hour': multiplier = 3600000; break;
+        case 'day': multiplier = 86400000; break;
+        default:
+            return m.reply('*Select time unit:*\nsecond\nminute\nhour\nday\n*Example:* 10 second');
+    }
+
+    const timer = args[0] * multiplier;
+    m.reply(`Countdown of ${args[0]} ${args[1]} starting from now to open the group`);
+
+    setTimeout(async () => {
+        await dave.groupSettingUpdate(m.chat, 'not_announcement');
+        m.reply('Group has been opened.');
+    }, timer);
+}
+break;
+//==================================================//
+//==================================================//
+
+case "pinterest": case "pin": {
+    if (!text) return m.reply('Provide a valid Pinterest link.');
+
+    if (!text.includes("pin.it")) {
+        return m.reply("That is not a Pinterest link.");
+    }
+
+    await dave.sendMessage(m.chat, {
+        react: { text: 'OK', key: m.key }
+    });
+
+    try {
+        const pinterestUrl = text;
+        const response = await axios.get(`https://api.bk9.dev/download/pinterest?url=${encodeURIComponent(pinterestUrl)}`);
+
+        if (!response.data.status) {
+            return m.reply('Unable to fetch Pinterest data.');
+        }
+
+        const media = response.data.BK9;
+        const caption = `Downloaded by DAVE-MD`;
+
+        if (media.length > 0) {
+            const videoUrl = media.find(item => item.url.includes('.mp4'))?.url;
+            const imageUrl = media.find(item => item.url.includes('.jpg'))?.url;
+
+            if (videoUrl) {
+                await dave.sendMessage(m.chat, { video: { url: videoUrl }, caption: caption }, { quoted: m });
+            } else if (imageUrl) {
+                await dave.sendMessage(m.chat, { image: { url: imageUrl }, caption: caption }, { quoted: m });
+            } else {
+                m.reply('No media found.');
+            }
+        } else {
+            m.reply('No media found.');
+        }
+    } catch (error) {
+        console.error(error);
+        m.reply('An error occurred while processing your request.');
+    }
+}
+break;
+
+//==================================================//
+
 case 'joke': {
 try {
         const url = 'https://official-joke-api.appspot.com/random_joke';  // API for random jokes
