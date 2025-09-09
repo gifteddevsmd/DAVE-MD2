@@ -505,7 +505,7 @@ case "movie": {
                     `🌟 IMDbRating : ${fids.data.imdbRating}\n` +
                     `❎ IMDbVotes  : ${fids.data.imdbVotes}`;
 
-        await client.sendMessage(m.chat, {  
+        await dave.sendMessage(m.chat, {  
             image: { url: fids.data.Poster },  
             caption: imdbt  
         }, { quoted: m });
@@ -525,9 +525,9 @@ case 'botpp': {
     if (!/image/.test(mime)) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`; 
     if (/webp/.test(mime)) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`;
 
-    let media = await client.downloadAndSaveMediaMessage(quoted);
+    let media = await dave.downloadAndSaveMediaMessage(quoted);
     
-    await client.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media)); 
+    await dave.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media)); 
 
     dave("DAVE-𝐌𝐃 bot profile picture has been successfully updated!");
 } 
@@ -548,10 +548,10 @@ case "Bois": {
     if (users === "254104260236@s.whatsapp.net") 
         return dave("❌ 𝗜 𝗰𝗮𝗻𝗻𝗼𝘁 𝗯𝗹𝗼𝗰𝗸 𝗺𝘆 𝗢𝘄𝗻𝗲𝗿 😡");
 
-    if (users === client.decodeJid(client.user.id)) 
+    if (users === dave.decodeJid(dave.user.id)) 
         throw '❌ 𝗜 𝗰𝗮𝗻𝗻𝗼𝘁 𝗯𝗹𝗼𝗰𝗸 𝗺𝘆𝘀𝗲𝗹𝗳 😡';
 
-    await client.updateBlockStatus(users, 'block'); 
+    await dave.updateBlockStatus(users, 'block'); 
     dave(`✅ 𝗨𝘀𝗲𝗿 has been blocked successfully!`);
 } 
 break;
