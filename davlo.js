@@ -135,7 +135,7 @@ if (global.autorecordtype) {
 }
 
 if (global.autobio) {
-  dave.updateProfileStatus(`𝙹𝚄𝙽𝙴 𝙼𝙳 𝙱𝙾𝚃 is Online✅ | |Runtime ${runtime(process.uptime())}`)
+  dave.updateProfileStatus(`𝙳𝙰𝚅𝙴-𝙼𝙳 is Online✅ | |Runtime ${runtime(process.uptime())}`)
     .catch(err => console.error("Error updating status:", err));
 }
 
@@ -521,9 +521,9 @@ break;
 
 case 'botpp': { 
     if (!Owner) throw NotOwner; 
-    if (!quoted) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`;
-    if (!/image/.test(mime)) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`; 
-    if (/webp/.test(mime)) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`;
+    if (!quoted) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐃𝐀𝐕𝐄-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`;
+    if (!/image/.test(mime)) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐃𝐀𝐕𝐄-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`; 
+    if (/webp/.test(mime)) throw `❌ 𝗧𝗮𝗴 𝗮𝗻 𝗶𝗺𝗮𝗴𝗲 𝘁𝗼 𝘀𝗲𝘁 𝗮𝘀 𝐃𝐀𝐕𝐄-𝐌𝐃 𝗯𝗼𝘁 𝗽𝗿𝗼𝗳𝗶𝗹𝗲 𝗽𝗶𝗰𝗸.`;
 
     let media = await dave.downloadAndSaveMediaMessage(quoted);
     
@@ -637,7 +637,7 @@ case "app": {
                 mimetype: "application/vnd.android.package-archive",
                 contextInfo: {
                     externalAdReply: {
-                        title: `𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃`,
+                        title: `𝐃𝐀𝐕𝐄-𝐌𝐃`,
                         body: `${tylor.BK9.name}`,
                         thumbnailUrl: `${tylor.BK9.icon}`,
                         sourceUrl: `${tylor.BK9.dllink}`,
@@ -795,7 +795,7 @@ case "getvar": {
     let baseUR = "/apps/" + appname;  
     let h9 = await heroku.get(baseUR + '/config-vars');  
 
-    let stoy = '*𝗕𝗲𝗹𝗼𝘄 𝗔𝗿𝗲 𝗛𝗲𝗿𝗼𝗸𝘂 𝗩𝗮𝗿𝗶𝗮𝗯𝗹𝗲𝘀 𝗳𝗼𝗿 𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃:*\n\n';  
+    let stoy = '*𝗕𝗲𝗹𝗼𝘄 𝗔𝗿𝗲 𝗛𝗲𝗿𝗼𝗸𝘂 𝗩𝗮𝗿𝗶𝗮𝗯𝗹𝗲𝘀 𝗳𝗼𝗿 𝐃𝐀𝐕𝐄-𝐌𝐃:*\n\n';  
 
     for (const vrt in h9) {  
         stoy += `${vrt} = ${h9[vrt]}\n\n`;  
