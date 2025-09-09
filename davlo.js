@@ -568,61 +568,75 @@ break;
 
 //==================================================//
 
-case 'closetime': {
-    if (!m.isGroup) throw group;
-    if (!isAdmin) throw admin;
-    if (!isBotAdmin) throw botAdmin;
-
-    let multiplier;
-    switch(args[1]) {
-        case 'second': multiplier = 1000; break;
-        case 'minute': multiplier = 60000; break;
-        case 'hour': multiplier = 3600000; break;
-        case 'day': multiplier = 86400000; break;
-        default:
-            return m.reply('*Select time unit:*\nsecond\nminute\nhour\nday\n*Example:* 10 second');
-    }
-
-    const timer = args[0] * multiplier;
-    m.reply(`Countdown of ${args[0]} ${args[1]} starting from now to close the group`);
-
-    setTimeout(async () => {
-        await dave.groupSettingUpdate(m.chat, 'announcement');
-        m.reply('Group has been closed.');
-    }, timer);
-}
-break;
-
-//========================================================================================================================//
-
-case 'opentime': {
-    if (!m.isGroup) throw group;
-    if (!isAdmin) throw admin;
-    if (!isBotAdmin) throw botAdmin;
-
-    let multiplier;
-    switch(args[1]) {
-        case 'second': multiplier = 1000; break;
-        case 'minute': multiplier = 60000; break;
-        case 'hour': multiplier = 3600000; break;
-        case 'day': multiplier = 86400000; break;
-        default:
-            return m.reply('*Select time unit:*\nsecond\nminute\nhour\nday\n*Example:* 10 second');
-    }
-
-    const timer = args[0] * multiplier;
-    m.reply(`Countdown of ${args[0]} ${args[1]} starting from now to open the group`);
-
-    setTimeout(async () => {
-        await dave.groupSettingUpdate(m.chat, 'not_announcement');
-        m.reply('Group has been opened.');
-    }, timer);
-}
-break;
+case 'closetime':
+                if (!m.isGroup) return m.reply(mess.group)
+                if (!isAdmins && !Owner) return reply(mess.admin)
+                if (!isBotAdmins) return m.reply(mess.admin)
+                if (args[1] == 'second') {
+                    var timer = args[0] * `1000`
+                } else if (args[1] == 'minute') {
+                    var timer = args[0] * `60000`
+                } else if (args[1] == 'hour') {
+                    var timer = args[0] * `3600000`
+                } else if (args[1] == 'day') {
+                    var timer = args[0] * `86400000`
+                } else {
+                    return m.reply('*select:*\nsecond\nminute\nhour\n\n*Example*\n10 second')
+                }
+                m.reply(`Close time ${q} starting from now`)
+                setTimeout(() => {
+                    var nomor = m.participant
+                    const close = `*Close time* group closed by admin\nnow only admin can send messages`
+                    dave.groupSettingUpdate(m.chat, 'announcement')
+                    
+                  m.reply(close)
+                }, timer)
+                break
+//========================================================\\
+case 'opentime':
+                if (!m.isGroup) return m.reply(mess.group)
+                if (!isAdmins && !Owner) return reply(mess.admin)
+                if (!isBotAdmins) return m.reply(mess.admin)
+                if (args[1] == 'second') {
+                    var timer = args[0] * `1000`
+                } else if (args[1] == 'minute') {
+                    var timer = args[0] * `60000`
+                } else if (args[1] == 'hour') {
+                    var timer = args[0] * `3600000`
+                } else if (args[1] == 'day') {
+                    var timer = args[0] * `86400000`
+                } else {
+                    return m.reply('*select:*\nsecond\nminute\nhour\n\n*example*\n10 second')
+                }
+                m.reply(`Open time ${q} starting from now`)
+                setTimeout(() => {
+                    var nomor = m.participant
+                    const open = `*Open time* the group was opened by admin\n now members can send messages`
+                   dave.groupSettingUpdate(m.chat, 'not_announcement')
+                    m.reply(open)
+                }, timer)
+                break
+//========================================================\\
+case 'addnumber':
+                if (!m.isGroup) return m.reply(mess.group)
+                if(!Owner) return m.reply(mess.owner)
+                if (!isBotAdmins) return reply(mess.admin)
+                let blockwwww = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                await dave.groupParticipantsUpdate(m.chat, [blockwwww], 'add')
+                m.reply(mess.done)
+                break
 //==================================================//
+
+ case 'pin': case 'unpin': {
+				if (!m.isGroup) return m.reply(mess.group)
+				if (!isAdmins) return m.reply(mess.admin)
+				if (!isBotAdmins) return m.reply(`bot must be admin first`)
+				await dave.sendMessage(m.chat, { pin: { type: command == 'pin' ? 1 : 0, time: 2592000, key: m.quoted ? m.quoted.key : m.key }})
+			}
+			break
 //==================================================//
 
-case "pinterest": case "pin": {
+case "pinterest": case "pinn": {
     if (!text) return m.reply('Provide a valid Pinterest link.');
 
     if (!text.includes("pin.it")) {
@@ -666,6 +680,54 @@ case "pinterest": case "pin": {
 break;
 
 //==================================================//
+
+case 'onlygroup':
+            case 'onlygc':
+                if (!Owner) return m.reply(mess.owner)
+                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+                if (q == 'on') {
+                    db.data.settings[botNumber].onlygrub = true
+                    m.reply(`Successfully Changed Onlygroup To ${q}`)
+                } else if (q == 'off') {
+                    db.data.settings[botNumber].onlygrub = false
+                    m.reply(`Successfully Changed Onlygroup To ${q}`)
+                }
+            break
+//========================================================\\
+case 'onlyprivatechat':
+            case 'onlypc':
+                if (!Owner) return m.reply(mess.owner)
+                if (args.length < 1) return m.reply(`Example ${prefix + command} on/off`)
+                if (q == 'on') {
+                    db.data.settings[botNumber].onlypc = true
+                    m.reply(`Successfully Changed Only-Pc To ${q}`)
+                } else if (q == 'off') {
+                    db.data.settings[botNumber].onlypc = false
+                    m.reply(`Successfully Changed Only-Pc To ${q}`)
+                }
+            break
+//========================================================\\
+case "setppgc": {
+if (!isGroup) return m.reply(mess.group)
+if (!isBotAdmins) return m.reply(mess.adminbot)
+if (!isBotAdmins) return m.reply(mess.admin)
+if (/image/g.test(mime)) {
+let media = await dave.downloadAndSaveMediaMessage(qmsg)
+await dave.updateProfilePicture(m.chat, {url: media})
+await fs.unlinkSync(media)
+m.reply("Group profile photo changed successfully by VolTah Xmd")
+} else return m.reply('tag/reply foto')}
+break
+//========================================================\\
+case "setppbot": case "setpp": {
+if (!Owner) return m.reply(mess.owner)
+if (/image/g.test(mime)) {
+let media = await dave.downloadAndSaveMediaMessage(qmsg)
+await dave.updateProfilePicture(botNumber, {url: media})
+await fs.unlinkSync(media)
+m.reply("Profile photo changed by Dave Xmd")
+} else return m.reply('tag/reply foto')}
+break
 
  case "dp": { 
  try { 
