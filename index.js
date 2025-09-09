@@ -263,7 +263,7 @@ dave.ev.on('group-participants.update', async (update) => {
             if (mek.key.id.startsWith('Xeon') && mek.key.id.length === 16) return
             if (mek.key.id.startsWith('BAE5')) return
             m = smsg(dave, mek, store)
-            require("./case")(dave, m, chatUpdate, store)
+            require("./dave")(dave, m, chatUpdate, store)
         } catch (err) {
             console.log(err)
         }
