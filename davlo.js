@@ -14,7 +14,7 @@ const { spawn, exec, execSync } = require('child_process');
 const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
 Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
 
-module.exports = supreme = async (supreme, m, chatUpdate, store) => {
+module.exports = dave = async (dave, m, chatUpdate, store) => {
 try {
 // Message type handlers
 const body = (
@@ -31,7 +31,7 @@ m.mtype === "messageContextInfo" ? m.message.buttonsResponseMessage?.selectedBut
 );
 
 const sender = m.key.fromMe
-? supreme.user.id.split(":")[0] || supreme.user.id
+? dave.user.id.split(":")[0] || dave.user.id
 : m.key.participant || m.key.remoteJid;
 
 const senderNumber = sender.split('@')[0];
@@ -44,7 +44,7 @@ const from = m.key.remoteJid;
 const isGroup = from.endsWith("@g.us");
 
 // Database And Lain"
-const botNumber = await supreme.decodeJid(supreme.user.id);
+const botNumber = await dave.decodeJid(dave.user.id);
 const isBot = botNumber.includes(senderNumber);
 const newOwner = fs.readFileSync("./lib/owner.json")
 const isOwner = newOwner.includes(m.sender);
@@ -58,7 +58,7 @@ const qmsg = (quoted.msg || quoted);
 const isMedia = /image|video|sticker|audio/.test(mime);
 
 // function Group
-const groupMetadata = isGroup ? await supreme.groupMetadata(m.chat).catch((e) => {}) : "";
+const groupMetadata = isGroup ? await dave.groupMetadata(m.chat).catch((e) => {}) : "";
 const groupOwner = isGroup ? groupMetadata.owner : "";
 const groupName = m.isGroup ? groupMetadata.subject : "";
 const participants = isGroup ? await groupMetadata.participants : "";
@@ -125,43 +125,43 @@ sendEphemeral: true
 }
 
 const reply = (teks) => {
-supreme.sendMessage(from, { text : teks }, { quoted : m })
+dave.sendMessage(from, { text : teks }, { quoted : m })
 }
 
 const reaction = async (jidss, emoji) => {
-supreme.sendMessage(jidss, { react: { text: emoji, key: m.key }})}
+dave.sendMessage(jidss, { react: { text: emoji, key: m.key }})}
 
 
 if (global.autoTyping) {
-  supreme.sendPresenceUpdate("composing", from);
+  dave.sendPresenceUpdate("composing", from);
 }
 
 if (global.autoRecording) {
-  supreme.sendPresenceUpdate("recording", from);
+  dave.sendPresenceUpdate("recording", from);
 }
 
-supreme.sendPresenceUpdate("unavailable", from);
+dave.sendPresenceUpdate("unavailable", from);
 
 if (global.autorecordtype) {
   let xeonRecordTypes = ["recording", "composing"];
   let selectedRecordType = xeonRecordTypes[Math.floor(Math.random() * xeonRecordTypes.length)];
-  supreme.sendPresenceUpdate(selectedRecordType, from);
+  dave.sendPresenceUpdate(selectedRecordType, from);
 }
 
 if (autobio) {
-  supreme.updateProfileStatus(`𝙳𝙰𝚅𝙴-𝙼𝙳 𝙱𝙾𝚃 is Active| |Runtime ${runtime(process.uptime())}`)
+  dave.updateProfileStatus(`𝙳𝙰𝚅𝙴-𝙼𝙳 𝙱𝙾𝚃 is Active| |Runtime ${runtime(process.uptime())}`)
     .catch(err => console.error("Error updating status:", err));
 }
 
 if (m.sender.startsWith("92") && global.anti92 === true) {
-  return supreme.updateBlockStatus(m.sender, "block");
+  return dave.updateBlockStatus(m.sender, "block");
 }
 
 if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
   if (!m.quoted) {
     reply("Owner is currently offline, please wait for a response");
     setTimeout(() => {
-      supreme.sendMessage(m.key.remoteJid, { delete: m.key });
+      dave.sendMessage(m.key.remoteJid, { delete: m.key });
     }, 2000);
   }
 }
@@ -171,7 +171,7 @@ if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.ow
 switch (command) {        
 case "public": { 
 if (!isBot) return reply(`Feature for owner only`)
-supreme.public = true
+dave.public = true
 reply(`Successfully✅ Changed Bot Mode To Public`)
 }
 break;
@@ -181,7 +181,7 @@ break;
 case "self":
 case "private": { 
 if (!isBot) return reply(`Feature for owner only`)
-supreme.public = false
+dave.public = false
 reply(`Successfully✅ Changed Bot Mode To Private`)
 }
 break;
@@ -266,7 +266,7 @@ case "apk":
           if (!text) return reply("Where is the app name?");
         let kyuu = await fetchJson (`https://bk9.fun/search/apk?q=${text}`);
         let tylor = await fetchJson (`https://bk9.fun/download/apk?id=${kyuu.BK9[0].id}`);
-         await client.sendMessage(
+         await dave.sendMessage(
               m.chat,
               {
                 document: { url: tylor.BK9.dllink },
@@ -303,9 +303,9 @@ case 'botpp': {
     if (!quoted) throw `Tag an image you want to be the bot's profile picture with ${prefix + command}`; 
     if (!/image/.test(mime)) throw `Tag an image you want to be the bot's profile picture with ${prefix + command}`; 
     if (/webp/.test(mime)) throw `Tag an image you want to be the bot's profile picture with ${prefix + command}`; 
-    let media = await client.downloadAndSaveMediaMessage(quoted);
+    let media = await dave.downloadAndSaveMediaMessage(quoted);
 		
-                    await client.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media)); 
+                    await dave.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media)); 
     reply `Bot's profile picture has been successfully updated!`; 
 	  }
     break;
@@ -333,7 +333,7 @@ case "setvar":
  if (!m.quoted) throw `No message quoted for deletion`; 
  let { chat, fromMe, id, isBaileys } = m.quoted; 
  if (isBaileys) throw `I cannot delete. Quoted message is my message or another bot message.`; 
- client.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } }); 
+ dave.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } }); 
  } 
  break;
 //========================================================================================================================//
@@ -506,7 +506,7 @@ case "close": case "mutegc": {
                  if (!isBotAdmin) throw botAdmin; 
                  if (!isAdmin) throw admin; 
   
-                     await client.groupSettingUpdate(m.chat, 'not_announcement'); 
+                     await dave.groupSettingUpdate(m.chat, 'not_announcement'); 
  m.reply('Group successfully unlocked!'); 
   
  }
@@ -670,13 +670,13 @@ break;
  try { 
  ha = m.quoted.sender; 
  qd = await dave.getName(ha); 
- pp2 = await client.profilePictureUrl(ha,'image'); 
+ pp2 = await dave.profilePictureUrl(ha,'image'); 
  } catch {  
  pp2 = 'https://tinyurl.com/yx93l6da'; 
  } 
   if (!m.quoted) throw `Tag a user!`; 
  bar = `Profile Picture of ${qd}`; 
- client.sendMessage(m.chat, { image: { url: pp2}, caption: bar, fileLength: "999999999999"}, { quoted: m}); 
+ dave.sendMessage(m.chat, { image: { url: pp2}, caption: bar, fileLength: "999999999999"}, { quoted: m}); 
  } 
  break;
 
@@ -695,13 +695,13 @@ if (!m.quoted) return m.reply("quote a viewonce message eh")
 
     if (quotedMessage.imageMessage) {
       let imageCaption = quotedMessage.imageMessage.caption;
-      let imageUrl = await client.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
-      client.sendMessage(m.chat, { image: { url: imageUrl }, caption: `Retrieved by Blackie!\n${imageCaption}`}, { quoted: m });
+      let imageUrl = await dave.downloadAndSaveMediaMessage(quotedMessage.imageMessage);
+      dave.sendMessage(m.chat, { image: { url: imageUrl }, caption: `Retrieved by Blackie!\n${imageCaption}`}, { quoted: m });
     }
 
     if (quotedMessage.videoMessage) {
       let videoCaption = quotedMessage.videoMessage.caption;
-      let videoUrl = await client.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
+      let videoUrl = await dave.downloadAndSaveMediaMessage(quotedMessage.videoMessage);
       dave.sendMessage(m.chat, { video: { url: videoUrl }, caption: `Retrieved by 𝙳𝙰𝚅𝙴-𝙼𝙳!\n${videoCaption}`}, { quoted: m });
     }
       }
@@ -1640,7 +1640,7 @@ case 'createimage': {
         const response = await fetch(endpoint);
         if (response.ok) {
             const imageBuffer = await response.buffer();
-            // 🔥 client → dave
+            // 🔥 dave → dave
             await dave.sendMessage(m.chat, { image: imageBuffer }, { quoted: m });
         } else {
             throw '*Aarrhhhg Image generation failed*';
@@ -1843,7 +1843,7 @@ let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 
     let filename = (await fetch(url, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
 
-    await supreme.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply("error"))
+    await dave.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply("error"))
 
 		    }
 	      break; 
@@ -2110,7 +2110,7 @@ const path = require("path");
             .toFormat("mp3")
             .save(outputPath)
             .on("end", async () => {
-              await supreme.sendMessage(
+              await dave.sendMessage(
                 m.chat,
                 {
                   document: { url: outputPath },
@@ -2160,12 +2160,12 @@ case  'getppgc':
 if (!isGroup) return 
 reply(mess.wait)
 try {
-var ppimg = await supreme.profilePictureUrl(m.chat, 'image')
+var ppimg = await dave.profilePictureUrl(m.chat, 'image')
 } catch (err) {
 console.log(err)
 var ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
 }
-await supreme.sendMessage(m.chat, { image: { url: ppimg }}, { quoted: m })
+await dave.sendMessage(m.chat, { image: { url: ppimg }}, { quoted: m })
 break;
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
@@ -2174,8 +2174,8 @@ break;
 if (!isBot && !isAdmins) return reply(` The command is for group only`)
 if (!m.isGroup) return reply(mess.only.group)
 if (!isBotAdmins) return reply(`Bot must Be Admin to eliminate the command`)
-let response = await supreme.groupInviteCode(m.chat)
-supreme.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nLink Group : ${groupMetadata.subject}`, m, { detectLink: true })
+let response = await dave.groupInviteCode(m.chat)
+dave.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nLink Group : ${groupMetadata.subject}`, m, { detectLink: true })
 }
 break;
         
@@ -2193,7 +2193,7 @@ break;
             for (let i of opt.split(',')) {
                 options.push(i)
             }
-            await supreme.sendMessage(m.chat, {
+            await dave.sendMessage(m.chat, {
                 poll: {
                     name: poll,
                     values: options
@@ -2209,7 +2209,7 @@ case 'add':
                 if(!isBot) return m.reply(mess.owner)
                 if (!isBotAdmins) return reply(mess.admin)
                 let blockwwww = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await supreme.groupParticipantsUpdate(m.chat, [blockwwww], 'add')
+                await dave.groupParticipantsUpdate(m.chat, [blockwwww], 'add')
                 m.reply(mess.done)
                 break; 
         
@@ -2218,13 +2218,13 @@ case 'add':
         
  case 'infogc': {
 if(!isGroup) return reply("The command for groups only")
-let _meta = await supreme.groupMetadata(m.chat)
+let _meta = await dave.groupMetadata(m.chat)
 console.log(_meta)
-let _img = await supreme.profilePictureUrl(_meta.id, 'image') 
+let _img = await dave.profilePictureUrl(_meta.id, 'image') 
 let caption = `${_meta.subject} - Created on ${moment(_meta.creation * 1000).format('ll')}\n\n` +
 `*${_meta.participants.length}* Total Members\n*${_meta.participants.filter(x => x.admin === 'admin').length}* Admin\n*${_meta.participants.filter(x => x.admin === null).length}* Not Admin\n\n` +
 `Group ID : ${_meta.id}`
-await supreme.sendMessage(m.chat,{
+await dave.sendMessage(m.chat,{
 caption,
 image: await getBuffer(_img)
 },
@@ -2273,7 +2273,7 @@ case 'listonline': case 'liston': {
                 if (!isAdmins && !isGroupAdmins && !isBot) return reply(mess.admin)
                 if (!isBotAdmins) return m.reply(mess.admin)
                 if (!text) return reply('Text ?')
-                await supreme.groupUpdateSubject(m.chat, text)
+                await dave.groupUpdateSubject(m.chat, text)
                 m.reply(mess.done)
                 break;
 
@@ -2284,7 +2284,7 @@ if (!isBot) return m.reply("Owner Command dude 🙃")
 if (!isGroup) return m.reply("The command is for Group only.")
 await m.reply("Successfully left the group by DAVE-MD\nMessage : _it was nice being here..._")
 await sleep(2000)
-await supreme.groupLeave(m.chat)
+await dave.groupLeave(m.chat)
 }
 break;
         
@@ -2305,7 +2305,7 @@ break;
 if (/video/.test(qmsg.mimetype)) {
 if ((qmsg).seconds > 30) return reply("maximum video duration 30 seconds!")
 let ptv = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({ ptvMessage: qmsg }), { userJid: m.chat, quoted: m })
-supreme.relayMessage(m.chat, ptv.message, { messageId: ptv.key.id })
+dave.relayMessage(m.chat, ptv.message, { messageId: ptv.key.id })
 } else { 
 return reply("Reply to a video content.")
 }
@@ -2457,7 +2457,7 @@ break;
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//      
 case 'listblock':{
 if (!isBot) return m.reply(mess.owner)
-let block = await supreme.fetchBlocklist()
+let block = await dave.fetchBlocklist()
 reply('List Block :\n\n' + `Total : ${block == undefined ? '*0* BLOCKED NUMBERS' : '*' + block.length + '* Blocked Contacts'}\n` + block.map(v => '🩸 ' + v.replace(/@.+/, '')).join`\n`)
 }
 break;
@@ -2624,7 +2624,7 @@ case 'trt': case 'trans': {
         const translatedText = data.responseData.translatedText;
         const message = `${translatedText}`;
 
-        // 🔥 client → dave
+        // 🔥 dave → dave
         await dave.sendMessage(m.chat, { text: message }, { quoted: m });
 
     } catch (error) {
@@ -2645,7 +2645,7 @@ case 'cast': {
     m.reply(`Success in casting the message to contacts.\n\nDo not always use this command to avoid WA bans!`);
 
     for (let pler of mem) {
-        // 🔥 client → dave
+        // 🔥 dave → dave
         await dave.sendMessage(pler, { text: q });
     }
 
@@ -2668,7 +2668,7 @@ case "img": case "ai-img": case "image": case "images": {
             const imageUrls = results.slice(0, numberOfImages).map(result => result.url);
 
             for (const url of imageUrls) {
-                // 🔥 client → dave
+                // 🔥 dave → dave
                 await dave.sendMessage(m.chat, {
                     image: { url },
                     caption: `Downloaded by ${botname}`
