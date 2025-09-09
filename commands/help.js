@@ -1,13 +1,12 @@
 const settings = require('../settings');
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
 function formatTime(seconds) {
     const days = Math.floor(seconds / (24 * 60 * 60));
-    seconds = seconds % (24 * 60 * 60);
+    seconds %= 24 * 60 * 60;
     const hours = Math.floor(seconds / (60 * 60));
-    seconds = seconds % (60 * 60);
+    seconds %= 60 * 60;
     const minutes = Math.floor(seconds / 60);
     seconds = Math.floor(seconds % 60);
 
@@ -21,13 +20,12 @@ function formatTime(seconds) {
 }
 
 async function helpCommand(sock, chatId, message) {
-        const start = Date.now();
-        await sock.sendMessage(chatId, { text: '_getting daves menu..._' }, { quoted: message });
-        const end = Date.now();
-        const ping = Math.round((end - start) / 2);
-
-        const uptimeInSeconds = process.uptime();
-        const uptimeFormatted = formatTime(uptimeInSeconds);
+    const start = Date.now();
+    await sock.sendMessage(chatId, { text: '_Getting DAVE menu..._' }, { quoted: message });
+    const end = Date.now();
+    const ping = Math.round((end - start) / 2);
+    const uptimeInSeconds = process.uptime();
+    const uptimeFormatted = formatTime(uptimeInSeconds);
     const helpMessage = `
 ┏▣ ◈ *𝐃𝐀𝐕𝐄-𝐌𝐃* ◈
 ┃ *ᴏᴡɴᴇʀ* : ${settings.botOwner}
@@ -404,40 +402,35 @@ async function helpCommand(sock, chatId, message) {
 
 try {
         const imagePath = path.join(__dirname, '../assets/Dave_menu.jpg');
-        
+        let imagePayload = {};
+
+        // Check if custom menu image exists
         if (fs.existsSync(imagePath)) {
-            const imageBuffer = fs.readFileSync(imagePath);
-            
-            await sock.sendMessage(chatId, {
-                image: imageBuffer,
-                caption: helpMessage,
-                contextInfo: {
-                    forwardingScore: 1,
-                    isForwarded: false,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363400480173280@newsletter',
-                        newsletterName: '𝐃𝐀𝐕𝐄-𝐗𝐌𝐃',
-                        serverMessageId: -1
-                    }
-                }
-            },{ quoted: message });
+            imagePayload = { image: { url: imagePath } };
         } else {
-            console.error('Bot image not found at:', imagePath);
-            await sock.sendMessage(chatId, { 
-                text: helpMessage,
-                contextInfo: {
-                    forwardingScore: 1,
-                    isForwarded: false,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363400480173280@newsletter',
-                        newsletterName: '𝐃𝐀𝐕𝐄-𝐗𝐌𝐃',
-                        serverMessageId: -1
-                    } 
-                }
-            });
+            // Fallback to bot's profile picture
+            const profilePicUrl = await sock.profilePictureUrl(sock.user.id).catch(() => null);
+            if (profilePicUrl) {
+                imagePayload = { image: { url: profilePicUrl } };
+            }
         }
+
+        await sock.sendMessage(chatId, {
+            ...imagePayload,
+            caption: helpMessage,
+            contextInfo: {
+                forwardingScore: 1,
+                isForwarded: false,
+                forwardedNewsletterMessageInfo: {
+                    newsletterJid: '120363400480173280@newsletter',
+                    newsletterName: '𝐃𝐀𝐕𝐄-𝐗𝐌𝐃',
+                    serverMessageId: -1
+                }
+            }
+        }, { quoted: message });
+
     } catch (error) {
-        console.error('Error in help command:', error);
+        console.error('Error in helpCommand:', error);
         await sock.sendMessage(chatId, { text: helpMessage });
     }
 }
