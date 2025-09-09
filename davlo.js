@@ -230,9 +230,520 @@ break;
                 break;
                 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+      case 'define': 
+if (!q) return m.reply(`What do you want to define?`)
+try {
+targetfine = await axios.get(`http://api.urbandictionary.com/v0/define?term=${q}`)
+if (!targetfine) return reply(mess.error)
+const reply = `
+*${themeemoji} Word:* ${q}
+*${themeemoji} Definition:* ${targetfine.data.list[0].definition
+    .replace(/\[/g, "")
+    .replace(/\]/g, "")}
+*${themeemoji} Example:* ${targetfine.data.list[0].example
+    .replace(/\[/g, "")
+    .replace(/\]/g, "")}`
+   dave.sendMessage(m.chat,{text:reply},{quoted:m})
+} catch (err) {
+    console.log(err)
+    return m.reply(`*${q}* isn't a valid text`)
+    }
+    break    
+
+ //========================================================\\     
+    
+                          
+      case 'lemonmail': case 'sendemail': {
+ const args = text.split('|'); if (args.length < 3) return m.reply('Format wrong! Provide: email|subject|message');
+const [target, subject, message] = args;
+        m.reply('sending email...');
+        try {
+            const data = JSON.stringify({ "to": target.trim(), "subject": subject.trim(), "message": message.trim() });
+            const config = {
+                method: 'POST',
+                url: 'https://lemon-email.vercel.app/send-email',
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36',
+                    'Content-Type': 'application/json',
+                    'sec-ch-ua-platform': '"Android"',
+                    'sec-ch-ua': '"Chromium";v="134", "Not:A-Brand";v="24", "Google Chrome";v="134"',
+                    'sec-ch-ua-mobile': '?1',
+                    'origin': 'https://lemon-email.vercel.app',
+                    'sec-fetch-site': 'same-origin',
+                    'sec-fetch-mode': 'cors',
+                    'sec-fetch-dest': 'empty',
+                    'referer': 'https://lemon-email.vercel.app/',
+                    'accept-language': 'id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7',
+                    'priority': 'u=1, i'
+                },
+                data: data
+            };
+            const axios = require('axios');
+            const api = await axios.request(config);
+            m.reply(`Email: ${JSON.stringify(api.data, null, 2)}`);
+        } catch (error) {
+            m.reply(`Error: ${error.message}`);
+        }
+        }
+        break
+  //========================================================\\  
+                 
+case 'myip':
+            case 'ipbot':
+                if (!Owner) return m.reply(mess.owner)
+                var http = require('http')
+                http.get({
+                    'host': 'api.ipify.org',
+                    'port': 80,
+                    'path': '/'
+                }, function(resp) {
+                    resp.on('data', function(ip) {
+                        reply("🔎 My public IP address is: " + ip);
+                    })
+                })
+            break
+            
+       //========================================================\\     
+       
+       
+       case "ff":
+case "ffstalk":{
+ try {
+ if (args.length === 0) return m.reply(`Example: ${prefix + command} 537212033`);
+ 
+ const id = args[0];
+ const apiUrl = `https://vapis.my.id/api/ff-stalk?id=${id}`;
+ 
+ const response = await fetch(apiUrl);
+ const json = await response.json();
+ 
+ if (!json.status) return m.reply('Failed to fetch data. User ID might be invalid.');
+ 
+ const data = json.data;
+ const account = data.account;
+ const pet = data.pet_info;
+ const guild = data.guild;
+ const items = data.equippedItems;
+ 
+ let text = `*👤 FREE FIRE USER INFO*\n\n`;
+ text += `*🆔 User ID*: ${account.id}\n`;
+ text += `*👤 Username*: ${account.name}\n`;
+ text += `*🔰 Level*: ${account.level}\n`;
+ text += `*⭐ XP*: ${account.xp}\n`;
+ text += `*🌍 Region*: ${account.region}\n`;
+ text += `*👍 Likes*: ${account.like}\n`;
+ text += `*📝 Bio*: ${account.bio}\n`;
+ text += `*🎂 Created*: ${account.create_time}\n`;
+ text += `*⏱️ Last Login*: ${account.last_login}\n`;
+ text += `*🎖️ Honor Score*: ${account.honor_score}\n`;
+ text += `*🎯 BR Points*: ${account.BR_points}\n`;
+ text += `*🔫 CS Points*: ${account.CS_points}\n`;
+ text += `*🎫 Booyah Pass*: ${account.booyah_pass ? 'Yes' : 'No'}\n`;
+ text += `*🏆 Booyah Pass Badge*: ${account.booyah_pass_badge}\n\n`;
+ 
+ if (pet) {
+ text += `*🐱 PET INFO*\n`;
+ text += `*🐾 Name*: ${pet.name}\n`;
+ text += `*🔰 Level*: ${pet.level}\n`;
+ text += `*⭐ XP*: ${pet.xp}\n\n`;
+ }
+ 
+ if (guild) {
+ text += `*👥 GUILD INFO*\n`;
+ text += `*🛡️ Name*: ${guild.name}\n`;
+ text += `*🆔 ID*: ${guild.id}\n`;
+ text += `*🔰 Level*: ${guild.level}\n`;
+ text += `*👥 Members*: ${guild.member}/${guild.capacity}\n\n`;
+ }
+ 
+
+ text += `*🎮 EQUIPPED ITEMS*\n`;
+ 
+ if (items.Outfit && items.Outfit.length > 0) {
+ text += `\n*👕 Outfit*:\n`;
+ items.Outfit.forEach(item => {
+ text += `- ${item.name}\n`;
+ });
+ }
+ 
+ if (items.Pet && items.Pet.length > 0) {
+ text += `\n*🐾 Pet*:\n`;
+ items.Pet.forEach(item => {
+ text += `- ${item.name}\n`;
+ });
+ }
+ 
+ if (items.Avatar && items.Avatar.length > 0) {
+ text += `\n*🎭 Avatar*:\n`;
+ items.Avatar.forEach(item => {
+ text += `- ${item.name}\n`;
+ });
+ }
+ 
+ if (items.Banner && items.Banner.length > 0) {
+ text += `\n*🏳️ Banner*:\n`;
+ items.Banner.forEach(item => {
+ text += `- ${item.name}\n`;
+ });
+ }
+ 
+ if (items.Weapons && items.Weapons.length > 0) {
+ text += `\n*🔫 Weapons*:\n`;
+ items.Weapons.forEach(item => {
+ text += `- ${item.name}\n`;
+ });
+ }
+ 
+ if (items.Title && items.Title.length > 0) {
+ text += `\n*📜 Title*:\n`;
+ items.Title.forEach(item => {
+ text += `- ${item.name}\n`;
+ });
+ }
+ 
+ await m.reply(text);
+ } catch (error) {
+ console.error(error);
+ await m.reply('An error occurred while fetching the data');
+ }
+}
+ break    
+  //========================================================\\              
+
+
+========================================================\\ 
+  
+  case "tts": {
+  if(!text) return m.reply("`provide a query`");
+  m.reply(`processing your query`);
+  try {
+    let anu = `https://api.siputzx.my.id/api/tools/tts?text=${encodeURIComponent(text)}&voice=jv-ID-DimasNeural&rate=0%&pitch=0Hz&volume=0%`;
+    const response = await axios.get(anu, {
+      responseType: 'arraybuffer'
+    });
+    let buffer = response.data;
+    
+    dave.sendMessage(m.chat, {
+      audio: buffer,
+      mimetype: "audio/mpeg",
+      ptt: true
+    })
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+break;
+
+ //========================================================\\     
+                
+                      
+case "notes": case "tulis": {
+  if (!text) return m.reply('❌provide a text .\n\nExample: nulis Biyu Tamvan');
+  
+  m.reply(`process.....`);
+  const axios = require('axios');
+  let apiUrl = `https://nirkyy.koyeb.app/api/v1/nulis?text=${encodeURIComponent(text)}`;
+
+  try {
+    const response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
+    dave.sendMessage(m.chat, {
+      image: Buffer.from(response.data),
+      caption: `📝 *Success* 📝\n\n📌 *Text:* ${text}`
+    }, { quoted: m });
+  } catch (error) {
+    console.log(error);
+    m.reply(`❌ Error\nLogs error : ${error.message}`);
+  }
+}
+break
+
+ //========================================================\\    
+
+case "dev":
+case "developer":
+case "botowner":
+case "vowner": {
+  let namaown = `Dave`
+  let NoOwn = `254104260236`
+  var contact = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+    contactMessage: {
+      displayName: namaown,
+      vcard: `BEGIN:VCARD\nVERSION:3.0\nN:;;;;\nFN:${namaown}\nitem1.TEL;waid=${NoOwn}:+${NoOwn}\nitem1.X-ABLabel:Mobile\nX-WA-BIZ-DESCRIPTION:Official Developer\nX-WA-BIZ-NAME:${namaown}\nEND:VCARD`
+    }
+  }), {
+    userJid: m.chat,
+    quoted: fkontak
+  })
+  dave.relayMessage(m.chat, contact.message, {
+    messageId: contact.key.id
+  })
+}
+break
         
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+
+case 'ghiblistyle': case 'toghibli':{
+ try {
+ let q = m.quoted ? m.quoted : m;
+ let mime = (q.msg || q).mimetype || '';
+ if (!mime) return dave.sendMessage(m.chat, { text: 'Reply to a photo' }, { quoted: m });
+ if (!mime.startsWith('image')) return dave.sendMessage(m.chat, { text: 'provide a photo!' }, { quoted: m });
+ const media = await q.download();
+ const base64Image = media.toString('base64');
+ await dave.sendMessage(m.chat, { text: '⏳ proses bro..' }, { quoted: m });
+ const axios = require('axios');
+ const response = await axios.post(
+ `https://ghiblistyleimagegenerator.cc/api/generate-ghibli`, 
+ { image: base64Image }, 
+ { headers: {
+ 'authority': 'ghiblistyleimagegenerator.cc',
+ 'origin': 'https://ghiblistyleimagegenerator.cc',
+ 'referer': 'https://ghiblistyleimagegenerator.cc/',
+ 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+ } 
+ }
+ );
+ if (!response.data.success) return dave.sendMessage(m.chat, { text: 'provide a photo' }, { quoted: m });
+ const ghibliImageUrl = response.data.ghibliImage; 
+ const form = new FormData();
+ form.append('reqtype', 'fileupload');
+ form.append('userhash', '');
+ form.append('fileToUpload', Buffer.from(media), 'ghibli.jpg'); 
+ const upres = await axios.post('https://catbox.moe/user/api.php', form, {
+ headers: form.getHeaders()
+ });
+ const upUrl = upres.data.trim();
+ await dave.sendMessage(m.chat, {
+ image: { url: ghibliImageUrl },
+ caption: `🎨 *Ghibli Style Image Generated*`,
+ mentions: [m.sender]
+ }, { quoted: m });
+ } catch (error) {
+ console.error('Error:', error);
+ await dave.sendMessage(m.chat, { text: `Error: ${error.message || 'error'}` }, { quoted: m });
+ }
+}
+ break
+  
+    
+  //========================================================\\    
+    
+     
+       
+case "cinfo": case "channelinfo": case "ci": { 
+if (!args[0]) return m.reply("⚠️ Format wrong!\nUse: .cinfo <link_channel>");
+
+let match = args[0].match(/whatsapp\.com\/channel\/([\w-]+)/);
+if (!match) return m.reply("⚠️ *link must be valid.*");
+
+let inviteId = match[1];
+
+try {
+ let metadata = await dave.newsletterMetadata("invite", inviteId);
+ if (!metadata || !metadata.id) return m.reply("⚠️ *Success fetched channel data.*");
+
+ let caption = `*— 乂 Channel Info —*\n\n` +
+ `🆔 *ID:* ${metadata.id}\n` +
+ `📌 *Name:* ${metadata.name}\n` +
+ `👥 *Followers:* ${metadata.subscribers?.toLocaleString() || "number of followers"}\n` +
+ `📅 *Created on:* ${metadata.creation_time ? new Date(metadata.creation_time * 1000).toLocaleString("id-ID") : "date data"}\n` +
+ `📄 *Description:* ${metadata.description || "Channel description."}`;
+
+ if (metadata.preview) {
+ await dave.sendMessage(m.chat, { 
+ image: { url: "https://pps.whatsapp.net" + metadata.preview }, 
+ caption 
+ });
+ } else {
+ m.reply(caption);
+ }
+} catch (error) {
+ console.error("Error:", error);
+ m.reply("an error has occurred ..");
+}
+}
+break  
+    
+        
+
+//========================================================\\                      
+case "xvideos":{
+    if (!q) return m.reply(`Example: ${prefix + command} anime`);
+    m.reply(mess.wait);
+const axios = require('axios');    
+    try {
+        const apiUrl = `https://restapi-v2.simplebot.my.id/search/xnxx?q=${encodeURIComponent(q)}`;
+        const { data } = await axios.get(apiUrl);
+        
+        if (!data.status) return m.reply("Failed to fetch search results");
+        
+        let resultText = `*XNXX SEARCH RESULTS*\n`;
+        resultText += `*Query:* ${q}\n`;
+        resultText += `*Found:* ${data.result.length} videos\n\n`;
+        
+        const maxResults = 10;
+        const displayResults = data.result.slice(0, maxResults);
+        
+        displayResults.forEach((video, index) => {
+            resultText += `*${index + 1}. ${video.title}*\n`;
+            resultText += `Info: ${video.info.trim()}\n`;
+            resultText += `Link: ${video.link}\n\n`;
+        });
+        
+        if (data.result.length > maxResults) {
+            resultText += `_And ${data.result.length - maxResults} more results..._\n`;
+            resultText += `_Use ${prefix}xnxxdown [link] to download any video_`;
+        }
+        
+        await dave.sendMessage(m.chat, {
+            text: resultText
+        }, { quoted: m });
+        
+    } catch (error) {
+        console.error(error);
+        m.reply(`Error: ${error.message}`);
+    }
+    }
+    break
+
+// Dowload
+ 
+ //========================================================\\    
+    
+       
+case 'play2': {
+    if (args.length === 0) return dave.sendMessage(m.chat, { text: `which song from YouTube do you want to download?, example:\nplay dj kane` }, { quoted: m });
+
+    const query = args.join(' ');
+    const axios = require('axios');
+    const yts = require('yt-search');
+
+    try {
+        const search = await yts(query);
+        if (!search || search.all.length === 0) return dave.sendMessage(m.chat, { text: 'Lagu yang Anda cari tidak ditemukan.' }, { quoted: m });
+
+        const video = search.all[0];
+        const detail = `* Youtube Audio Play*
+
+*❖ Title* : ${video.title}
+*❖ Views* : ${video.views}
+*❖ Artist* : ${video.author.name}
+*❖ Period* : ${video.ago}
+*❖ URL* : ${video.url}
+_processing audio..._`;
+
+        await dave.sendMessage(m.chat, { text: detail }, { quoted: m });
+
+        const format = 'mp3';
+        const url = `https://p.oceansaver.in/ajax/download.php?format=${format}&url=${encodeURIComponent(video.url)}&api=dfcb6d76f2f6a9894gjkege8a4ab232222`;
+
+        const response = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
+
+        if (!response.data || !response.data.success) return dave.sendMessage(m.chat, { text: 'audio.' }, { quoted: m });
+
+        const { id, title, info } = response.data;
+        const { image } = info;
+
+        while (true) {
+            const progress = await axios.get(`https://p.oceansaver.in/ajax/progress.php?id=${id}`, {
+                headers: {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                }
+            });
+
+            if (progress.data && progress.data.success && progress.data.progress === 1000) {
+                const downloadUrl = progress.data.download_url;
+
+                await dave.sendMessage(m.chat, {
+                    audio: { url: downloadUrl },
+                    mimetype: 'audio/mpeg',
+                    fileName: `${title}.mp3`
+                }, { quoted: m });
+                break;
+            }
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        dave.sendMessage(m.chat, { text: 'Could not find your song.' }, { quoted: loli });
+    }
+}
+break;
+
+
+ //========================================================\\    
+ 
+    
+                case 'request-join': {
+				if (!m.isGroup) return m.reply(mess.group)
+				if (!isAdmins) return m.reply(mess.admin)
+				if (!isBotAdmins) return m.reply(mess.botAdmin)
+				const _list = await dave.groupRequestParticipantsList(m.chat).then(a => a.map(b => b.jid))
+				if (/a(p||pp||cc)(ept||rove)|true|ok/i.test(args[0])) {
+					await dave.groupRequestParticipantsUpdate(m.chat, _list, 'approve')
+				} else if (/reject|false|no/i.test(args[0])) {
+					await dave.groupRequestParticipantsUpdate(m.chat, _list, 'reject')
+				} else {
+					m.reply(`List Request Join :\n${_list.length > 0 ? '- @' + _list.join('\n- @').split('@')[0] : '*Nothing*'}\nExample : ${prefix + command} approve/reject`)
+				}
+			}
+			break         
+        
+ //========================================================\\    
+ 
+case 'logo': {
+  if (!text) {
+    return m.reply("Provide title, description, and slogan logo. Format: .logo Judul|Ide|Slogan");
+  }
+
+  const [title, idea, slogan] = text.split("|");
+
+  if (!title || !idea || !slogan) {
+    return m.reply("Format invalid. Use : .logo Title|Description|Slogan\n\n*Example :* .logo Takashi|Singer|subscribe");
+  }
+
+  try {
+    const payload = {
+      ai_icon: [333276, 333279],
+      height: 300,
+      idea: idea,
+      industry_index: "N",
+      industry_index_id: "",
+      pagesize: 4,
+      session_id: "",
+      slogan: slogan,
+      title: title,
+      whiteEdge: 80,
+      width: 400
+    };
+
+    const { data } = await axios.post("https://www.sologo.ai/v1/api/logo/logo_generate", payload);
+    
+    if (!data.data.logoList || data.data.logoList.length === 0) {
+      return m.reply("Logo Data");
+    }
+
+    const logoUrls = data.data.logoList.map(logo => logo.logo_thumb);
+    
+    for (const url of logoUrls) {
+      await dave.sendMessage(m.chat, { image: { url: url } });
+    }
+  } catch (error) {
+    console.error("Error generating logo:", error);
+    await m.reply("Failed to Create Logo");
+  }
+};
+break    	            
+                                  
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//	    
+
+
     case 'gitclone': {
 
 		      if (!text) return m.reply(`provide  a github link.\n *Example:* .gitclone https://github.com/giftdee/DAVE-MD`)
@@ -280,6 +791,44 @@ break;
            
         
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//    
+
+case "ai":
+case "gpt":
+ if (!args.length) {
+ return m.reply("provide a question .\n\nExample: *who is Ronaldo?*");
+ }
+ let query = encodeURIComponent(args.join(" "));
+ let apiUrl3 = `https://www.laurine.site/api/ai/heckai?query=${query}`;
+ try {
+ let response = await fetch(apiUrl3);
+ let data = await response.json();
+ if (!data.status || !data.data) {
+ return reply("❌ AI is inactive.");
+ }
+ m.reply(`🤖 *AI Response:*\n\n${data.data}`);
+ } catch (error) {
+ console.error(error);
+ m.reply("❌ errror.");
+ }
+ break
+ 
+  //====================================================\\ 
+
+
+            
+case 'calender': case 'createcalender': {
+    let args = text.split(' ');
+    if (args.length < 2) return m.reply('wrong format! Use: ckalender month year');
+    let month = args[0];
+    let year = args[1];
+    if (isNaN(month) || isNaN(year)) return m.reply('provide a correct format!');
+    let apiUrl = `https://fastrestapis.fasturl.cloud/maker/calendar/simple?month=${month}&year=${year}`;
+    dave.sendMessage(m.chat, { image: { url: apiUrl }, caption: `Kalender month ${month} year ${year}` }, { quoted: loli });
+    }
+    break  
+    
+  //=====================================================\\  
+    
    case 'setprefix':
                 if (!isBot) return reply (mess.owner)
                 if (!text) return reply(`Example : ${prefix + command} desired prefix`)
@@ -420,7 +969,7 @@ break;
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
         
- case 'grouplink': case 'linkgc':{
+ case 'link': case 'linkgc':{
 if (!isBot && !isAdmins) return reply(` The command is for group only`)
 if (!m.isGroup) return reply(mess.only.group)
 if (!isBotAdmins) return reply(`Bot must Be Admin to eliminate the command`)
