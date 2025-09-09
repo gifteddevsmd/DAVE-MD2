@@ -11,7 +11,7 @@ async function blurCommand(sock, chatId, message, quotedMessage) {
             // If replying to a message
             if (!quotedMessage.imageMessage) {
                 await sock.sendMessage(chatId, { 
-                    text: '❌ Please reply to an image message' 
+                    text: '❌ Please dave to an image message' 
                 });
                 return;
             }
@@ -38,7 +38,7 @@ async function blurCommand(sock, chatId, message, quotedMessage) {
             );
         } else {
             await sock.sendMessage(chatId, { 
-                text: '❌ Please reply to an image or send an image with caption .blur' 
+                text: '❌ Please dave to an image or send an image with caption .blur' 
             });
             return;
         }

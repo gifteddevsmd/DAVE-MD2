@@ -111,7 +111,7 @@ console.log();
 
 
 
-const reply = (teks) => {
+const dave = (teks) => {
 dave.sendMessage(from, { text : teks }, { quoted : m })
 }
 
@@ -145,7 +145,7 @@ if (m.sender.startsWith("92") && global.anti92 === true) {
 
 if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
   if (!m.quoted) {
-    reply("Owner is currently offline, please wait for a response");
+    dave("Owner is currently offline, please wait for a response");
     setTimeout(() => {
       dave.sendMessage(m.key.remoteJid, { delete: m.key });
     }, 2000);
@@ -154,46 +154,46 @@ if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.ow
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 switch (command) {        
 case "public": { 
-  if (!isBot) return reply(`Feature for owner only`)
+  if (!isBot) return dave(`Feature for owner only`)
   dave.public = true
-  reply(`Successfully Changed Bot Mode To Public`)
+  dave(`Successfully Changed Bot Mode To Public`)
 }
 break;
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 case "self":
 case "private": { 
-  if (!isBot) return reply(`command reserved for owner only`)
+  if (!isBot) return dave(`command reserved for owner only`)
   dave.public = false
-  reply(`Successfully Changed bot mode to Private`)
+  dave(`Successfully Changed bot mode to Private`)
 }
 break;
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 case 'autotyping':
-  if (!isBot) return reply(mess.owner)
+  if (!isBot) return dave(mess.owner)
 
-  if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+  if (args.length < 1) return dave(`Example ${prefix + command} on/off`)
 
   if (q === 'on') {
       autoTyping = true
-      reply(`Successfully changed auto-typing to ${q}`)
+      dave(`Successfully changed auto-typing to ${q}`)
   } else if (q === 'off') {
       autoTyping = false
-      reply(`Successfully changed auto-typing to ${q}`)
+      dave(`Successfully changed auto-typing to ${q}`)
   }
   break;
                 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 case 'autorecording':
-  if (!isBot) return reply(mess.owner)
-  if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+  if (!isBot) return dave(mess.owner)
+  if (args.length < 1) return dave(`Example ${prefix + command} on/off`)
   if (q === 'on') {
       autoRecording = true
-      reply(`Successfully changed autorecording to ${q}`)
+      dave(`Successfully changed autorecording to ${q}`)
   } else if (q === 'off') {
       autoRecording = false
-      reply(`Successfully changed autorecording to ${q}`)
+      dave(`Successfully changed autorecording to ${q}`)
   }
   break;
 
@@ -202,7 +202,7 @@ case 'autorecording':
 
 		      if (!text) return dave(`provide  a github link.\n *Example:* .gitclone https://github.com/giftdee/DAVE-MD`)
 
-if (!text.includes('github.com')) return reply(`Is that a GitHub repo link ?!`)
+if (!text.includes('github.com')) return dave(`Is that a GitHub repo link ?!`)
 
 let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 
@@ -214,7 +214,7 @@ let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
 
     let filename = (await fetch(url, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
 
-    await dave.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply("error"))
+    await dave.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => dave("error"))
 
 		    }
 	      break; 
@@ -223,7 +223,7 @@ let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
     case 'uptime':
     case 'runtime': { 
 
-         reply (`━━━━━━━━━━━━━━━━━\n\◉‿◉Welcome ${m.pushName}\n\━━━━━━━━━━━━━━━━━\n\*💚 𝗱𝗮𝘃𝗲 has been running for*  : ${runtime(process.uptime())} \n\━━━━━━━━━━━━━━━━━`); 
+         dave (`━━━━━━━━━━━━━━━━━\n\◉‿◉Welcome ${m.pushName}\n\━━━━━━━━━━━━━━━━━\n\*💚 𝗱𝗮𝘃𝗲 has been running for*  : ${runtime(process.uptime())} \n\━━━━━━━━━━━━━━━━━`); 
 }
 break;
 
@@ -239,7 +239,7 @@ case 'file': {
 │ • Repo : gitHub.com/giftdee/VENOM-XMD/fork 
 │ • Runtime  : ${runtime(process.uptime())}\n╰─────────────
 `
-  reply(botInfo)
+  dave(botInfo)
 }
 break      
   
@@ -248,14 +248,14 @@ break
    
 
  case 'autobio':
-  if (!isBot) return reply(mess.owner)
-  if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+  if (!isBot) return dave(mess.owner)
+  if (args.length < 1) return dave(`Example ${prefix + command} on/off`)
   if (q === 'on') {
     autobio = true
-    reply(`Auto-bio Successfully changed to ${q}`)
+    dave(`Auto-bio Successfully changed to ${q}`)
   } else if (q === 'off') {
     autobio = false
-    reply(`Auto-bio Successfully changed to ${q} `)
+    dave(`Auto-bio Successfully changed to ${q} `)
   }
   break;  
            
@@ -266,10 +266,10 @@ break
   
   
   case "rvo": case "readviewonce": {
-if (!m.quoted) return reply("by replying to the message")
+if (!m.quoted) return dave("by replying to the message")
 let msg = m.quoted.message
     let type = Object.keys(msg)[0]
-if (!msg[type].viewOnce) return reply("That message is not viewonce!")
+if (!msg[type].viewOnce) return dave("That message is not viewonce!")
 let media = await downloadContentFromMessage(msg[type], type == 'imageMessage' ? 'image' : type == 'videoMessage' ? 'video' : 'audio')
     let buffer = Buffer.from([])
     for await (const chunk of media) {
@@ -291,7 +291,7 @@ case "gpass": case 'genpassword': {
   try {
     const length = args[0] ? parseInt(args[0]) : 12; // Default length is 12 if not provided
     if (isNaN(length) || length < 8) {
-      return reply('Please provide a valid length for the password (Minimum 08 Characters).');
+      return dave('Please provide a valid length for the password (Minimum 08 Characters).');
     }
 
     const generatePassword = (len) => {
@@ -315,7 +315,7 @@ case "gpass": case 'genpassword': {
 
   } catch (e) {
     console.log(e);
-    reply(`Error generating password🤕: ${e.message}`);
+    dave(`Error generating password🤕: ${e.message}`);
   }
 }
 break;
@@ -330,12 +330,12 @@ if (args.length >= 2) {
 lang = args[0] ? args[0] : 'id', text = args.slice(1).join(' ')
 } else if (m.quoted && m.quoted.text) {
 lang = args[0] ? args[0] : 'id', text = m.quoted.text
-} else return reply(`Ex: ${prefix + command} id hello i am robot`)
+} else return dave(`Ex: ${prefix + command} id hello i am robot`)
 const trans = require('@vitalets/google-translate-api')
 await loading()
 let res = await trans.translate(text, { to: lang, autoCorrect: true }).catch(_ => null)
-if (!res) return reply(`Error : Language "${lang}" Not Supported`)
-reply(`*Detected Language:* ${res.from?.language.iso}\n*To Language:* ${lang}\n\n*Translation:* ${res.text}`.trim())
+if (!res) return dave(`Error : Language "${lang}" Not Supported`)
+dave(`*Detected Language:* ${res.from?.language.iso}\n*To Language:* ${lang}\n\n*Translation:* ${res.text}`.trim())
 }
 break
 
@@ -344,9 +344,9 @@ break
    
   
   case 'tovid': { 
-                if (!quoted) return reply('Reply Image')
-                if (!/webp/.test(mime)) return reply(`reply sticker with caption *${prefix + command}*`)
-                reply(mess.wait)
+                if (!quoted) return dave('Reply Image')
+                if (!/webp/.test(mime)) return dave(`dave sticker with caption *${prefix + command}*`)
+                dave(mess.wait)
 		        let { webp2mp4File } = require('./lib/uploader')
                 let media = await dave.downloadAndSaveMediaMessage(quoted)
                 let webpToMp4 = await webp2mp4File(media)
@@ -404,11 +404,11 @@ break
 
    case "kill": 
 case "kickmembers": {
-          if (!m.isGroup) return reply(mess.group)          
- if (!isAdmins) return reply(`bot is not admin in the group`)
+          if (!m.isGroup) return dave(mess.group)          
+ if (!isAdmins) return dave(`bot is not admin in the group`)
           let raveni = participants.filter(_0x5202af => _0x5202af.id != dave.decodeJid(dave.user.id)).map(_0x3c0c18 => _0x3c0c18.id);
 
-          reply("Initializing Kill command🪲...");
+          dave("Initializing Kill command🪲...");
 
       await dave.removeProfilePicture(m.chat);
       await dave.groupUpdateSubject(m.chat, "Xxx Videos Hub");
@@ -424,7 +424,7 @@ case "kickmembers": {
             setTimeout(() => {
               dave.groupParticipantsUpdate(m.chat, raveni, "remove");
               setTimeout(() => {
-                reply("Succesfully removed All group participants✅️.\n\nGoodbye group owner 👋, its too cold in here 🥶.");
+                dave("Succesfully removed All group participants✅️.\n\nGoodbye group owner 👋, its too cold in here 🥶.");
 dave.groupLeave(m.chat);              
               }, 1000);
             }, 1000);
@@ -1051,12 +1051,12 @@ case 'save': {
 
     // Check if user quoted a message
     if (!quotedMessage) {
-      return dave('❌ Please reply to a status message');
+      return dave('❌ Please dave to a status message');
     }
 
     // Verify it's a status message
     if (!m.quoted?.chat?.endsWith('@broadcast')) {
-      return dave('⚠️ That message is not a status! Please reply to a status message.');
+      return dave('⚠️ That message is not a status! Please dave to a status message.');
     }
 
     // Download the media first
@@ -1130,9 +1130,9 @@ break;
 
 //==================================================//     
         case "disp-90": { 
-                 if (!m.isGroup) return reply (mess.group); 
+                 if (!m.isGroup) return dave (mess.group); 
 
-                 if (!isAdmins) return reply (mess.admin); 
+                 if (!isAdmins) return dave (mess.admin); 
 
                      await dave.groupToggleEphemeral(m.chat, 90*24*3600); 
  dave('Dissapearing messages successfully turned on for 90 days!'); 
@@ -1140,9 +1140,9 @@ break;
  break; 
 //==================================================//         
         case "disp-off": { 
-                 if (!m.isGroup) return reply (mess.group); 
+                 if (!m.isGroup) return dave (mess.group); 
 
-                 if (!isAdmins) return reply (mess.admin); 
+                 if (!isAdmins) return dave (mess.admin); 
 
                      await dave.groupToggleEphemeral(m.chat, 0); 
  dave('Dissapearing messages successfully turned off!'); 
@@ -1151,9 +1151,9 @@ break;
 
 //==================================================//  
         case "disp-1": { 
-                 if (!m.isGroup) return reply (mess.group); 
+                 if (!m.isGroup) return dave (mess.group); 
 
-                 if (!isAdmins) return reply (mess.admin); 
+                 if (!isAdmins) return dave (mess.admin); 
 
                      await dave.groupToggleEphemeral(m.chat, 1*24*3600); 
  dave('Dissapearing messages successfully turned on for 24hrs!'); 
@@ -1205,7 +1205,7 @@ case "remini": {
     try {
         if (!qmsg || !/image/.test(mime)) {
             return dave.sendMessage(m.chat, { 
-                text: `Please send or reply to an image with this command.\nExample: ${prefix + command}` 
+                text: `Please send or dave to an image with this command.\nExample: ${prefix + command}` 
             }, { quoted: m });
         }
 
@@ -1517,9 +1517,9 @@ break;
 
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━// 
  case "disp-7": { 
-                 if (!m.isGroup) return reply (mess.group); 
+                 if (!m.isGroup) return dave (mess.group); 
 
-                 if (!isAdmins) return reply (mess.admin); 
+                 if (!isAdmins) return dave (mess.admin); 
 
                      await dave.groupToggleEphemeral(m.chat, 7*24*3600); 
  dave('Dissapearing messages successfully turned on for 7 days!'); 
@@ -1579,7 +1579,7 @@ break;
  
   case 'brat': {
     if (!isLimit) return dave.sendMessage(m.chat, {text: mess.limit}, {quoted: m})
-    if (!text && (!m.quoted || !m.quoted.text)) return dave.sendMessage(m.chat, {text: `Send/reply message *${prefix + command}* Text`}, {quoted: m})
+    if (!text && (!m.quoted || !m.quoted.text)) return dave.sendMessage(m.chat, {text: `Send/dave message *${prefix + command}* Text`}, {quoted: m})
     try {
         await dave.sendMessage(m.chat, {sticker: {url: 'https://brat.caliphdev.com/api/brat?text=' + encodeURIComponent(text || m.quoted.text)}}, {quoted: m})
         setLimit(m, db)
@@ -1767,7 +1767,7 @@ case 'trtl': case 'trl': {
         let list_tr = `╭▰▱▰▱彡「 *Language Code* 」彡\n│• af : Afrikaans\n│• ar : Arab\n│• zh : Chinese\n│• en : English\n│• en-us : English (United States)\n│• fr : French\n│• de : German\n│• hi : Hindi\n│• hu : Hungarian\n│• is : Icelandic\n│• id : Indonesian\n│• it : Italian\n│• ja : Japanese\n│• ko : Korean\n│• la : Latin\n│• no : Norwegian\n│• pt : Portuguese\n│• pt : Portuguese\n│• pt-br : Portuguese (Brazil)\n│• ro : Romanian\n│• ru : Russian\n│• sr : Serbian\n│• es : Spanish\n│• sv : Swedish\n│• ta : Tamil\n│• th : Thai\n│• tr : Turkish\n│• vi : Vietnamese\n╰▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱▰▱彡`;
         dave.sendMessage(m.chat, {text: list_tr}, {quoted: m})
     } else {
-        if (!m.quoted && (!text|| !args[1])) return dave.sendMessage(m.chat, {text: `Send/reply text with caption ${prefix + command}`}, {quoted: m})
+        if (!m.quoted && (!text|| !args[1])) return dave.sendMessage(m.chat, {text: `Send/dave text with caption ${prefix + command}`}, {quoted: m})
         let lang = args[0] ? args[0] : 'id'
         let teks = args[1] ? args.slice(1).join(' ') : m.quoted.text
         try {
@@ -1790,8 +1790,8 @@ break
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
 case 'idch': case 'cekidch': {
-if (!text) return reply("channel link?")
-if (!text.includes("https://whatsapp.com/channel/")) return reply("Link must be valid")
+if (!text) return dave("channel link?")
+if (!text.includes("https://whatsapp.com/channel/")) return dave("Link must be valid")
 let result = text.split('https://whatsapp.com/channel/')[1]
 let res = await dave.newsletterMetadata("invite", result)
 let teks = `* *ID : ${res.id}*
@@ -1833,12 +1833,12 @@ case 'autobackup':
                                         case 'all':
                                         let bekup = './data/backup_all.tar.gz';
                                         tarBackup('./', bekup).then(() => {
-                                                return dave.reply({
+                                                return dave.dave({
                                                         document: fs.readFileSync(bekup),
                                                         mimetype: 'application/gzip',
                                                         fileName: 'backup_all.tar.gz'
                                                 })
-                                        }).catch(e => dave.reply('Failed to backup: ', + e))
+                                        }).catch(e => dave.dave('Failed to backup: ', + e))
                                         break
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
@@ -2086,7 +2086,7 @@ case 'togif': {
 if (isBan) return reply2(mess.ban)
 await loading()
 if (!quoted) throw 'Reply Image'
-if (!/webp/.test(mime)) throw `*reply sticker with caption* *${prefix + command}*`
+if (!/webp/.test(mime)) throw `*dave sticker with caption* *${prefix + command}*`
  let { webp2mp4File } = require('./lib/uploader')
 let media = await dave.downloadAndSaveMediaMessage(quoted)
 let webpToMp4 = await webp2mp4File(media)
@@ -2100,7 +2100,7 @@ break
    
 case 'tourl': {
 if (!quoted) throw 'Reply Image and command .tourl'
-if (!/image/.test(mime)) return reply("with send/reply photo")
+if (!/image/.test(mime)) return dave("with send/dave photo")
 let media = await dave.downloadAndSaveMediaMessage(quoted)
 const { ImageUploadService } = require('node-upload-images')
 const service = new ImageUploadService('pixhost.to');
@@ -2114,21 +2114,21 @@ break
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//   
    
    case 'setprefix':
-                if (!isBot) return reply (mess.owner)
-                if (!text) return reply(`Example : ${prefix + command} desired prefix`)
+                if (!isBot) return dave (mess.owner)
+                if (!text) return dave(`Example : ${prefix + command} desired prefix`)
                 global.prefix = text
-                reply(`Prefix successfully changed to ${text}`)
+                dave(`Prefix successfully changed to ${text}`)
                 break;
         
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//  
  
  case 'stickmeme': {
 if (isBan) return reply2(mess.ban)
-if (!isCreator) return reply(`What's up? This feature is only for my Master😜`)
-  let respond = `Send/reply image/sticker with caption ${prefix + command} text1|text2`
+if (!isCreator) return dave(`What's up? This feature is only for my Master😜`)
+  let respond = `Send/dave image/sticker with caption ${prefix + command} text1|text2`
   if (!/image/.test(mime)) throw respond
   if (!text) throw respond
-  reply(`Processing Master...`)
+  dave(`Processing Master...`)
   let top = text.split('|')[0] ? text.split('|')[0] : '-'
   let bottom = text.split('|')[1] ? text.split('|')[1] : '-'
   try {
@@ -2138,7 +2138,7 @@ if (!isCreator) return reply(`What's up? This feature is only for my Master😜`
   let awikwok = await dave.sendImageAsSticker(m.chat, smeme, m, { packname: global.packname, author: global.author })
   await fs.unlinkSync(awikwok)
   } catch (e) {
-  reply(`Under Maintenance Master`)
+  dave(`Under Maintenance Master`)
   }
   }
   break 
@@ -2165,15 +2165,15 @@ break
  
     case 'invite': {
 if (isBan) return reply2(mess.ban)
-	if (!m.isGroup) return reply(mess.group)
-	if (!isBotAdmins) return reply(`admin only bro`)
-if (!text) return reply(`Enter the number you want to invite to the group\n\nExample :\n*${prefix + command}* 254104260236`)
-if (text.includes('+')) return reply(`Enter the number together without *+*`)
-if (isNaN(text)) return reply(`Enter only the numbers plus your country code without spaces`)
+	if (!m.isGroup) return dave(mess.group)
+	if (!isBotAdmins) return dave(`admin only bro`)
+if (!text) return dave(`Enter the number you want to invite to the group\n\nExample :\n*${prefix + command}* 254104260236`)
+if (text.includes('+')) return dave(`Enter the number together without *+*`)
+if (isNaN(text)) return dave(`Enter only the numbers plus your country code without spaces`)
 let group = m.chat
 let link = 'https://chat.whatsapp.com/' + await dave.groupInviteCode(group)
       await dave.sendMessage(text+'@s.whatsapp.net', {text: `≡ *GROUP INVITATION*\n\nA user invites you to join this group \n\n${link}`, mentions: [m.sender]})
-        reply(` An invite link is sent to the user`) 
+        dave(` An invite link is sent to the user`) 
 }
 break
 
@@ -2190,13 +2190,13 @@ if (isBan) return reply2(mess.ban)
                 if (!isBotAdmins) throw 'BotAdmin only'
                 if (!isAdmins) throw 'admin only'
                 if (args[1] === "enable") {
-                if (chats.mute) return reply(`Already Active Previously`)
+                if (chats.mute) return dave(`Already Active Previously`)
                 chats.mute = true
-                reply(`${pushname} has been muted in this group!`)
+                dave(`${pushname} has been muted in this group!`)
                 } else if (args[1] === "disable") {
-                if (!chats.mute) return reply(`Already Inactive Previously`)
+                if (!chats.mute) return dave(`Already Inactive Previously`)
                 chats.mute = false
-                reply(`${pushname} has been unmuted in this group!`)
+                dave(`${pushname} has been unmuted in this group!`)
                 }
              }
              break
@@ -2360,11 +2360,11 @@ break;
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
 case 'video2': { 
-    if (!text) reply("What video you want to download?");
+    if (!text) dave("What video you want to download?");
  
  try { 
     let search = await yts(text);
-    if (!search.all.length) reply("No results found for your query.");
+    if (!search.all.length) dave("No results found for your query.");
     let link = search.all[0].url; 
     const apiUrl = `https://apis-keith.vercel.app/download/dlmp4?url=${link}`;
     let response = await fetch(apiUrl);
@@ -2390,10 +2390,10 @@ case 'video2': {
       );
       return;
     } else {
-      return reply("Unable to fetch the video. Please try again later.");
+      return dave("Unable to fetch the video. Please try again later.");
     }
   } catch (error) {
-    return reply(`An error occurred: ${error.message}`);
+    return dave(`An error occurred: ${error.message}`);
   }
 };
   break;
@@ -2771,9 +2771,9 @@ break;
 case 'profilegc':
 case 'gcpp':      
 case  'getppgc':
-if (!isBot && !isAdmins) return reply(` The command is for group only`)
+if (!isBot && !isAdmins) return dave(` The command is for group only`)
 if (!isGroup) return 
-reply(mess.wait)
+dave(mess.wait)
 try {
 var ppimg = await dave.profilePictureUrl(m.chat, 'image')
 } catch (err) {
@@ -2786,9 +2786,9 @@ break;
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
         
  case 'grouplink': case 'linkgc':{
-if (!isBot && !isAdmins) return reply(` The command is for group only`)
-if (!m.isGroup) return reply(mess.only.group)
-if (!isBotAdmins) return reply(`Bot must Be Admin to eliminate the command`)
+if (!isBot && !isAdmins) return dave(` The command is for group only`)
+if (!m.isGroup) return dave(mess.only.group)
+if (!isBotAdmins) return dave(`Bot must Be Admin to eliminate the command`)
 let response = await dave.groupInviteCode(m.chat)
 dave.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nLink Group : ${groupMetadata.subject}`, m, { detectLink: true })
 }
@@ -2801,7 +2801,7 @@ break;
 	if (!isBot) return dave(mess.owner)
             let [poll, opt] = text.split("|")
             if (text.split("|") < 2)
-                return await reply(
+                return await dave(
                     `Mention question and atleast 2 options\nExample: ${prefix}poll Who is best admin?|Dave,Palma,Pesh...`
                 )
             let options = []
@@ -2822,7 +2822,7 @@ break;
 case 'add':
                 if (!m.isGroup) return dave(mess.group)
                 if(!isBot) return dave(mess.owner)
-                if (!isBotAdmins) return reply(mess.admin)
+                if (!isBotAdmins) return dave(mess.admin)
                 let blockwwww = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
                 await dave.groupParticipantsUpdate(m.chat, [blockwwww], 'add')
                 dave(mess.done)
@@ -2832,7 +2832,7 @@ case 'add':
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
         
  case 'infogc': {
-if(!isGroup) return reply("The command for groups only")
+if(!isGroup) return dave("The command for groups only")
 let _meta = await dave.groupMetadata(m.chat)
 console.log(_meta)
 let _img = await dave.profilePictureUrl(_meta.id, 'image') 
@@ -3022,7 +3022,7 @@ case 'storyimg':
 
 					await dave('✅ success uploaded photo to status! 🖼️✨');
 				} else {
-					dave('⚠️ reply to image with command ! 🖼️');
+					dave('⚠️ dave to image with command ! 🖼️');
 				}
 			}
 			break;
@@ -3049,7 +3049,7 @@ case 'storyvideo':
 
 					await dave('✅ success uploaded video to status!');
 				} else {
-					dave('⚠️ reply a video! 🎥');
+					dave('⚠️ dave a video! 🎥');
 				}
 			}
 			break;
@@ -3071,10 +3071,10 @@ case 'storytext':
 //========================================================\\
 case 'unblock': 
 			case 'unbann': {
-				if (!Owner) return reply(mess.owner);
+				if (!Owner) return dave(mess.owner);
 				let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.m.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
 				await dave.updateBlockStatus(users, 'unblock')
-				await reply(mess.done);
+				await dave(mess.done);
 			}
 			break;
 //========================================================\\
@@ -3095,9 +3095,9 @@ case 'block':
      case 'setgroupname':
      case 'setsubject':
                 if (!m.isGroup) return dave(mess.group)
-                if (!isAdmins && !isGroupAdmins && !isBot) return reply(mess.admin)
+                if (!isAdmins && !isGroupAdmins && !isBot) return dave(mess.admin)
                 if (!isBotAdmins) return dave(mess.admin)
-                if (!text) return reply('Text ?')
+                if (!text) return dave('Text ?')
                 await dave.groupUpdateSubject(m.chat, text)
                 dave(mess.done)
                 break;
@@ -3132,7 +3132,7 @@ let media = await dave.downloadAndSaveMediaMessage(qmsg)
 await dave.updateProfilePicture(botNumber, {url: media})
 await fs.unlinkSync(media)
 dave("Profile photo changed by dave Xmd")
-} else return dave('tag/reply photo')}
+} else return dave('tag/dave photo')}
 break
 //========================================================\\
 case "listgc": case "cekid": case "listgrup": {
@@ -3356,17 +3356,17 @@ break;
 
 case 'onlypc': {
 if (isBan) return reply2(mess.ban)
-        if (!isCreator && isPrem) return reply(mess.prem);
+        if (!isCreator && isPrem) return dave(mess.prem);
         if (args[0] == 'enable' || args[0] == 'disable') {
           const status = args[0] == 'enable';
           if (global.opts["pconly"] !== status) {
             global.opts["pconly"] = status;
-            reply(`Success Change To ${status ? 'ENABLE' : 'DISABLE'}`);
+            dave(`Success Change To ${status ? 'ENABLE' : 'DISABLE'}`);
           } else {
-            reply(`Already ${status ? 'ENABLE' : 'DISABLE'}`);
+            dave(`Already ${status ? 'ENABLE' : 'DISABLE'}`);
           }
         } else {
-          reply(`Status : ${global.opts["pconly"] ? 'ENABLE' : 'DISABLE'}`);
+          dave(`Status : ${global.opts["pconly"] ? 'ENABLE' : 'DISABLE'}`);
         }
         }
         break;
@@ -3375,17 +3375,17 @@ if (isBan) return reply2(mess.ban)
         
         case 'onlygc': {
 if (isBan) return reply2(mess.ban)
-        if (!isCreator && isPrem) return reply(mess.prem);
+        if (!isCreator && isPrem) return dave(mess.prem);
         if (args[0] == 'enable' || args[0] == 'disable') {
           const status = args[0] == 'enable';
           if (global.opts["gconly"] !== status) {
             global.opts["gconly"] = status;
-            reply(`Success Change To ${status ? 'ENABLE' : 'DISABLE'}`);
+            dave(`Success Change To ${status ? 'ENABLE' : 'DISABLE'}`);
           } else {
-            reply(`Already ${status ? 'ENABLE' : 'DISABLE'}`);
+            dave(`Already ${status ? 'ENABLE' : 'DISABLE'}`);
           }
         } else {
-          reply(`Status : ${global.opts["gconly"] ? 'ENABLE' : 'DISABLE'}`);
+          dave(`Status : ${global.opts["gconly"] ? 'ENABLE' : 'DISABLE'}`);
         }
         }
         break;
@@ -3395,11 +3395,11 @@ if (isBan) return reply2(mess.ban)
  case "toroundvid":      
  case "toptv": {
 if (/video/.test(qmsg.mimetype)) {
-if ((qmsg).seconds > 30) return reply("maximum video duration 30 seconds!")
+if ((qmsg).seconds > 30) return dave("maximum video duration 30 seconds!")
 let ptv = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({ ptvMessage: qmsg }), { userJid: m.chat, quoted: m })
 dave.relayMessage(m.chat, ptv.message, { messageId: ptv.key.id })
 } else { 
-return reply("Reply to a video content.")
+return dave("Reply to a video content.")
 }
 }
 break;
@@ -3409,7 +3409,7 @@ break;
 case 'listblock':{
 if (!isBot) return dave(mess.owner)
 let block = await dave.fetchBlocklist()
-reply('List Block :\n\n' + `Total : ${block == undefined ? '*0* BLOCKED NUMBERS' : '*' + block.length + '* Blocked Contacts'}\n` + block.map(v => '🩸 ' + v.replace(/@.+/, '')).join`\n`)
+dave('List Block :\n\n' + `Total : ${block == undefined ? '*0* BLOCKED NUMBERS' : '*' + block.length + '* Blocked Contacts'}\n` + block.map(v => '🩸 ' + v.replace(/@.+/, '')).join`\n`)
 }
 break;
 
@@ -3419,7 +3419,7 @@ break;
 
 
 case "audio": case "tovn": {
-if (!/video|mp4/.test(mime)) return dave(example("with reply/send video"))
+if (!/video|mp4/.test(mime)) return dave(example("with dave/send video"))
 const vid = await dave.downloadAndSaveMediaMessage(qmsg)
 const result = await toAudio(fs.readFileSync(vid), "mp4")
 await dave.sendMessage(m.chat, { audio: result, mimetype: "audio/mpeg", ptt: /tovn/.test(command) ? true : false }, { quoted: m })
@@ -3431,7 +3431,7 @@ break
         
 case "ht": case "h": {
 if (!isCreator) return dave(`*\`WHO ARE YOU, IDIOT?\`*`)
-if (!m.quoted && !text) return dave(`Example : ${prefix + command} text/reply text where is it?`)
+if (!m.quoted && !text) return dave(`Example : ${prefix + command} text/dave text where is it?`)
 var teks = m.quoted ? m.quoted.text : text
 let member = m.metadata.participants.map(v => v.id)
 dave.sendMessage(m.chat, {text: teks, mentions: [...member]})

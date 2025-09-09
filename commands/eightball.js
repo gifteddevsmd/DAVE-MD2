@@ -5,7 +5,7 @@ const eightBallResponses = [
     "It is certain.",
     "Very doubtful.",
     "Without a doubt.",
-    "My reply is no.",
+    "My dave is no.",
     "Signs point to yes."
 ];
 

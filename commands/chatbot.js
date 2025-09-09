@@ -194,12 +194,12 @@ async function handleChatbotResponse(sock, chatId, message, userMessage, senderI
         let isBotMentioned = false;
         let isReplyToBot = false;
 
-        // Check if message is a reply and contains bot mention
+        // Check if message is a dave and contains bot mention
         if (message.message?.extendedTextMessage) {
             const mentionedJid = message.message.extendedTextMessage.contextInfo?.mentionedJid || [];
             const quotedParticipant = message.message.extendedTextMessage.contextInfo?.participant;
             
-            // Check if bot is mentioned in the reply
+            // Check if bot is mentioned in the dave
             isBotMentioned = mentionedJid.some(jid => jid === botNumber);
             
             // Check if replying to bot's message
@@ -261,7 +261,7 @@ async function handleChatbotResponse(sock, chatId, message, userMessage, senderI
         // Add human-like delay before sending response
         await new Promise(resolve => setTimeout(resolve, getRandomDelay()));
 
-        // Send response as a reply with proper context
+        // Send response as a dave with proper context
         await sock.sendMessage(chatId, {
             text: response
         }, {
@@ -303,7 +303,7 @@ RESPONSE STYLE:
 
 EMOTIONAL RESPONSES:
 - IF they abuse you, strictly you also abuse them in savage way.
-- If they're rude: Give savage reply with emojis
+- If they're rude: Give savage dave with emojis
 - If they're sweet: Be soft and caring
 - If they're funny: Joke around
 - If they're sad: Be supportive

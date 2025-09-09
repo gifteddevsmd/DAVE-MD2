@@ -7,13 +7,13 @@ const webp = require('node-webpmux');
 const crypto = require('crypto');
 
 async function stickerCommand(sock, chatId, message) {
-    // The message that will be quoted in the reply.
+    // The message that will be quoted in the dave.
     const messageToQuote = message;
     
     // The message object that contains the media to be downloaded.
     let targetMessage = message;
 
-    // If the message is a reply, the target media is in the quoted message.
+    // If the message is a dave, the target media is in the quoted message.
     if (message.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
         // We need to build a new message object for downloadMediaMessage to work correctly.
         const quotedInfo = message.message.extendedTextMessage.contextInfo;
@@ -31,7 +31,7 @@ async function stickerCommand(sock, chatId, message) {
 
     if (!mediaMessage) {
         await sock.sendMessage(chatId, { 
-            text: 'Please reply to an image/video with .sticker, or send an image/video with .sticker as the caption.',
+            text: 'Please dave to an image/video with .sticker, or send an image/video with .sticker as the caption.',
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: false,

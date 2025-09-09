@@ -91,7 +91,7 @@ const { handleSsCommand } = require('./commands/ss');
 const { addCommandReaction, handleAreactCommand } = require('./lib/reactions');
 const { shayariCommand } = require('./commands/shayari');
 const { rosedayCommand } = require('./commands/roseday');
-const { miscCommand, handleHeart } = require('./commands/supreme');
+const { miscCommand, handleHeart } = require('./commands/dave');
 const { animeCommand } = require('./commands/davke');
 const imagineCommand = require('./commands/imagine');
 const videoCommand = require('./commands/video');
@@ -275,7 +275,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 if (quotedMessage?.stickerMessage) {
                     await simageCommand(sock, quotedMessage, chatId);
                 } else {
-                    await sock.sendMessage(chatId, { text: 'Please reply to a sticker with the .simage command to convert it.', ...channelInfo });
+                    await sock.sendMessage(chatId, { text: 'Please dave to a sticker with the .simage command to convert it.', ...channelInfo });
                 }
                 break;
             }

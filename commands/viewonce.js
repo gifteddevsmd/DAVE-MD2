@@ -25,7 +25,7 @@ async function viewOnceCommand(sock, chatId, message) {
 
         if (!quotedMessage) {
             await sock.sendMessage(chatId, { 
-                text: '😒 _Please reply to a view once message!_',
+                text: '😒 _Please dave to a view once message!_',
                 ...channelInfo
             });
             return;
@@ -138,7 +138,7 @@ async function viewOnceCommand(sock, chatId, message) {
 
         // If we get here, it wasn't a view once message
         await sock.sendMessage(chatId, { 
-            text: '😒 This is not a view once message! Please reply to a view once image/video.',
+            text: '😒 This is not a view once message! Please dave to a view once image/video.',
             ...channelInfo
         });
 

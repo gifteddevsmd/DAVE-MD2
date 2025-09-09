@@ -13,11 +13,11 @@ async function setProfilePicture(sock, chatId, msg) {
             return;
         }
 
-        // Check if message is a reply
+        // Check if message is a dave
         const quotedMessage = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage;
         if (!quotedMessage) {
             await sock.sendMessage(chatId, { 
-                text: '_Please reply to an image with the .setpp command!_' 
+                text: '_Please dave to an image with the .setpp command!_' 
             });
             return;
         }
