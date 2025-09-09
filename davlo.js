@@ -539,6 +539,45 @@ quoted: m
 break
 //======================================================\\ 
 
+case 'quiz': {
+  if (!text) return m.reply(`whats your question ?`)
+async function openai(text, logic) { // Membuat fungsi openai untuk dipanggil
+    let response = await axios.post("https://chateverywhere.app/api/chat/", {
+        "model": {
+            "id": "gpt-4",
+            "name": "GPT-4",
+            "maxLength": 32000,  // Sesuaikan token limit jika diperlukan
+            "tokenLimit": 8000,  // Sesuaikan token limit untuk model GPT-4
+            "completionTokenLimit": 5000,  // Sesuaikan jika diperlukan
+            "deploymentName": "gpt-4"
+        },
+        "messages": [
+            {
+                "pluginId": null,
+                "content": text, 
+                "role": "user"
+            }
+        ],
+        "prompt": logic, 
+        "temperature": 0.5
+    }, { 
+        headers: {
+            "Accept": "/*/",
+            "User-Agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
+        }
+    });
+    
+    let result = response.data;
+    return result;
+}
+
+let kanjuthann = await openai(text, "nama mu adalah Xrzteam, kamu adalah asisten kecerdasan buatan yang sering membantu orang lain jika ada yang ditanyakan")
+m.reply(kanjuthann)
+}
+break
+//========================================================\\
+
+
 case "kill": 
 case "kickall": {
 	  if (!m.isGroup) return reply(mess.group)          
@@ -1248,6 +1287,35 @@ image: await getBuffer(_img)
 break;
         
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//  
+
+case 'delete': case 'del': case 'd': {
+				if (!m.quoted) return m.reply('Reply message you want to delete')
+				await dave.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: m.isBotAdmin ? false : true, id: m.quoted.id, participant: m.quoted.sender }})
+			}
+			break
+   //=====================================================\\                    
+//========================================================\\
+   case "disp-7": { 
+                 if (!m.isGroup) return reply (mess.group); 
+                 
+                 if (!isAdmins) return reply (mess.admin); 
+  
+                     await dave.groupToggleEphemeral(m.chat, 7*24*3600); 
+ m.reply('Dissapearing messages successfully turned on for 7 days!'); 
+  
+ } 
+ break;
+
+//========================================================\\
+case 'listonline': case 'liston': {
+				if (!m.isGroup) return m.reply(mess.group)
+				let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat
+				if (!store.presences || !store.presences[id]) return m.reply('This is the online list!')
+				let online = [...Object.keys(store.presences[id]), botNumber]
+				await dave.sendMessage(m.chat, { text: 'List Online:\n\n' + online.map(v => setv + ' @' + v.replace(/@.+/, '')).join`\n`, mentions: online }, { quoted: m }).catch((e) => m.reply('Gagal'))
+			}
+			break
+    
         
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
         
@@ -1298,6 +1366,146 @@ return reply("Reply to a video content.")
 break;
   
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━// 
+
+case "laliga":
+case "pd-table": {
+  try {
+    const data = await fetchJson('https://api.dreaded.site/api/standings/PD');
+    const standings = data.data;
+    const message = `𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗟𝗮𝗹𝗶𝗴𝗮 𝗧𝗮𝗯𝗹𝗲 𝗦𝘁𝗮𝗻𝗱𝗶𝗻𝗴𝘀:-\n\n${standings}`;
+    await m.reply(message);
+  } catch (error) {
+    m.reply('Something went wrong. Unable to fetch 𝗟𝗮𝗹𝗶𝗴𝗮 standings.');
+  }
+}
+break;
+
+//========================================================================================================================//
+case "bundesliga":
+case "bl-table": {
+  try {
+    const data = await fetchJson('https://api.dreaded.site/api/standings/BL1');
+    const standings = data.data;
+    const message = `𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗕𝘂𝗻𝗱𝗲𝘀𝗹𝗶𝗴𝗮 𝗧𝗮𝗯𝗹𝗲 𝗦𝘁𝗮𝗻𝗱𝗶𝗻𝗴𝘀\n\n${standings}`;
+    await m.reply(message);
+  } catch (error) {
+    m.reply('Something went wrong. Unable to fetch 𝗕𝘂𝗻𝗱𝗲𝘀𝗹𝗶𝗴𝗮 standings.');
+  }
+}
+break;
+
+//======================================================//
+case "ligue-1":
+case "lg-1": {
+  try {
+    const data = await fetchJson('https://api.dreaded.site/api/standings/FL1');
+    const standings = data.data;
+    const message = `𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗟𝗶𝗴𝘂𝗲-1 𝗧𝗮𝗯𝗹𝗲 𝗦𝘁𝗮𝗻𝗱𝗶𝗻𝗴𝘀\n\n${standings}`;
+    await m.reply(message);
+  } catch (error) {
+    m.reply('Something went wrong. Unable to fetch 𝗹𝗶𝗴𝘂𝗲-1 standings.');
+  }
+}
+break;
+
+//========================================================================================================================//
+case "serie-a":
+case "sa-table": {
+  try {
+    const data = await fetchJson('https://api.dreaded.site/api/standings/SA');
+    const standings = data.data;
+    const message = `𝗖𝘂𝗿𝗿𝗲𝗻𝘁 𝗦𝗲𝗿𝗶𝗲-𝗮 𝗧𝗮𝗯𝗹𝗲 𝗦𝘁𝗮𝗻𝗱𝗶𝗻𝗴𝘀\n\n${standings}`;
+    await m.reply(message);
+  } catch (error) {
+    m.reply('Something went wrong. Unable to fetch 𝗦𝗲𝗿𝗶𝗲-𝗮 standings.');
+  }
+}
+break;
+
+//==================================================//
+case "enc":
+case "obfuscate": {
+  const JsConfuser = require('js-confuser');
+
+  if (
+    !m.message.extendedTextMessage ||
+    !m.message.extendedTextMessage.contextInfo.quotedMessage
+  ) {
+    return reply('Please reply to a file to be obfuscated.');
+  }
+
+  const quotedMessage = m.message.extendedTextMessage.contextInfo.quotedMessage;
+  const quotedDocument = quotedMessage.documentMessage;
+
+  if (!quotedDocument || !quotedDocument.fileName.endsWith('.js')) {
+    return reply('Please reply to a file to be obfuscated.');
+  }
+
+  try {
+    const fileName = quotedDocument.fileName;
+    const docBuffer = await m.quoted.download();
+    if (!docBuffer) return reply('Please reply to a file to be obfuscated.');
+
+    await dave.sendMessage(m.chat, {
+      react: { text: '🕛', key: m.key }
+    });
+
+    const obfuscatedCode = await JsConfuser.obfuscate(docBuffer.toString(), {
+      target: "node",
+      preset: "high",
+      compact: true,
+      minify: true,
+      flatten: true,
+      identifierGenerator: function () {
+        const originalString = "素GIFTED晴DAVE晴" + "素GIFTED晴DAVE晴";
+        const removeUnwantedChars = (input) => input.replace(/[^a-zA-Z素GIDDY晴TENNOR晴]/g, "");
+        const randomString = (length) => {
+          let result = "";
+          const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+          for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+          }
+          return result;
+        };
+        return removeUnwantedChars(originalString) + randomString(2);
+      },
+      renameVariables: true,
+      renameGlobals: true,
+      stringEncoding: true,
+      stringSplitting: 0.0,
+      stringConcealing: true,
+      stringCompression: true,
+      duplicateLiteralsRemoval: 1.0,
+      shuffle: { hash: 0.0, true: 0.0 },
+      stack: true,
+      controlFlowFlattening: 1.0,
+      opaquePredicates: 0.9,
+      deadCode: 0.0,
+      dispatcher: true,
+      rgf: false,
+      calculator: true,
+      hexadecimalNumbers: true,
+      movedDeclarations: true,
+      objectExtraction: true,
+      globalConcealing: true
+    });
+
+    await dave.sendMessage(
+      m.chat,
+      {
+        document: Buffer.from(obfuscatedCode, "utf-8"),
+        mimetype: "application/javascript",
+        fileName: fileName,
+        caption: `•Successful Encrypt\n•Type: Hard Code\n•@Tennormodz`
+      },
+      { quoted: fkontak }
+    );
+  } catch (err) {
+    console.error('I encountered an error during encryption:', err);
+    await reply(`❌ An error occurred: ${err.message}`);
+  }
+}
+break;
         
 case 'listblock':{
 if (!isBot) return m.reply(mess.owner)
@@ -1309,6 +1517,413 @@ break;
 
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+
+case "tourl": { 
+  // Check if the message is a quoted image
+  if (!m.quoted) return reply("Reply to an image with /tourlpub");
+
+  // Download the quoted image
+  let q = await m.quoted.download();
+  if (!q) return reply("Failed to download image");
+
+  // Create a new FormData object and append the image
+  const FormData = require("form-data"),
+    axios = require("axios"),
+    form = new FormData();
+  form.append("key", "LutBotz.Tamvan.dan.ganteng.banget.sumpah");
+  form.append("file", q, { filename: "wa.png", contentType: "image/png" });
+
+  // Send a POST request to the upload URL
+  const r = await axios.post("https:")                                                                                      
+  const z = r.data;
+
+  if (!z.success) return reply("//rismajaya.my.id/tools/uploaders/uploads.php", form, { headers: form.getHeaders() });
+  const d = r.data;
+
+  // Check if the upload was successful
+  if (!d.success) return reply("Upload failed: " + d.error);
+
+  // Send the public link
+  await reply(`Public link created successfully:\n\n${d.url}`);
+}
+break;
+//==================================================//   
+        case 'ytmp4': {
+  const axios = require('axios');
+  const input = text?.trim();
+  if (!input) return reply(`play:\n.ytmp4 https://youtu.be/xxxx,720\n\nList for results:\n- 360\n- 480\n- 720\n- 1080`);
+  const [url, q = '720'] = input.split(',').map(a => a.trim());
+  const validUrl = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//.test(url);
+  if (!validUrl) return reply(`❌ URL YouTube is not valid!`);
+  const qualityMap = {
+    "360": 360,
+    "480": 480,
+    "720": 720,
+    "1080": 1080
+  };
+
+  if (!qualityMap[q]) {
+    return reply(`❌ Quality must be valid!\nexample: 360, 720, 1080`);
+  }
+  const quality = qualityMap[q];
+  const sendResult = async (meta) => {
+    await dave.sendMessage(m.chat, {
+      image: { url: meta.image },
+      caption: `✅ *Title:* ${meta.title}\n📥 *Type:* MP4\n🎚️ *Quality:* ${meta.quality}p\n\nSending  file...`,
+    }, { quoted: m });
+    await dave.sendMessage(m.chat, {
+      document: { url: meta.downloadUrl },
+      mimetype: 'video/mp4',
+      fileName: `${meta.title}.mp4`
+    }, { quoted: m });
+  };
+
+  try {
+    const { data: start } = await axios.get(
+      `https://p.oceansaver.in/ajax/download.php?button=1&start=1&end=1&format=${quality}&iframe_source=https://allinonetools.com/&url=${encodeURIComponent(url)}`,
+      {
+        timeout: 30000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        }
+      }
+    );
+    if (!start.progress_url) return m.reply(`❌ failed to start progress`);
+    let progressUrl = start.progress_url;
+    let meta = {
+      image: start.info?.image || "https://telegra.ph/file/fd0028db8c3fc25d85726.jpg",
+      title: start.info?.title || "Unknown Title",
+      downloadUrl: "",
+      quality: q,
+      type: "mp4"
+    };
+    let polling, attempts = 0;
+    const maxTry = 40;
+    reply('⏳ processing video...');
+    do {
+      if (attempts >= maxTry) return reply(`❌ Timeout process!`);
+      await new Promise(r => setTimeout(r, 3000));
+      try {
+        const { data } = await axios.get(progressUrl, {
+          timeout: 15000,
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+          }
+        });
+        polling = data;
+        if (polling.progress < 100) console.log(`Progress: ${polling.progress}%`);
+      } catch (e) {
+        console.log(`Polling ${attempts + 1} gagal`);
+      }
+      attempts++;
+    } while (!polling?.download_url);
+    if (!polling.download_url) return reply(`❌ failed to get download from the link`);
+    meta.downloadUrl = polling.download_url;
+    return await sendResult(meta);
+  } catch (e) {
+    console.error(e);
+    return reply(`❌ error has occurred: ${e.message || 'err'}`);
+  }
+}
+break
+//==================================================//   
+
+case 'translate':{
+  	if (!q) return m.reply(`*Where is the text*\n\n*𝙴xample usage*\n*${prefix + command} <language id> <text>*\n*${prefix + command} ja yo wassup*`)
+  	const defaultLang = 'en'
+const tld = 'cn'
+    let err = `
+ *Example:*
+
+*${prefix + command}* <id> [text]
+*${prefix + command}* en Hello World
+
+≡ *List of supported languages:* 
+https://cloud.google.com/translate/docs/languages
+`.trim()
+    let lang = args[0]
+    let text = args.slice(1).join(' ')
+    if ((args[0] || '').length !== 2) {
+        lang = defaultLang
+        text = args.join(' ')
+    }
+    if (!text && m.quoted && m.quoted.text) text = m.quoted.text
+    try {
+       let result = await translate(text, { to: lang, autoCorrect: true }).catch(_ => null) 
+       reply(result.text)
+    } catch (e) {
+        return m.reply(err)
+    } 
+    }
+    break
+//========================================================\\
+case "url": {
+if (!/image/.test(mime)) return m.reply(example("tag/reply photo"))
+let media = await dave.downloadAndSaveMediaMessage(qmsg)
+const { ImageUploadService } = require('node-upload-images')
+const service = new ImageUploadService('pixhost.to');
+let { directLink } = await service.uploadFromBinary(fs.readFileSync(media), 'skyzopedia.png');
+
+let teks = directLink.toString()
+await dave.sendMessage(m.chat, {text: teks}, {quoted: m})
+await fs.unlinkSync(media)
+}
+break
+//========================================================\\
+case 'anime': {
+if (!text) return m.reply(`Which anime are you lookin for?`)
+const malScraper = require('mal-scraper')
+await m.reply("wait.....")
+        const anime = await malScraper.getInfoFromName(text).catch(() => null)
+        if (!anime) return m.reply(`Could not find`)
+let animetxt = `
+🎀 *Title: ${anime.title}*
+🎋 *Type: ${anime.type}*
+🎐 *Premiered on: ${anime.premiered}*
+💠 *Total Episodes: ${anime.episodes}*
+📈 *Status: ${anime.status}*
+💮 *Genres: ${anime.genres}
+📍 *Studio: ${anime.studios}*
+🌟 *Score: ${anime.score}*
+💎 *Rating: ${anime.rating}*
+🏅 *Rank: ${anime.ranked}*
+💫 *Popularity: ${anime.popularity}*
+♦️ *Trailer: ${anime.trailer}*
+🌐 *URL: ${anime.url}*
+❄ *Description:* ${anime.synopsis}*`
+                await dave.sendMessage(m.chat,{image:{url:anime.picture}, caption:animetxt},{quoted:m})
+                }
+                break
+//========================================================\\
+
+case 'bible': {
+  	const { translate } = require('@vitalets/google-translate-api')
+  	const BASE_URL = 'https://bible-api.com'
+  try {
+    // Extract the chapter number or name from the command text.
+    let chapterInput = m.text.split(' ').slice(1).join('').trim()
+    if (!chapterInput) {
+      throw new Error(`Please specify the chapter number or name. Example: ${prefix + command} john 3:16`)
+    }
+    // Encode the chapterInput to handle special characters
+    chapterInput = encodeURIComponent(chapterInput);
+    // Make an API request to fetch the chapter information.
+    let chapterRes = await fetch(`${BASE_URL}/${chapterInput}`)
+    if (!chapterRes.ok) {
+      throw new Error(`Please specify the chapter number or name. Example: ${prefix + command} john 3:16`)
+    }
+    let chapterData = await chapterRes.json();
+    let translatedChapterHindi = await translate(chapterData.text, { to: 'hi', autoCorrect: true })
+    let translatedChapterEnglish = await translate(chapterData.text, { to: 'en', autoCorrect: true })
+    let bibleChapter = `
+📖 *The Holy Bible*\n
+📜 *Chapter ${chapterData.reference}*\n
+Type: ${chapterData.translation_name}\n
+Number of verses: ${chapterData.verses.length}\n
+🔮 *Chapter Content (English):*\n
+${translatedChapterEnglish.text}\n
+🔮 *Chapter Content (Hindi):*\n
+${translatedChapterHindi.text}`
+    m.reply(bibleChapter)
+  } catch (error) {
+    m.reply(`Error: ${error.message}`)
+  }
+  }
+  break
+//========================================================\\
+case 'quran': {
+    try {
+    
+    let surahInput = m.text.split(' ')[1]
+    if (!surahInput) {
+      throw new Error(`Please specify the surah number or name`)
+    }
+    let surahListRes = await fetch('https://quran-endpoint.vercel.app/quran')
+    let surahList = await surahListRes.json()
+    let surahData = surahList.data.find(surah => 
+        surah.number === Number(surahInput) || 
+        surah.asma.ar.short.toLowerCase() === surahInput.toLowerCase() || 
+        surah.asma.en.short.toLowerCase() === surahInput.toLowerCase()
+    )
+    if (!surahData) {
+      throw new Error(`Couldn't find surah with number or name "${surahInput}"`)
+    }
+    let res = await fetch(`https://quran-endpoint.vercel.app/quran/${surahData.number}`)
+    if (!res.ok) {
+      let error = await res.json();
+      throw new Error(`API request failed with status ${res.status} and message ${error.message}`)
+    }
+
+    let json = await res.json()
+
+    
+    let translatedTafsirUrdu = await translate(json.data.tafsir.id, { to: 'ur', autoCorrect: true })
+
+    
+    let translatedTafsirEnglish = await translate(json.data.tafsir.id, { to: 'en', autoCorrect: true })
+
+    let quranSurah = `
+🕌 *Quran: The Holy Book*\n
+📜 *Surah ${json.data.number}: ${json.data.asma.ar.long} (${json.data.asma.en.long})*\n
+Type: ${json.data.type.en}\n
+Number of verses: ${json.data.ayahCount}\n
+🔮 *Explanation (Urdu):*\n
+${translatedTafsirUrdu.text}\n
+🔮 *Explanation (English):*\n
+${translatedTafsirEnglish.text}`
+
+    m.reply(quranSurah)
+
+    if (json.data.recitation.full) {
+      dave.sendMessage(m.chat, { audio: {url: json.data.recitation.full}, mimetype: 'audio/mp4', ptt: true, fileName: `recitation.mp3`, }, {quoted: m})
+    }
+  } catch (error) {
+    m.reply(`Error: ${error.message}`)
+  }
+  }
+  break
+//========================================================\\
+
+case 'detiknews' : {
+  if (!text) {
+    return m.reply(`Provide a request.\n\nExample:\n.${command} ruu tni`)
+  }
+
+  try {
+    const url = `https://www.detik.com/search/searchall?query=${encodeURIComponent(text)}`
+    const { data } = await axios.get(url)
+    const $ = cheerio.load(data)
+
+    let result = []
+    $('.media__text').each((_, el) => {
+      const media = $(el).find('h2').text().trim()
+      const title = $(el).find('a').text().trim()
+      const href = $(el).find('a').attr('href')
+      const description = $(el).find('.media__desc').text().trim()
+
+      if (title && href) {
+        result.push({
+          media,
+          title,
+          url: href,
+          description
+        })
+      }
+    })
+
+    if (!result.length) return m.reply('❌ provide a valid request.')
+
+    const list = result.slice(0, 10).map(item => {
+      return `📰 *${item.title}*\n📌 ${item.media || 'Detik News'}\n🔗 ${item.url}`
+    }).join('\n\n')
+
+    await m.reply(`🔍 *Here are the latest news:*\n\n${list}`)
+    
+  } catch (e) {
+    console.error(e)
+    m.reply('⚠️ failed to get data.')
+  }
+}
+break
+//========================================================\\
+
+
+case 'storyaudio':
+			case 'upswaudio': {
+				if (!Owner) return mmreply(mess.owner);
+				if (/audio/.test(mime)) {
+					var audiosw = await dave.downloadAndSaveMediaMessage(quoted);
+					await dave.sendMessage('status@broadcast', {
+						audio: { url: audiosw },
+						mimetype: 'audio/mp4',
+						ptt: true
+					}, {
+						backgroundColor: '#FF000000',
+						statusJidList: Object.keys(db.data.users)
+					});
+					await m.reply('✅ success upload audio to status!');
+				} else {
+					m.reply('⚠️ Reply to audio with command ! 🎧');
+				}
+			}
+			break;
+//========================================================\\
+
+case 'storyimg':
+			case 'storyimage':
+			case 'upswimg': {
+				if (!Owner) return m.reply(mess.owner);
+				if (/image/.test(mime)) {
+					var imagesw = await dave.downloadAndSaveMediaMessage(quoted);
+					let fileSize = quoted.fileLength ? `${(quoted.fileLength / 1024 / 1024).toFixed(2)} MB` : 'Tidak diketahui';
+					let mediaType = mime || 'Tidak diketahui';
+					let sendTime = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+					let sender = `${m.pushName || ownerName}`;
+					let defaultCaption = `📁 *Size File*: ${fileSize}\n`;
+					defaultCaption += `🖼️ *Media Type*: ${mediaType}\n`;
+					defaultCaption += `⏰ *Time*: ${sendTime}\n`;
+					defaultCaption += `👤 *Sender*: ${sender}`;
+					await dave.sendMessage('status@broadcast', {
+						image: { url: imagesw },
+						caption: text ? text : defaultCaption
+					}, {
+						statusJidList: Object.keys(db.data.users)
+					});
+
+					await m.reply('✅ success uploaded photo to status! 🖼️✨');
+				} else {
+					m.reply('⚠️ reply to image with command ! 🖼️');
+				}
+			}
+			break;
+//========================================================\\
+
+
+case 'storyvideo':
+			case 'upswvideo': {
+				if (!Owner) return m.reply(mess.owner);
+				if (/video/.test(mime)) {
+					var videosw = await dave.downloadAndSaveMediaMessage(quoted);
+					let fileSize = quoted.fileLength ? `${(quoted.fileLength / 1024 / 1024).toFixed(2)} MB` : 'Tidak diketahui';
+					let mediaType = mime || 'Tidak diketahui';
+					let sendTime = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+					let sender = `${m.pushName || ownerName}`;
+					let defaultCaption = `📁 *Size File*: ${fileSize}\n`;
+					defaultCaption += `🎥 *Media Type*: ${mediaType}\n`;
+					defaultCaption += `⏰ *Time*: ${sendTime}\n`;
+					defaultCaption += `👤 *Sender*: ${sender}`;
+					await dave.sendMessage('status@broadcast', {
+						video: { url: videosw },
+						caption: text ? text : defaultCaption
+					}, {
+						statusJidList: Object.keys(db.data.users)
+					});
+
+					await m.reply('✅ success uploaded video to status!');
+				} else {
+					m.reply('⚠️ reply a video! 🎥');
+				}
+			}
+			break;
+//========================================================\\
+
+
+case 'storytext':
+			case 'upswtext': {
+				if (!Owner) return m.reply(mess.owner);
+				if (!text) return m.reply('where is the text?');
+				await dave.sendMessage('status@broadcast', { 
+					text: text 
+				}, { 
+					backgroundColor: '#FF000000', 
+					font: 3, 
+					statusJidList: Object.keys(db.data.users) 
+				});
+				m.reply('Succes uploaded text!');
+			}
+			break;
+//========================================================\\
+
 
 case 'save': {
   try {
@@ -1373,7 +1988,49 @@ case 'save': {
   }
 }
 break;
-//==================================================//     
+//==================================================//  
+
+
+case 'toimage':
+            case 'photo': {
+                if (!/webp/.test(mime)) return reply(`Reply sticker with caption *${prefix + command}*`)
+                await m.reply(`processing photo`)
+                let media = await dave.downloadAndSaveMediaMessage(qmsg)
+                let ran = await getRandom('.png')
+                exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+                    fs.unlinkSync(media)
+                    if (err) return err
+                    let buffer = fs.readFileSync(ran)
+                    dave.sendMessage(m.chat, {
+                        image: buffer
+                    }, {
+                        quoted: loli
+                    })
+                    fs.unlinkSync(ran)
+                })
+
+            }
+            break
+//========================================================\\          
+case 'tomp4':
+            case 'tovideo': {
+                if (!/webp/.test(mime)) return m.reply(`Reply sticker with caption *${prefix + command}*`)
+                await m.reply(`processing your video`)
+                let media = await dave.downloadAndSaveMediaMessage(qmsg)
+                let webpToMp4 = await webp2mp4File(media)
+                await dave.sendMessage(m.chat, {
+                    video: {
+                        url: webpToMp4.result,
+                        caption: 'Convert Webp To Video'
+                    }
+                }, {
+                    quoted: loli
+                })
+                await fs.unlinkSync(media)
+
+            }
+            break
+//========================================================\\        
         case "disp-90": { 
                  if (!m.isGroup) return reply (mess.group); 
                  
@@ -1405,6 +2062,413 @@ break;
  } 
  break; 
 //==================================================//  
+
+
+case 'toimage':
+            case 'photo': {
+                if (!/webp/.test(mime)) return reply(`Reply sticker with caption *${prefix + command}*`)
+                await m.reply(`processing photo`)
+                let media = await dave.downloadAndSaveMediaMessage(qmsg)
+                let ran = await getRandom('.png')
+                exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+                    fs.unlinkSync(media)
+                    if (err) return err
+                    let buffer = fs.readFileSync(ran)
+                    dave.sendMessage(m.chat, {
+                        image: buffer
+                    }, {
+                        quoted: loli
+                    })
+                    fs.unlinkSync(ran)
+                })
+
+            }
+            break
+//========================================================\\          
+case 'tomp4':
+            case 'tovideo': {
+                if (!/webp/.test(mime)) return m.reply(`Reply sticker with caption *${prefix + command}*`)
+                await m.reply(`processing your video`)
+                let media = await dave.downloadAndSaveMediaMessage(qmsg)
+                let webpToMp4 = await webp2mp4File(media)
+                await dave.sendMessage(m.chat, {
+                    video: {
+                        url: webpToMp4.result,
+                        caption: 'Convert Webp To Video'
+                    }
+                }, {
+                    quoted: loli
+                })
+                await fs.unlinkSync(media)
+
+            }
+            break
+//========================================================\\     
+
+case "calculate":{
+if (text.split("+")[0] && text.split("+")[1]) {
+const nilai_one = Number(text.split("+")[0])
+const nilai_two = Number(text.split("+")[1])
+reply(`${nilai_one + nilai_two}`)
+} else if (text.split("-")[0] && text.split("-")[1]) {
+const nilai_one = Number(text.split("-")[0])
+const nilai_two = Number(text.split("-")[1])
+reply(`${nilai_one - nilai_two}`)
+} else if (text.split("×")[0] && text.split("×")[1]) {
+const nilai_one = Number(text.split("×")[0])
+const nilai_two = Number(text.split("×")[1])
+reply(`${nilai_one * nilai_two}`)
+} else if (text.split("÷")[0] && text.split("÷")[1]) {
+const nilai_one = Number(text.split("÷")[0])
+const nilai_two = Number(text.split("÷")[1])
+reply(`${nilai_one / nilai_two}`)
+} else reply(`*Example* : ${prefix + command} 1 + 1`)
+}
+break
+//==================================================// 
+
+case "rvo": case "readviewonce": {
+if (!m.quoted) return reply("by replying to the message")
+let msg = m.quoted.message
+    let type = Object.keys(msg)[0]
+if (!msg[type].viewOnce) return reply("That message is not viewonce!")
+let media = await downloadContentFromMessage(msg[type], type == 'imageMessage' ? 'image' : type == 'videoMessage' ? 'video' : 'audio')
+    let buffer = Buffer.from([])
+    for await (const chunk of media) {
+        buffer = Buffer.concat([buffer, chunk])
+    }
+    if (/video/.test(type)) {
+        return dave.sendMessage(m.chat, {video: buffer, caption: msg[type].caption || ""}, {quoted: m})
+    } else if (/image/.test(type)) {
+        return dave.sendMessage(m.chat, {image: buffer, caption: msg[type].caption || ""}, {quoted: m})
+    } else if (/audio/.test(type)) {
+        return dave.sendMessage(m.chat, {audio: buffer, mimetype: "audio/mpeg", ptt: true}, {quoted: m})
+    } 
+}
+break
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━// 
+
+
+case "createqr": {
+const qrcode = require('qrcode')
+if (!text) return reply(`Wrong Usage Should Be ${prefix+command} Biiofc`)
+const qyuer = await qrcode.toDataURL(text, { scale: 8 })
+let data = new Buffer.from(qyuer.replace('data:image/png;base64,', ''), 'base64')
+dave.sendMessage(from, { image: data, caption: `Success Sis` }, { quoted: kalgans })
+}
+break
+
+//==================================================//     
+       
+         case 'cry': case 'kill': case 'hug': case 'pat': case 'lick': 
+case 'kiss': case 'bite': case 'yeet': case 'bully': case 'bonk':
+case 'wink': case 'poke': case 'nom': case 'slap': case 'smile': 
+case 'wave': case 'awoo': case 'blush': case 'smug': case 'glomp': 
+case 'happy': case 'dance': case 'cringe': case 'cuddle': case 'highfive': 
+case 'shinobu': case 'handhold': {
+
+axios.get(`https://api.waifu.pics/sfw/${command}`)
+.then(({data}) => {
+dave.sendImageAsSticker(from, data.url, m, { packname: global.packname, author: global.author })
+})
+}
+break
+//==================================================//         
+        case 'woof':
+case '8ball':
+case 'goose':
+case 'gecg':
+case 'feed':
+case 'avatar':
+case 'fox_girl':
+case 'lizard':
+case 'spank':
+case 'meow':
+case 'tickle':{
+                axios.get(`https://nekos.life/api/v2/img/${command}`)
+.then(({data}) => {
+dave.sendImageAsSticker(from, data.url, m, { packname: global.packname, author: global.author })
+})
+}
+break
+//==================================================//   
+        case 'glitchtext':
+case 'writetext':
+case 'advancedglow':
+case 'typographytext':
+case 'pixelglitch':
+case 'neonglitch':
+case 'flagtext':
+case 'flag3dtext':
+case 'deletingtext':
+case 'blackpinkstyle':
+case 'glowingtext':
+case 'underwatertext':
+case 'logomaker':
+case 'cartoonstyle':
+case 'papercutstyle':
+case 'watercolortext':
+case 'effectclouds':
+case 'blackpinklogo':
+case 'gradienttext':
+case 'summerbeach':
+case 'luxurygold':
+case 'multicoloredneon':
+case 'sandsummer':
+case 'galaxywallpaper':
+case '1917style':
+case 'makingneon':
+case 'royaltext':
+case 'freecreate':
+case 'galaxystyle':
+case 'lighteffects':{
+
+if (!q) return reply(`Example : ${prefix+command} Trash corr`) 
+let link
+if (/glitchtext/.test(command)) link = 'https://en.ephoto360.com/create-digital-glitch-text-effects-online-767.html'
+if (/writetext/.test(command)) link = 'https://en.ephoto360.com/write-text-on-wet-glass-online-589.html'
+if (/advancedglow/.test(command)) link = 'https://en.ephoto360.com/advanced-glow-effects-74.html'
+if (/typographytext/.test(command)) link = 'https://en.ephoto360.com/create-typography-text-effect-on-pavement-online-774.html'
+if (/pixelglitch/.test(command)) link = 'https://en.ephoto360.com/create-pixel-glitch-text-effect-online-769.html'
+if (/neonglitch/.test(command)) link = 'https://en.ephoto360.com/create-impressive-neon-glitch-text-effects-online-768.html'
+if (/flagtext/.test(command)) link = 'https://en.ephoto360.com/nigeria-3d-flag-text-effect-online-free-753.html'
+if (/flag3dtext/.test(command)) link = 'https://en.ephoto360.com/free-online-american-flag-3d-text-effect-generator-725.html'
+if (/deletingtext/.test(command)) link = 'https://en.ephoto360.com/create-eraser-deleting-text-effect-online-717.html'
+if (/blackpinkstyle/.test(command)) link = 'https://en.ephoto360.com/online-blackpink-style-logo-maker-effect-711.html'
+if (/glowingtext/.test(command)) link = 'https://en.ephoto360.com/create-glowing-text-effects-online-706.html'
+if (/underwatertext/.test(command)) link = 'https://en.ephoto360.com/3d-underwater-text-effect-online-682.html'
+if (/logomaker/.test(command)) link = 'https://en.ephoto360.com/free-bear-logo-maker-online-673.html'
+if (/cartoonstyle/.test(command)) link = 'https://en.ephoto360.com/create-a-cartoon-style-graffiti-text-effect-online-668.html'
+if (/papercutstyle/.test(command)) link = 'https://en.ephoto360.com/multicolor-3d-paper-cut-style-text-effect-658.html'
+if (/watercolortext/.test(command)) link = 'https://en.ephoto360.com/create-a-watercolor-text-effect-online-655.html'
+if (/effectclouds/.test(command)) link = 'https://en.ephoto360.com/write-text-effect-clouds-in-the-sky-online-619.html'
+if (/blackpinklogo/.test(command)) link = 'https://en.ephoto360.com/create-blackpink-logo-online-free-607.html'
+if (/gradienttext/.test(command)) link = 'https://en.ephoto360.com/create-3d-gradient-text-effect-online-600.html'
+if (/summerbeach/.test(command)) link = 'https://en.ephoto360.com/write-in-sand-summer-beach-online-free-595.html'
+if (/luxurygold/.test(command)) link = 'https://en.ephoto360.com/create-a-luxury-gold-text-effect-online-594.html'
+if (/multicoloredneon/.test(command)) link = 'https://en.ephoto360.com/create-multicolored-neon-light-signatures-591.html'
+if (/sandsummer/.test(command)) link = 'https://en.ephoto360.com/write-in-sand-summer-beach-online-576.html'
+if (/galaxywallpaper/.test(command)) link = 'https://en.ephoto360.com/create-galaxy-wallpaper-mobile-online-528.html'
+if (/1917style/.test(command)) link = 'https://en.ephoto360.com/1917-style-text-effect-523.html'
+if (/makingneon/.test(command)) link = 'https://en.ephoto360.com/making-neon-light-text-effect-with-galaxy-style-521.html'
+if (/royaltext/.test(command)) link = 'https://en.ephoto360.com/royal-text-effect-online-free-471.html'
+if (/freecreate/.test(command)) link = 'https://en.ephoto360.com/free-create-a-3d-hologram-text-effect-441.html'
+if (/galaxystyle/.test(command)) link = 'https://en.ephoto360.com/create-galaxy-style-free-name-logo-438.html'
+if (/lighteffects/.test(command)) link = 'https://en.ephoto360.com/create-light-effects-green-neon-online-429.html'
+let haldwhd = await ephoto(link, q)
+dave.sendMessage(m.chat, { image: { url: haldwhd }, caption: `${mess.success}` }, { quoted: m })
+}
+break
+//==================================================//        
+        case 'truth':
+              const truth =[
+    "Have you ever liked anyone? How long?",
+    "If you can or if you want, which gc/outside gc would you make friends with? (maybe different/same type)",
+    "apa ketakutan terbesar kamu?",
+    "Have you ever liked someone and felt that person likes you too?",
+    "What is the name of your friend's ex-girlfriend that you used to secretly like?",
+    "Have you ever stolen money from your father or mom? The reason?",
+    "What makes you happy when you're sad?",
+    "Ever had a one sided love? if so who? how does it feel bro?", 
+    "been someone's mistress?",
+    "the most feared thing",
+    "Who is the most influential person in your life?",
+    "what proud thing did you get this year", 
+    "Who is the person who can make you awesome", 
+    "Who is the person who has ever made you very happy?", 
+    "Who is closest to your ideal type of partner here", 
+    "Who do you like to play with??", 
+    "Have you ever rejected people? the reason why?",
+    "Mention an incident that made you hurt that you still remember", 
+    "What achievements have you got this year??",
+    "What's your worst habit at school??",
+    "What song do you sing most in the shower",
+    "Have you ever had a near-death experience",
+    "When was the last time you were really angry. Why?",
+    "Who is the last person who called you",
+    "Do you have any hidden talents, What are they",
+    "What word do you hate the most?",
+    "What is the last YouTube video you watched?",
+    "What is the last thing you Googled",
+    "Who in this group would you want to swap lives with for a week",
+    "What is the scariest thing thats ever happened to you",
+    "Have you ever farted and blamed it on someone else",
+    "When is the last time you made someone else cry",
+    "Have you ever ghosted a friend",
+    "Have you ever seen a dead body",
+    "Which of your family members annoys you the most and why",
+    "If you had to delete one app from your phone, which one would it be",
+    "What app do you waste the most time on",
+    "Have you ever faked sick to get home from school",
+    "What is the most embarrassing item in your room",
+    "What five items would you bring if you got stuck on a desert island",
+    "Have you ever laughed so hard you peed your pants",
+    "Do you smell your own farts",
+    "have u ever peed on the bed while sleeping ??",
+    "What is the biggest mistake you have ever made",
+    "Have you ever cheated in an exam",
+    "What is the worst thing you have ever done",
+    "When was the last time you cried",
+    "whom do you love the most among ur parents", 
+    "do u sometimes put ur finger in ur nosetril?", 
+    "who was ur crush during the school days",
+    "tell honestly, do u like any boy in this grup",
+    "have you ever liked anyone? how long?",
+    "do you have gf/bf','what is your biggest fear?",
+    "have you ever liked someone and felt that person likes you too?",
+    "What is the name of your ex boyfriend of your friend that you once liked quietly?",
+    "ever did you steal your mothers money or your fathers money",
+    "what makes you happy when you are sad",
+    "do you like someone who is in this grup? if you then who?",
+    "have you ever been cheated on by people?",
+    "who is the most important person in your life",
+    "what proud things did you get this year",
+    "who is the person who can make you happy when u r sad",
+    "who is the person who ever made you feel uncomfortable",
+    "have you ever lied to your parents",
+    "do you still like ur ex",
+    "who do you like to play together with?",
+    "have you ever stolen big thing in ur life? the reason why?",
+    "Mention the incident that makes you hurt that you still remember",
+    "what achievements have you got this year?",
+    "what was your worst habit at school?",
+    "do you love the bot creator, xeon?ðŸ¤£",
+    "have you ever thought of taking revenge from ur teacher?",
+    "do you like current prime minister of ur country",
+    "you non veg or veg",
+    "if you could be invisible, what is the first thing you would do",
+    "what is a secret you kept from your parents",
+    "Who is your secret crush",
+    "whois the last person you creeped on social media",
+    "If a genie granted you three wishes, what would you ask for",
+    "What is your biggest regret",
+    "What animal do you think you most look like",
+    "How many selfies do you take a day",
+    "What was your favorite childhood show",
+    "if you could be a fictional character for a day, who would you choose",
+    "whom do you text the most",
+    "What is the biggest lie you ever told your parents",
+    "Who is your celebrity crush",
+    "Whats the strangest dream you have ever had",
+    "do you play pubg, if you then send ur id number"
+]
+              const xeontruth = truth[Math.floor(Math.random() * truth.length)]
+              buffertruth = await getBuffer(`https://i.ibb.co/305yt26/bf84f20635dedd5dde31e7e5b6983ae9.jpg`)
+              dave.sendMessage(from, { image: buffertruth, caption: '_You choose TRUTH_\n'+ xeontruth }, {quoted:m})
+              break
+//==================================================//          
+        case 'dare':
+              const dare =[
+    "eat 2 tablespoons of rice without any side dishes, if it's dragging you can drink",
+    "spill people who make you pause",
+    "call crush/pickle now and send ss",
+    "drop only emote every time you type on gc/pc for 1 day.",
+    "say Welcome to Who Wants To Be a Millionaire! to all the groups you have",
+    "call ex saying miss",
+    "sing the chorus of the last song you played",
+    "vn your ex/crush/girlfriend, says hi (name), wants to call, just a moment. I miss you so much",
+	"Bang on the table (which is at home) until you get scolded for being noisy",
+    "Tell random people _I was just told I was your twin first, we separated, then I had plastic surgery. And this is the most ciyusss_ thing",
+    "mention ex's name",
+    "make 1 rhyme for the members!",
+    "send ur whatsapp chat list",
+    "chat random people with gheto language then ss here",
+    "tell your own version of embarrassing things",
+    "tag the person you hate",
+    "Pretending to be possessed, for example: possessed by dog, possessed by grasshoppers, possessed by refrigerator, etc.",
+    "change name to *I AM DONKEY* for 24 hours",
+    "shout *ma chuda ma chuda ma chuda* in front of your house",
+    "snap/post boyfriend photo/crush",
+    "tell me your boyfriend type!",
+    "say *i hv crush on you, do you want to be my girlfriend?* to the opposite sex, the last time you chatted (submit on wa/tele), wait for him to reply, if you have, drop here",
+    "record ur voice that read *titar ke age do titar, titar ke piche do titar*",
+    "prank chat ex and say *i love u, please come back.* without saying dare!",
+    "chat to contact wa in the order according to your battery %, then tell him *i am lucky to hv you!*",
+    "change the name to *I am a child of randi* for 5 hours",
+    "type in bengali 24 hours",
+    "Use selmon bhoi photo for 3 days",
+    "drop a song quote then tag a suitable member for that quote",
+    "send voice note saying can i call u baby?",
+    "ss recent call whatsapp",
+    "Say *YOU ARE SO BEAUTIFUL DON'T LIE* to guys!",
+    "pop to a group member, and say fuck you",
+    "Act like a chicken in front of ur parents",
+    "Pick up a random book and read one page out loud in vn n send it here",
+    "Open your front door and howl like a wolf for 10 seconds",
+    "Take an embarrassing selfie and paste it on your profile picture",
+    "Let the group choose a word and a well known song. You have to sing that song and send it in voice note",
+    "Walk on your elbows and knees for as long as you can",
+    "sing national anthem in voice note",
+    "Breakdance for 30 seconds in the sitting roomðŸ˜‚",
+    "Tell the saddest story you know",
+    "make a twerk dance video and put it on status for 5mins",
+    "Eat a raw piece of garlic",
+    "Show the last five people you texted and what the messages said",
+    "put your full name on status for 5hrs",
+    "make a short dance video without any filter just with a music and put it on ur status for 5hrs",
+    "call ur bestie, bitch",
+    "put your photo without filter on ur status for 10mins",
+    "say i love oli london in voice noteðŸ¤£ðŸ¤£",
+    "Send a message to your ex and say I still like you",
+    "call Crush/girlfriend/bestie now and screenshot here",
+    "pop to one of the group member personal chat and Say you ugly bustard",
+    "say YOU ARE BEAUTIFUL/HANDSOME to one of person who is in top of ur pinlist or the first person on ur chatlist",
+    "send voice notes and say, can i call u baby, if u r boy tag girl/if girl tag boy",
+    "write i love you (random grup member name, who is online) in personal chat, (if u r boy write girl name/if girl write boy name) take a snap of the pic and send it here",
+    "use any bollywood actor photo as ur pfp for 3 days",
+    "put your crush photo on status with caption, this is my crush",
+    "change name to I AM GAY for 5 hours",
+    "chat to any contact in whatsapp and say i will be ur bf/gf for 5hours",
+    "send voice note says i hv crush on you, want to be my girlfriend/boyfriend or not? to any random person from the grup(if u girl choose boy, if boy choose girl",
+    "slap ur butt hardly send the sound of slap through voice noteðŸ˜‚",
+    "state ur gf/bf type and send the photo here with caption, ugliest girl/boy in the world",
+    "shout bravooooooooo and send here through voice note",
+    "snap your face then send it here",
+    "Send your photo with a caption, i am lesbian",
+    "shout using harsh words and send it here through vn",
+    "shout you bastard in front of your mom/papa",
+    "change the name to i am idiot for 24 hours",
+    "slap urself firmly and send the sound of slap through voice noteðŸ˜‚",
+    "say i love the bot owner xeon through voice note",
+    "send your gf/bf pic here",
+    "make any tiktok dance challenge video and put it on status, u can delete it after 5hrs",
+    "breakup with your best friend for 5hrs without telling him/her that its a dare",
+     "tell one of your frnd that u love him/her and wanna marry him/her, without telling him/her that its a dare",
+     "say i love depak kalal through voice note",
+     "write i am feeling horny and put it on status, u can delete it only after 5hrs",
+     "write i am lesbian and put it on status, u can delete only after 5hrs",
+     "kiss your mommy or papa and say i love youðŸ˜Œ",
+     "put your father name on status for 5hrs",
+     "send abusive words in any grup, excepting this grup, and send screenshot proof here"
+]
+              const xeondare = dare[Math.floor(Math.random() * dare.length)]
+              bufferdare = await getBuffer(`https://i.ibb.co/305yt26/bf84f20635dedd5dde31e7e5b6983ae9.jpg`)
+              dave.sendMessage(from, { image: bufferdare, caption: '_You choose DARE_\n'+ xeondare }, {quoted:m})
+              break
+  
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//     
+
+case 'getbio':{
+              try {
+    let who
+    if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
+    else who = m.quoted.sender ? m.quoted.sender : m.sender
+    let bio = await dave.fetchStatus(who)
+    reply(bio.status)
+  } catch {
+    if (text) return reply(`bio is private or you haven't replied to the person's message!`)
+    else try {
+      let who = m.quoted ? m.quoted.sender : m.sender
+      let bio = await dave.fetchStatus(who)
+      reply(bio.status)
+    } catch {
+      return m.reply(`bio is private or you haven't replied to the person's message!`)
+    }
+  }
+}
+break
+
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//     
 default:
 if (budy.startsWith('>')) {
