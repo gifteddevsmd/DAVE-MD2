@@ -336,6 +336,7 @@ case "setvar":
  client.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } }); 
  } 
  break;
+//========================================================================================================================//
 
 
 case "gpass": case 'genpassword': {
@@ -486,6 +487,33 @@ case 'approve': case 'approve-all': {
 break;
 
 //========================================================================================================================//
+
+
+case "close": case "mutegc": { 
+  
+                 if (!m.isGroup) throw group; 
+                 if (!isBotAdmin) throw botAdmin; 
+                 if (!isAdmin) throw admin; 
+  
+                     await dave.groupSettingUpdate(m.chat, 'announcement'); 
+ m.reply('Group successfully locked!'); 
+ } 
+ break; 
+
+//========================================================================================================================//		      
+ case "open": case "unmutegc": { 
+                 if (!m.isGroup) throw group; 
+                 if (!isBotAdmin) throw botAdmin; 
+                 if (!isAdmin) throw admin; 
+  
+                     await client.groupSettingUpdate(m.chat, 'not_announcement'); 
+ m.reply('Group successfully unlocked!'); 
+  
+ }
+        break; 
+
+//========================================================================================================================//
+
 case 'reject': case 'reject-all': {
     if (!m.isGroup) throw group;
     if (!isAdmin) throw admin;
