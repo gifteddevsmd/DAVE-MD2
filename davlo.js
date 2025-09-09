@@ -1207,23 +1207,22 @@ break;
 //========================================================\\
 
 
-//========================================================================================================================//
 
+//========================================================================================================================//
 case "compile-c": {
   if (!text && !m.quoted) return m.reply("❌ Quote or provide a C code to compile.");
 
   const sourceCodeC = m.quoted?.text || text || m.text;
 
-  c.runSource(sourceCodeC)
-    .then(async result => {  // <-- make this async
-      if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
-      if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
-      console.log(result);
-    })
-    .catch(async err => {  // <-- make this async
-      console.error(err);
-      await reply(`❌ Compilation error:\n${err}`);
-    });
+  try {
+    const result = await c.runSource(sourceCodeC); // requires enclosing function to be async
+    if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
+    if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
+    console.log(result);
+  } catch (err) {
+    console.error(err);
+    await reply(`❌ Compilation error:\n${err}`);
+  }
 }
 break;
 
@@ -1233,16 +1232,15 @@ case "compile-c++": {
 
   const sourceCodeCPP = m.quoted?.text || text || m.text;
 
-  cpp.runSource(sourceCodeCPP)
-    .then(result => {
-      if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
-      if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
-      console.log(result);
-    })
-    .catch(err => {
-      console.error(err);
-      await reply(`❌ Compilation error:\n${err}`);
-    });
+  try {
+    const result = await cpp.runSource(sourceCodeCPP); // requires enclosing function to be async
+    if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
+    if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
+    console.log(result);
+  } catch (err) {
+    console.error(err);
+    await reply(`❌ Compilation error:\n${err}`);
+  }
 }
 break;
 
