@@ -1208,18 +1208,19 @@ break;
 
 
 //========================================================================================================================//
+
 case "compile-c": {
   if (!text && !m.quoted) return m.reply("❌ Quote or provide a C code to compile.");
 
   const sourceCodeC = m.quoted?.text || text || m.text;
 
   c.runSource(sourceCodeC)
-    .then(result => {
+    .then(async result => {  // <-- make this async
       if (result.stdout) await reply(`✅ Output:\n${result.stdout}`);
       if (result.stderr) await reply(`⚠️ Errors:\n${result.stderr}`);
       console.log(result);
     })
-    .catch(err => {
+    .catch(async err => {  // <-- make this async
       console.error(err);
       await reply(`❌ Compilation error:\n${err}`);
     });
