@@ -617,14 +617,7 @@ case 'opentime':
                 }, timer)
                 break
 //========================================================\\
-case 'addnumber':
-                if (!m.isGroup) return m.reply(mess.group)
-                if(!Owner) return m.reply(mess.owner)
-                if (!isBotAdmins) return reply(mess.admin)
-                let blockwwww = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await dave.groupParticipantsUpdate(m.chat, [blockwwww], 'add')
-                m.reply(mess.done)
-                break
+
 //==================================================//
 
  case 'pin': case 'unpin': {
