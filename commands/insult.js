@@ -50,7 +50,7 @@ async function insultCommand(sock, chatId, message) {
         
         if (!userToInsult) {
             await sock.sendMessage(chatId, { 
-                text: 'Please mention someone or dave to their message to insult them!'
+                text: 'Please mention someone or reply to their message to insult them!'
             });
             return;
         }

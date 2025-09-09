@@ -49,7 +49,7 @@ async function demoteCommand(sock, chatId, mentionedJids, message) {
         // If no user found through either method
         if (userToDemote.length === 0) {
             await sock.sendMessage(chatId, { 
-                text: '❌ Error: Please mention the user or dave to their message to demote!'
+                text: '❌ Error: Please mention the user or reply to their message to demote!'
             });
             return;
         }

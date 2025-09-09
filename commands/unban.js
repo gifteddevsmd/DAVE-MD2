@@ -16,7 +16,7 @@ async function unbanCommand(sock, chatId, message) {
     
     if (!userToUnban) {
         await sock.sendMessage(chatId, { 
-            text: 'Please mention the user or dave to their message to unban!', 
+            text: 'Please mention the user or reply to their message to unban!', 
             ...channelInfo 
         });
         return;

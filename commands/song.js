@@ -41,7 +41,7 @@ function logAxiosError(prefix, error) {
 	}
 }
 
-// PrinceTech YT-MP3 API dave
+// PrinceTech YT-MP3 API reply
 const princeApi = {
     base: 'https://api.princetechn.com/api/download/ytmp3',
     apikey: process.env.PRINCE_API_KEY || 'prince',

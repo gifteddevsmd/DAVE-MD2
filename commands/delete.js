@@ -19,7 +19,7 @@ async function deleteCommand(sock, chatId, message, senderId) {
     if (quotedMessage) {
         await sock.sendMessage(chatId, { delete: { remoteJid: chatId, fromMe: false, id: quotedMessage, participant: quotedParticipant } });
     } else {
-        await sock.sendMessage(chatId, { text: 'Please dave to a message you want to delete.' });
+        await sock.sendMessage(chatId, { text: 'Please reply to a message you want to delete.' });
     }
 }
 

@@ -70,7 +70,7 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message) {
         
         if (!userToWarn) {
             await sock.sendMessage(chatId, { 
-                text: '🛑 Error: Please mention the user or dave to their message to warn!'
+                text: '🛑 Error: Please mention the user or reply to their message to warn!'
             });
             return;
         }

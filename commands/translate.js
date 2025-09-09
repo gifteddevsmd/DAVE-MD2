@@ -9,7 +9,7 @@ async function handleTranslateCommand(sock, chatId, message, match) {
         let textToTranslate = '';
         let lang = '';
 
-        // Check if it's a dave
+        // Check if it's a reply
         const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
         if (quotedMessage) {
             // Get text from quoted message
@@ -37,7 +37,7 @@ async function handleTranslateCommand(sock, chatId, message, match) {
 
         if (!textToTranslate) {
             return sock.sendMessage(chatId, {
-                text: '❌ No text found to translate. Please provide text or dave to a message.',
+                text: '❌ No text found to translate. Please provide text or reply to a message.',
                 quoted: message
             });
         }
@@ -48,7 +48,7 @@ async function handleTranslateCommand(sock, chatId, message, match) {
 
         // Try API 1 (Google Translate API)
         try {
-            const response = await fetch(`https://translate.googleapis.com/translate_a/single?dave=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(textToTranslate)}`);
+            const response = await fetch(`https://translate.googleapis.com/translate_a/single?reply=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(textToTranslate)}`);
             if (response.ok) {
                 const data = await response.json();
                 if (data && data[0] && data[0][0] && data[0][0][0]) {

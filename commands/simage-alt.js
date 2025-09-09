@@ -6,7 +6,7 @@ const ffmpeg = require('ffmpeg-static');
 async function simageCommand(sock, quotedMessage, chatId) {
     try {
         if (!quotedMessage?.stickerMessage) {
-            await sock.sendMessage(chatId, { text: 'Please dave to a sticker!' });
+            await sock.sendMessage(chatId, { text: 'Please reply to a sticker!' });
             return;
         }
 

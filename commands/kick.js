@@ -31,7 +31,7 @@ async function kickCommand(sock, chatId, senderId, mentionedJids, message) {
     // If no user found through either method
     if (usersToKick.length === 0) {
         await sock.sendMessage(chatId, { 
-            text: 'Please mention the user or dave to their message to kick!'
+            text: 'Please mention the user or reply to their message to kick!'
         }, { quoted: message });
         return;
     }

@@ -51,7 +51,7 @@ async function complimentCommand(sock, chatId, message) {
         
         if (!userToCompliment) {
             await sock.sendMessage(chatId, { 
-                text: 'Please mention someone or dave to their message to compliment them!'
+                text: 'Please mention someone or reply to their message to compliment them!'
             });
             return;
         }

@@ -6,13 +6,13 @@ async function stickerCommand(sock, chatId, message) {
     try {
         const quotedMsg = message.message.extendedTextMessage?.contextInfo?.quotedMessage;
         if (!quotedMsg) {
-            await sock.sendMessage(chatId, { text: 'Please dave to an image or video!' });
+            await sock.sendMessage(chatId, { text: 'Please reply to an image or video!' });
             return;
         }
 
         const type = Object.keys(quotedMsg)[0];
         if (!['imageMessage', 'videoMessage'].includes(type)) {
-            await sock.sendMessage(chatId, { text: 'Please dave to an image or video!' });
+            await sock.sendMessage(chatId, { text: 'Please reply to an image or video!' });
             return;
         }
 

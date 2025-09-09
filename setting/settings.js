@@ -12,7 +12,7 @@ global.devname = "Dave"
 global.ownername = process.env.OWNER_NAME ||'Dave'
 global.botname = "𝐃𝐀𝐕𝐄-𝐌𝐃"
 global.versisc = "2"
-global.packname = "dave-md"
+global.packname = "reply-md"
 //~~~~~~~~~~~ Settings Sosmed ~~~~~~~~~~~//
 global.linkwa = "https://wa.me/254104260236"
 global.linkyt = "https://www.youtube.com/Davke"

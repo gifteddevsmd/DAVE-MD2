@@ -16,7 +16,7 @@ async function promoteCommand(sock, chatId, mentionedJids, message) {
     // If no user found through either method
     if (userToPromote.length === 0) {
         await sock.sendMessage(chatId, { 
-            text: 'Please mention the user or dave to their message to promote!'
+            text: 'Please mention the user or reply to their message to promote!'
         });
         return;
     }
