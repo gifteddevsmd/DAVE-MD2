@@ -277,6 +277,57 @@ reply("Success opened group chat,all members can send messages in group now")
 break
 //==================================================//
 
+case "gpass": case 'genpassword': {
+  try {
+    const length = args[0] ? parseInt(args[0]) : 12; // Default length is 12 if not provided
+    if (isNaN(length) || length < 8) {
+      return reply('Please provide a valid length for the password (Minimum 08 Characters).');
+    }
+
+    const generatePassword = (len) => {
+      const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+[]{}|;:,.<>?';
+      let password = '';
+      for (let i = 0; i < len; i++) {
+        const randomIndex = crypto.randomInt(0, charset.length);
+        password += charset[randomIndex];
+      }
+      return password;
+    };
+
+    const password = generatePassword(length);
+    const message = `Below is your password 🔥:`;
+
+    // Send initial notification message
+    await dave.sendMessage(from, { text: message }, { quoted: m });
+
+    // Send the password in a separate message
+    await dave.sendMessage(from, { text: password }, { quoted: m });
+
+  } catch (e) {
+    console.log(e);
+    reply(`Error generating password🤕: ${e.message}`);
+  }
+}
+break;
+
+//==================================================//
+case "gpt4": {
+    if (!text) return reply("Hello there, what's your question?");
+    try {
+        const d = await fetchJson(`https://bk9.fun/ai/Aoyo?q=${text}`);
+        if (!d.BK9) {
+            return reply("An error occurred while fetching the AI chatbot response. Please try again later.");
+        }
+        reply(d.BK9);
+    } catch (e) {
+        console.error(e);
+        reply("Something went wrong while contacting the AI. Please try again.");
+    }
+}
+break;
+//==================================================//
+
+
 case "inspect": {
     const fetch = require('node-fetch');
     const cheerio = require('cheerio');
@@ -878,7 +929,7 @@ case 'ghiblistyle': case 'toghibli':{
  break
   
     
-  //========================================================\\    
+  //======================================================\\    
     
      
        
@@ -1449,7 +1500,7 @@ break;
             let [poll, opt] = text.split("|")
             if (text.split("|") < 2)
                 return await reply(
-                    `Mention question and atleast 2 options\nExample: ${prefix}poll Who is best admin?|Xeon,Cheems,Doge...`
+                    `Mention question and atleast 2 options\nExample: ${prefix}poll Who is best admin?|dave,pesh,Med...`
                 )
             let options = []
             for (let i of opt.split(',')) {
@@ -1715,7 +1766,8 @@ case "obfuscate": {
   }
 }
 break;
-        
+
+  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//      
 case 'listblock':{
 if (!isBot) return m.reply(mess.owner)
 let block = await supreme.fetchBlocklist()
@@ -1866,6 +1918,81 @@ https://cloud.google.com/translate/docs/languages
     }
     break
 //========================================================\\
+
+case 'trt': case 'trans': {
+    try {
+        const args = text.split(' ');
+        if (args.length < 2) return m.reply("Please provide a language code and text to translate!");
+
+        const targetLang = args[0];
+        const textToTranslate = args.slice(1).join(' ');
+
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=en|${targetLang}`);
+
+        if (!response.ok) return m.reply('Failed to fetch data. Please try again later.');
+
+        const data = await response.json();
+        if (!data.responseData || !data.responseData.translatedText) return m.reply('No translation found for the provided text.');
+
+        const translatedText = data.responseData.translatedText;
+        const message = `${translatedText}`;
+
+        // 🔥 client → dave
+        await dave.sendMessage(m.chat, { text: message }, { quoted: m });
+
+    } catch (error) {
+        console.error("Error occurred:", error);
+        m.reply('An error occurred while fetching the data. Please try again later.\n' + error);
+    }
+}
+break;
+
+//========================================================================================================================//
+
+case 'cast': {
+    if (!Owner) throw NotOwner;
+    if (!m.isGroup) throw group;
+    if (!text) return m.reply(`Provide a text to cast!`);
+
+    let mem = participants.filter(v => v.id.endsWith('.net')).map(v => v.id);
+    m.reply(`Success in casting the message to contacts.\n\nDo not always use this command to avoid WA bans!`);
+
+    for (let pler of mem) {
+        // 🔥 client → dave
+        await dave.sendMessage(pler, { text: q });
+    }
+
+    m.reply(`Casting completed successfully 😁`);
+}
+break;
+
+//========================================================================================================================//
+
+case "img": case "ai-img": case "image": case "images": {
+    const gis = require('g-i-s');
+    if (!text) return m.reply("Provide a text");
+
+    try {
+        gis(text, async (error, results) => {
+            if (error) return m.reply("An error occurred while searching for images.\n" + error);
+            if (results.length === 0) return m.reply("No images found.");
+
+            const numberOfImages = Math.min(results.length, 5);
+            const imageUrls = results.slice(0, numberOfImages).map(result => result.url);
+
+            for (const url of imageUrls) {
+                // 🔥 client → dave
+                await dave.sendMessage(m.chat, {
+                    image: { url },
+                    caption: `Downloaded by ${botname}`
+                }, { quoted: m });
+            }
+        });
+    } catch (e) {
+        m.reply("An error occurred.\n" + e);
+    }
+}
+break;
 case "url": {
 if (!/image/.test(mime)) return m.reply(example("tag/reply photo"))
 let media = await dave.downloadAndSaveMediaMessage(qmsg)
