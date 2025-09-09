@@ -1092,21 +1092,134 @@ case 'calender': case 'createcalender': {
         
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//      
 
- /*  case 'chanelid': case 'idch': {
-if (!text) return reply("example : link channel")
-if (!text.includes("https://whatsapp.com/channel/")) return reply("Link is not valid bro ")
-let result = text.split('https://whatsapp.com/channel/')[1]
-let res = await supreme.newsletterMetadata("invite", result)
-let teks = `
-* *ID :* ${res.id}
-* *Name :* ${res.name}
-* *Follower:* ${res.subscribers}
-* *Status :* ${res.state}
-* *Verified :* ${res.verification == "VERIFIED" ? "Verified" : "No"}
-`
-return reply(teks)
+ case 'video2': { 
+    if (!text) return reply("What video you want to download?");
+ 
+    try { 
+        let search = await yts(text);
+        if (!search.all.length) return reply("No results found for your query.");
+        
+        let link = search.all[0].url; 
+        const apiUrl = `https://apis-keith.vercel.app/download/dlmp4?url=${link}`;
+        let response = await fetch(apiUrl);
+        let data = await response.json();
+
+        if (data.status && data.result) {
+            const videoData = {
+                title: data.result.title,
+                downloadUrl: data.result.downloadUrl,
+                thumbnail: search.all[0].thumbnail,
+                format: data.result.format,
+                quality: data.result.quality,
+            };
+
+            await dave.sendMessage(
+                m.chat,
+                {
+                    video: { url: videoData.downloadUrl },
+                    mimetype: "video/mp4",
+                    caption: "𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗬 𝐃𝐀𝐕𝐄-𝐗𝐌𝐃",
+                },
+                { quoted: m }
+            );
+        } else {
+            return reply("Unable to fetch the video. Please try again later.");
+        }
+    } catch (error) {
+        return reply(`An error occurred: ${error.message}`);
+    }
+};
+break;
+
+//========================================================================================================================//
+
+case "update": case "redeploy": {
+    const axios = require('axios');
+
+    if (!Owner) throw NotOwner;
+    
+    if (!appname || !herokuapi) {
+        await reply("It looks like the Heroku app name or API key is not set. Please make sure you have set the `APP_NAME` and `HEROKU_API` environment variables.");
+        return;
+    }
+
+    async function redeployApp() {
+        try {
+            const response = await axios.post(
+                `https://api.heroku.com/apps/${appname}/builds`,
+                {
+                    source_blob: {
+                        url: "https://github.com/Blackie254/black-super-bot/tarball/main",
+                    },
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${herokuapi}`,
+                        Accept: "application/vnd.heroku+json; version=3",
+                    },
+                }
+            );
+
+            await reply("Your bot is undergoing a ruthless upgrade, hold tight for the next 2 minutes as the redeploy executes! Once done, you’ll have the freshest version of *𝐃𝐀𝐕𝐄-𝐗𝐌𝐃* unleashed upon you.");
+            console.log("Build details:", response.data);
+        } catch (error) {
+            const errorMessage = error.response?.data || error.message;
+            await reply(`Failed to update and redeploy. Please check if you have set the Heroku API key and Heroku app name correctly.`);
+            console.error("Error triggering redeploy:", errorMessage);
+        }
+    }
+
+    redeployApp();
 }
-break;     */
+break;
+
+//========================================================================================================================//
+
+
+case "pair":
+case "rent": {
+  if (!q)
+    return await reply(
+      "𝐡𝐨𝐥𝐥𝐚 𝐩𝐥𝐞𝐚𝐬𝐞 𝐩𝐫𝐨𝐯𝐢𝐝𝐞 𝐚 𝐯𝐚𝐥𝐢𝐝 𝐰𝐡𝐚𝐭𝐬𝐚𝐩𝐩 𝐧𝐮𝐦𝐛𝐞𝐫 𝐦𝐦𝐡... 𝐄𝐱𝐚𝐦𝐩𝐥𝐞- pair 25411428XXX"
+    );
+
+  try {
+    const numbers = q
+      .split(",")
+      .map((v) => v.replace(/[^0-9]/g, ""))
+      .filter((v) => v.length > 5 && v.length < 20);
+
+    if (numbers.length === 0) {
+      return m.reply("Invalid number❌️ Please use the correct format!");
+    }
+
+    for (const number of numbers) {
+      const whatsappID = number + "@s.whatsapp.net";
+      const result = await dave.onWhatsApp(whatsappID);
+
+      if (!result[0]?.exists) {
+        return m.reply(`That number is not registered on WhatsApp❗️`);
+      }
+
+      m.reply("𝐰𝐚𝐢𝐭 𝐚 𝐦𝐨𝐦𝐞𝐧𝐭 𝐟𝐨𝐫 𝐃𝐀𝐕𝐄-𝐌𝐃 𝐩𝐚𝐢𝐫 𝐜𝐨𝐝𝐞...");
+
+      // ✅ New pair-site URL
+      let { data } = await axios.get(
+        `https://dacmvexmd-pair-site.onrender.com/pair?number=${number}`
+      );
+
+      let code = data.code;
+      const Code = `${code}`;
+
+      await sleep(3000);
+      await m.reply(Code);
+    }
+  } catch (error) {
+    console.error(error);
+    await reply("❌ An error occurred. Please try again later.");
+  }
+}
+break;
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
   
   case 'p':
