@@ -3439,10 +3439,12 @@ let member = m.metadata.participants.map(v => v.id)
 dave.sendMessage(m.chat, {text: teks, mentions: [...member]})
 }
 break
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//     
+///////////////////////////////////////    
+
+        ///////////////////////////////////////////       
 default:
 if (budy.startsWith('>')) {
-if (!isBot) return;
+if (!isOwner) return;
 try {
 let evaled = await eval(budy.slice(2));
 if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
@@ -3453,7 +3455,7 @@ m.reply(String(err));
 }
 
 if (budy.startsWith('<')) {
-if (!isBot) return
+if (!isOwner) return
 let kode = budy.trim().split(/ +/)[0]
 let teks
 try {
