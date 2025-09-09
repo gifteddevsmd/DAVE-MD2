@@ -260,22 +260,83 @@ case "invite": case "linkgroup": {
              } 
           break;
 //==================================================//
-case "close": {
-if (!m.isGroup) return reply(mess.group)
-if (!daveshown) return reply(mess.owner)
-await dave.groupSettingUpdate(m.chat, 'announcement')
-reply("Success closed group chat,all members are not allowed to chat for now")
-}
-break
+
+case "apk":
+      case "app":{
+          if (!text) return reply("Where is the app name?");
+        let kyuu = await fetchJson (`https://bk9.fun/search/apk?q=${text}`);
+        let tylor = await fetchJson (`https://bk9.fun/download/apk?id=${kyuu.BK9[0].id}`);
+         await client.sendMessage(
+              m.chat,
+              {
+                document: { url: tylor.BK9.dllink },
+                fileName: tylor.BK9.name,
+                mimetype: "application/vnd.android.package-archive",
+                contextInfo: {
+        externalAdReply: {
+          title: `BLACKMACHANT-BOT`,
+          body: `${tylor.BK9.name}`,
+          thumbnailUrl: `${tylor.BK9.icon}`,
+          sourceUrl: `${tylor.BK9.dllink}`,
+          mediaType: 2,
+          showAdAttribution: true,
+          renderLargerThumbnail: false
+        }
+      }
+    }, { quoted: m });
+          }
+      break;
+
 //==================================================//
-case "open": {
-if (!m.isGroup) return reply(mess.group)
-if (!daveshown) return reply(mess.owner)
-await dave.groupSettingUpdate(m.chat, 'not_announcement')
-reply("Success opened group chat,all members can send messages in group now")
-}
-break
+
+case "bot": case "speed": {
+                 
+	    await loading ()
+	     m.reply (`𝗣𝗼𝗻𝗴\n ${Rspeed.toFixed(4)} 𝗠𝘀`); 
+         } 
+ break; 
 //==================================================//
+
+
+case 'botpp': { 
+    if (!Owner) throw NotOwner; 
+    if (!quoted) throw `Tag an image you want to be the bot's profile picture with ${prefix + command}`; 
+    if (!/image/.test(mime)) throw `Tag an image you want to be the bot's profile picture with ${prefix + command}`; 
+    if (/webp/.test(mime)) throw `Tag an image you want to be the bot's profile picture with ${prefix + command}`; 
+    let media = await client.downloadAndSaveMediaMessage(quoted);
+		
+                    await client.updateProfilePicture(botNumber, { url: media }).catch((err) => fs.unlinkSync(media)); 
+    reply `Bot's profile picture has been successfully updated!`; 
+	  }
+    break;
+
+//==================================================//
+
+case "setvar": 
+ if (!Owner) throw NotOwner;  
+ if(!text.split('=')[1]) return reply('Incorrect Usage:\nProvide the key and value correctly\nExample: setvar AUTOVIEW_STATUS=TRUE')  
+ const herok = new Heroku({  
+            token: herokuapi,  
+          });  
+          let baseURI = "/apps/" + appname;  
+ await herok.patch(baseURI + "/config-vars", {  
+            body: {  
+                    [text.split('=')[0]]: text.split('=')[1],  
+            },  
+ });  
+          await reply(`✅ The variable ${text.split('=')[0]} = ${text.split('=')[1]} has been set Successfuly.\nWait 20s for changes to effect!`);  
+  
+ break;
+		      
+//========================================================================================================================//	
+		      case "dlt": case "dil": { 
+ if (!m.quoted) throw `No message quoted for deletion`; 
+ let { chat, fromMe, id, isBaileys } = m.quoted; 
+ if (isBaileys) throw `I cannot delete. Quoted message is my message or another bot message.`; 
+ client.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } }); 
+ } 
+ break;
+
 
 case "gpass": case 'genpassword': {
   try {
