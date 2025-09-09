@@ -341,25 +341,26 @@ case "setvar":
 
 case "gpass": case 'genpassword': {
   try {
-    const length = args[0] ? parseInt(args[0]) : 12; // Default length is 12 if not provided
+    const length = args[0] ? parseInt(args[0]) : 12; // Default length is 12
     if (isNaN(length) || length < 8) {
       return reply('Please provide a valid length for the password (Minimum 08 Characters).');
     }
 
+    // Safe random index generator using Math.random
     const generatePassword = (len) => {
       const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+[]{}|;:,.<>?';
       let password = '';
       for (let i = 0; i < len; i++) {
-        const randomIndex = crypto.randomInt(0, charset.length);
+        const randomIndex = Math.floor(Math.random() * charset.length);
         password += charset[randomIndex];
       }
       return password;
     };
 
     const password = generatePassword(length);
-    const message = `Below is your password 🔥:`;
+    const message = `Below is your password:`;
 
-    // Send initial notification message
+    // Send initial notification
     await dave.sendMessage(from, { text: message }, { quoted: m });
 
     // Send the password in a separate message
@@ -367,7 +368,7 @@ case "gpass": case 'genpassword': {
 
   } catch (e) {
     console.log(e);
-    reply(`Error generating password🤕: ${e.message}`);
+    reply(`Error generating password: ${e.message}`);
   }
 }
 break;
@@ -681,7 +682,7 @@ break;
  break;
 
 //========================================================================================================================//		      
-case "list": case "vars": case "help":
+case "getsettings": case "vars": case "set":
 let vaa = `𝟏 Owner➣ 𝙳𝙰𝚅𝙴-𝙼𝙳 𝐜𝐨𝐧𝐭𝐚𝐜𝐭\n\n𝟐 𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭➣ 𝐒𝐞𝐧𝐝𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞 𝐭𝐨 𝐚𝐥𝐥 𝐠𝐫𝐨𝐮𝐩𝐬\n\n𝟑 𝐉𝐨𝐢𝐧➣ 𝐭𝐚𝐠 𝐠𝐫𝐨𝐮𝐩 𝐥𝐢𝐧𝐤 𝐰𝐢𝐭𝐡 𝐣𝐨𝐢𝐧\n\n𝟒 𝐛𝐨𝐭𝐩𝐩➣ 𝐂𝐡𝐚𝐧𝐠𝐞 𝐛𝐨𝐭𝐬 𝐚𝐜𝐜𝐨𝐮𝐧𝐭 𝐝𝐩\n\n𝟓 𝐁𝐥𝐨𝐜𝐤➣ 𝐁𝐥𝐨𝐜𝐤 𝐭𝐡𝐞𝐦 𝐟𝐚𝐤𝐞 𝐟𝐫𝐢𝐞𝐧𝐝𝐬\n\n𝟔 𝐊𝐢𝐥𝐥➣ 𝐊𝐢𝐥𝐥𝐬 𝐠𝐫𝐨𝐮𝐩 𝐢𝐧 𝐬𝐞𝐜𝐨𝐧𝐝𝐬\n\n𝟕 𝐔𝐧𝐛𝐥𝐨𝐜𝐤➣ 𝐆𝐢𝐯𝐞 𝐭𝐡𝐞𝐦 𝐟𝐚𝐤𝐞 𝐟𝐫𝐢𝐞𝐧𝐝𝐬 𝐚 𝐬𝐞𝐜𝐨𝐧𝐝 𝐜𝐡𝐚𝐧𝐜𝐞\n\n𝟖 𝐒𝐞𝐭𝐯𝐚𝐫➣ 𝐒𝐞𝐭 𝐯𝐚𝐫𝐬 𝐢𝐧 𝐡𝐞𝐫𝐨𝐤𝐮\n\n𝟗 𝐒𝐭𝐢𝐜𝐤𝐞𝐫➣ 𝐂𝐨𝐧𝐯𝐞𝐫𝐭𝐬 𝐚 𝐩𝐡𝐨𝐭𝐨 𝐨𝐫 𝐚 𝐬𝐡𝐨𝐫𝐭 𝐯𝐢𝐝𝐞𝐨 𝐭𝐨 𝐚 𝐬𝐭𝐢𝐜𝐤𝐞𝐫\n\n𝟏𝟎 𝐓𝐨𝐢𝐦𝐠➣ 𝐂𝐨𝐧𝐯𝐞𝐫𝐭𝐬 𝐚 𝐬𝐭𝐢𝐜𝐤𝐞𝐫 𝐭𝐨 𝐚 𝐩𝐡𝐨𝐭𝐨\n\n𝟏𝟏 𝐏𝐥𝐚𝐲➣ 𝐆𝐞𝐭 𝐲𝐨𝐮𝐫 𝐟𝐚𝐯𝐨𝐫𝐢𝐭𝐞 𝐬𝐨𝐧𝐠\n\n𝟏𝟐 𝐖𝐡𝐚𝐭𝐬𝐨𝐧𝐠➣ 𝐠𝐞𝐭 𝐭𝐡𝐞 𝐭𝐢𝐭𝐥𝐞 𝐨𝐟 𝐭𝐡𝐞 𝐬𝐨𝐧𝐠\n\n𝟏𝟑 𝐘𝐭𝐬 ➣ 𝐆𝐞𝐭 𝐘𝐨𝐮𝐓𝐮𝐛𝐞 𝐯𝐢𝐝𝐞𝐨𝐬\n\n𝟏𝟒 𝐌𝐨𝐯𝐢𝐞➣ 𝐆𝐞𝐭 𝐲𝐨𝐮𝐫 𝐟𝐚𝐯𝐨𝐫𝐢𝐭𝐞 𝐦𝐨𝐯𝐢𝐞 𝐝𝐞𝐭𝐚𝐢𝐥𝐬\n\n𝟏𝟓 𝐌𝐢𝐱➣ 𝐂𝐨𝐦𝐛𝐢𝐧𝐞𝐬 +𝟐𝐞𝐦𝐨𝐣𝐢𝐬\n\n𝟏𝟔 𝐀𝐢-𝐢𝐦𝐠➣ 𝐆𝐞𝐭 𝐚𝐧 𝐀𝐢 𝐩𝐡𝐨𝐭𝐨\n\n𝟏𝟕 𝐆𝐩𝐭 ➣ 𝐇𝐞𝐫𝐞 𝐭𝐨 𝐚𝐧𝐬𝐰𝐞𝐫 𝐲𝐨𝐮𝐫 𝐪𝐮𝐞𝐬𝐭𝐢𝐨𝐧𝐬\n\n𝟏𝟖 𝐃𝐩➣ 𝐆𝐞𝐭𝐬 𝐚 𝐩𝐞𝐫𝐬𝐨𝐧 𝐝𝐩\n\n𝟏𝟗 𝐒𝐩𝐞𝐞𝐝 ➣ 𝐂𝐡𝐞𝐜𝐤𝐬 𝐛𝐨𝐭𝐬 𝐬𝐩𝐞𝐞𝐝\n\n𝟐𝟎 𝐀𝐥𝐢𝐯𝐞➣ 𝐂𝐡𝐞𝐜𝐤 𝐰𝐡𝐞𝐭𝐡𝐞𝐫 𝐭𝐡𝐞 𝐛𝐨𝐭 𝐢𝐬 𝐬𝐭𝐢𝐥𝐥 𝐤𝐢𝐜𝐤𝐢𝐧𝐠\n\n𝟐𝟏 𝐑𝐮𝐧𝐭𝐢𝐦𝐞➣ 𝐖𝐡𝐞𝐧 𝐝𝐢𝐝 𝐛𝐨𝐭 𝐬𝐭𝐚𝐫𝐭𝐞𝐝 𝐨𝐩𝐞𝐫𝐚𝐭𝐢𝐧𝐠\n\n𝟐𝟐 𝐒𝐜𝐫𝐢𝐩𝐭➣ 𝐆𝐞𝐭 𝐛𝐨𝐭 𝐬𝐜𝐫𝐢𝐩𝐭\n\n𝟐𝟑 𝐎𝐰𝐧𝐞𝐫  ➣ 𝐆𝐞𝐭 𝐨𝐰𝐧𝐞𝐫(𝐬) 𝐜𝐨𝐧𝐭𝐚𝐜𝐭\n\n𝟐𝟒 𝐕𝐚𝐫𝐬 ➣ 𝐒𝐞𝐞 𝐚𝐥𝐥 𝐯𝐚𝐫𝐢𝐚𝐛𝐥𝐞𝐬\n\n𝟐𝟓 𝐏𝐫𝐨𝐦𝐨𝐭𝐞➣ 𝐆𝐢𝐯𝐞𝐬 𝐨𝐧𝐞 𝐚𝐝𝐦𝐢𝐧 𝐫𝐨𝐥𝐞\n\n𝟐𝟔 𝐃𝐞𝐦𝐨𝐭𝐞➣ 𝐃𝐞𝐦𝐨𝐭𝐞𝐬 𝐟𝐫𝐨𝐦 𝐠𝐫𝐨𝐮𝐩 𝐚𝐝𝐦𝐢𝐧 𝐭𝐨 𝐚 𝐦𝐞𝐦𝐛𝐞𝐫\n\n𝟐𝟕 𝐃𝐞𝐥𝐞𝐭𝐞➣ 𝐃𝐞𝐥𝐞𝐭𝐞 𝐚 𝐦𝐞𝐬𝐬𝐚𝐠𝐞\n\n𝟐𝟖 𝐑𝐞𝐦𝐨𝐯𝐞/𝐤𝐢𝐜𝐤➣ 𝐊𝐢𝐜𝐤 𝐭𝐡𝐚𝐭 𝐭𝐞𝐫𝐫𝐨𝐫𝐢𝐬𝐭 𝐟𝐫𝐨𝐦 𝐚 𝐠𝐫𝐨𝐮𝐩\n\n𝟐𝟗 𝐅𝐨𝐫𝐞𝐢𝐠𝐧𝐞𝐫𝐬➣ 𝐆𝐞𝐭 𝐟𝐨𝐫𝐞𝐢𝐠𝐧 𝐧𝐮𝐦𝐛𝐞𝐫𝐬\n\n𝟑𝟎 𝐂𝐥𝐨𝐬𝐞➣ 𝐓𝐢𝐦𝐞 𝐟𝐨𝐫 𝐠𝐫𝐨𝐮𝐩 𝐦𝐞𝐦𝐛𝐞𝐫𝐬 𝐭𝐨 𝐭𝐚𝐤𝐞 𝐚 𝐛𝐫𝐞𝐚𝐤 𝐨𝐧𝐥𝐲 𝐚𝐝𝐦𝐢𝐧𝐬 𝐜𝐚𝐧 𝐜𝐡𝐚𝐭\n\n𝟑𝟏 𝐎𝐩𝐞𝐧 ➣ 𝐄𝐯𝐞𝐫𝐲𝐨𝐧𝐞 𝐜𝐚𝐧 𝐜𝐡𝐚𝐭 𝐢𝐧 𝐚 𝐠𝐫𝐨𝐮𝐩\n\n𝟑𝟐 𝐈𝐜𝐨𝐧➣ 𝐂𝐡𝐚𝐧𝐠𝐞 𝐠𝐫𝐨𝐮𝐩 𝐢𝐜𝐨𝐧\n\n𝟑𝟑 𝐒𝐮𝐛𝐣𝐞𝐜𝐭➣ 𝐂𝐡𝐚𝐧𝐠𝐞 𝐠𝐫𝐨𝐮𝐩 𝐬𝐮𝐛𝐣𝐞𝐜𝐭\n\n𝟑𝟒 𝐃𝐞𝐬𝐜➣ 𝐆𝐞𝐭 𝐠𝐫𝐨𝐮𝐩 𝐝𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧\n\n𝟑𝟓 𝐋𝐞𝐚𝐯𝐞➣ 𝐓𝐡𝐞 𝐠𝐫𝐨𝐮𝐩 𝐢𝐬 𝐛𝐨𝐫𝐢𝐧𝐠 ,𝐭𝐢𝐦𝐞 𝐟𝐨𝐫 𝐛𝐨𝐭 𝐭𝐨 𝐥𝐞𝐚𝐯𝐞\n\n𝟑𝟔 𝐓𝐚𝐠𝐚𝐥𝐥 ➣ 𝐓𝐚𝐠 𝐞𝐯𝐞𝐫𝐲𝐨𝐧𝐞 𝐢𝐧 𝐚 𝐠𝐫𝐨𝐮𝐩 𝐜𝐡𝐚𝐭\n\n𝟑𝟕 𝐇𝐢𝐝𝐞𝐭𝐚𝐠➣ 𝐀𝐭𝐭𝐞𝐧𝐭𝐢𝐨𝐧! 𝐀𝐭𝐭𝐞𝐧𝐭𝐢𝐨𝐧! 𝐬𝐨𝐦𝐞𝐨𝐧𝐞 𝐡𝐚𝐬 𝐬𝐨𝐦𝐞𝐭𝐡𝐢𝐧𝐠 𝐭𝐨 𝐬𝐚𝐲\n\n𝟑𝟖 𝐑𝐞𝐯𝐨𝐤𝐞 ➣ 𝐑𝐞𝐬𝐞𝐭 𝐠𝐫𝐨𝐮𝐩 𝐥𝐢𝐧𝐤`
 reply(vaa)
 break;
@@ -706,6 +707,8 @@ if (!m.quoted) return m.reply("quote a viewonce message eh")
     }
       }
 	break;
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
 case 'joke': {
 try {
@@ -756,6 +759,8 @@ case 'carbon': {
 }
 break;
 
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+
 case 'zodiac': {
   if (!text) return reply('Please provide your birth month and date\n*Example:* zodiac 8 23 (for August 23)');
   const input = text.split(' ');
@@ -786,7 +791,7 @@ case 'zodiac': {
 }
 break;
 
-
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
 case "tweet": {
   if (!text) return m.reply("Provide some text for the tweet");
@@ -797,6 +802,7 @@ case "tweet": {
   await dave.sendMessage(m.chat, { image: { url: imageurl }, caption: `𝗖𝗼𝗻𝘃𝗲𝗿𝘁𝗲𝗱 𝗯𝘆 𝙳𝙰𝚅𝙴-𝙼𝙳` }, { quoted: m });
 }
 break;
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
 case "pickupline": {
   try {
@@ -812,7 +818,7 @@ case "pickupline": {
 break;
 
 
-
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
         case 'playdoc': {
   const axios = require('axios');
   const yts = require("yt-search");
@@ -1546,7 +1552,8 @@ case 'createimage': {
 }
 break;
 
-                     
+    //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+                 
 case "xvideos":{
     if (!q) return m.reply(`Example: ${prefix + command} anime`);
     m.reply(mess.wait);
@@ -1962,7 +1969,7 @@ break;
  //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//       
         
         
-case 'play':{
+case 'play1':{
 const axios = require('axios');
 const yts = require("yt-search");
 const fs = require("fs");
@@ -2047,6 +2054,83 @@ m.reply(`${m.chat}`)
 break;
         
         
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+
+case 'play':{
+const axios = require('axios');
+const yts = require("yt-search");
+const fs = require("fs");
+const path = require("path");
+
+  try {
+    if (!text) return m.reply("What song do you want to download?");
+
+    let search = await yts(text);
+    let link = search.all[0].url;
+
+    const apis = [
+      `https://xploader-api.vercel.app/ytmp3?url=${link}`,
+      `https://apis.davidcyriltech.my.id/youtube/mp3?url=${link}`,
+      `https://api.ryzendesu.vip/api/downloader/ytmp3?url=${link}`,
+      `https://api.dreaded.site/api/ytdl/audio?url=${link}`
+       ];
+
+    for (const api of apis) {
+      try {
+        let data = await fetchJson(api);
+
+        // Checking if the API response is successful
+        if (data.status === 200 || data.success) {
+          let videoUrl = data.result?.downloadUrl || data.url;
+          let outputFileName = `${search.all[0].title.replace(/[^a-zA-Z0-9 ]/g, "")}.mp3`;
+          let outputPath = path.join(__dirname, outputFileName);
+
+          const response = await axios({
+            url: videoUrl,
+            method: "GET",
+            responseType: "stream"
+          });
+
+          if (response.status !== 200) {
+            m.reply("sorry but the API endpoint didn't respond correctly. Try again later.");
+            continue;
+          }
+                ffmpeg(response.data)
+            .toFormat("mp3")
+            .save(outputPath)
+            .on("end", async () => {
+              await dave.sendMessage(
+                m.chat,
+                {
+                  document: { url: outputPath },
+                  mimetype: "audio/mp3",
+                  caption: "",
+                  fileName: outputFileName,
+                },
+                { quoted: m }
+              );
+              fs.unlinkSync(outputPath);
+            })
+            .on("error", (err) => {
+              m.reply("Download failed\n" + err.message);
+            });
+
+          return;
+        }
+      } catch (e) {
+        // Continue to the next API if one fails
+        continue;
+      }
+   }
+
+    // If no APIs succeeded
+    m.reply("An error occurred. All APIs might be down or unable to process the request.");
+  } catch (error) {
+    m.reply("Download failed\n" + error.message);
+  }
+}
+          break;
+
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
         
 case 'profilegc':
@@ -2575,6 +2659,8 @@ case "img": case "ai-img": case "image": case "images": {
     }
 }
 break;
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 case "url": {
 if (!/image/.test(mime)) return m.reply(example("tag/reply photo"))
 let media = await dave.downloadAndSaveMediaMessage(qmsg)
@@ -3389,65 +3475,40 @@ break
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//     
 default:
-                if (budy.startsWith('=>')) {
-                    if (!Owner) return reply(mess.owner)
-                    function Return(sul) {
-                        sat = JSON.stringify(sul, null, 2)
-                        bang = util.format(sat)
-                        if (sat == undefined) {
-                            bang = util.format(sul)
-                        }
-                        return reply(bang)
-                    }
-                    try {
-                        reply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)))
-                    } catch (e) {
-                        reply(String(e))
-                    }
-                }
-
-                if (budy.startsWith('>')) {
-                    if (!Owner) return reply(mess.owner)
-                    try {
-                        let evaled = await eval(budy.slice(2))
-                        if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
-                        await reply(evaled)
-                    } catch (err) {
-                        await reply(String(err))
-                    }
-                }
-                if (budy.startsWith('$')) {
-                    if (!Owner) return reply(mess.owner)
-                    exec(budy.slice(2), (err, stdout) => {
-                        if (err) return reply(err)
-                        if (stdout) return reply(stdout)
-                    })
-                }
-                if (isCmd && budy.toLowerCase() != undefined) {
-if (m.chat.endsWith('broadcast')) return
-if (m.isBaileys) return
-let msgs = global.db.data.database
-if (!(budy.toLowerCase() in msgs)) return
-Bellah.copyNForward(m.chat, msgs[budy.toLowerCase()], true, {quoted: m})
+if (budy.startsWith('>')) {
+if (!isBot) return;
+try {
+let evaled = await eval(budy.slice(2));
+if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
+await m.reply(evaled);
+} catch (err) {
+m.reply(String(err));
 }
-            }
-    } catch (err) {
-          console.log(util.format(err))
-        let e = String(err)
-console.log({ text: "Hello developer, there seems to be an error, please fix it " + util.format(e), 
-contextInfo:{
-forwardingScore: 9999999, 
-isForwarded: true    
+}
 
-}})
-if (e.includes("conflict")) return
-if (e.includes("not-authorized")) return
-if (e.includes("already-exists")) return
-if (e.includes("rate-overlimit")) return
-if (e.includes("Connection Closed")) return
-if (e.includes("Timed Out")) return
-if (e.includes("Value not found")) return
-if (e.includes("Socket connection timeout")) return
-    }
-} 
-    
+if (budy.startsWith('<')) {
+if (!isBot) return
+let kode = budy.trim().split(/ +/)[0]
+let teks
+try {
+teks = await eval(`(async () => { ${kode == ">>" ? "return" : ""} ${q}})()`)
+} catch (e) {
+teks = e
+} finally {
+await m.reply(require('util').format(teks))
+}
+}
+
+}
+} catch (err) {
+console.log(require("util").format(err));
+}
+};
+
+let file = require.resolve(__filename);
+require('fs').watchFile(file, () => {
+require('fs').unwatchFile(file);
+console.log('\x1b[0;32m' + __filename + ' \x1b[1;32mupdated!\x1b[0m');
+delete require.cache[file];
+require(file);
+});
