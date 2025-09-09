@@ -971,7 +971,7 @@ break
 
 //========================================================\\ 
 
-case 'dalle': case 'createimage': {
+case 'createimage': {
     if (!text) return m.reply(`*This command generates images from text prompts*\n\n*𝙴xample usage*\n*${prefix + command} Beautiful anime girl*\n*${prefix + command} girl in pink dress*`);
     try {
         m.reply('Please wait, I am generating your image...');
@@ -1214,25 +1214,30 @@ break;
         
   //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//    
 
-case "ai":
-case "gpt":
- if (!args.length) {
- return m.reply("provide a question .\n\nExample: *who is Ronaldo?*");
- }
- let query = encodeURIComponent(args.join(" "));
- let apiUrl3 = `https://www.laurine.site/api/ai/heckai?query=${query}`;
- try {
- let response = await fetch(apiUrl3);
- let data = await response.json();
- if (!data.status || !data.data) {
- return reply("❌ AI is inactive.");
- }
- m.reply(`🤖 *AI Response:*\n\n${data.data}`);
- } catch (error) {
- console.error(error);
- m.reply("❌ errror.");
- }
- break
+
+case "gpt": {
+  if (!args.length) {
+    return m.reply("Provide a question.\n\nExample: *who is Ronaldo?*");
+  }
+
+  let query = encodeURIComponent(args.join(" "));
+  let apiUrl3 = `https://www.laurine.site/api/ai/heckai?query=${query}`;
+
+  try {
+    let response = await fetch(apiUrl3);
+    let data = await response.json();
+
+    if (!data.status || !data.data) {
+      return reply("❌ AI is inactive.");
+    }
+
+    m.reply(`🤖 *AI Response:*\n\n${data.data}`);
+  } catch (error) {
+    console.error(error);
+    m.reply("❌ Error.");
+  }
+}
+break;
  
   //====================================================\\ 
 
@@ -1910,7 +1915,7 @@ break;
 break
 //==================================================//   
 
-case 'translate':{
+case 'translated':{
   	if (!q) return m.reply(`*Where is the text*\n\n*𝙴xample usage*\n*${prefix + command} <language id> <text>*\n*${prefix + command} ja yo wassup*`)
   	const defaultLang = 'en'
 const tld = 'cn'
