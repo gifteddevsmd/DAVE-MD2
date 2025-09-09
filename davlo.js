@@ -545,6 +545,102 @@ break;
 
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+
+case 'save': {
+  try {
+    const quotedMessage = m.msg?.contextInfo?.quotedMessage;
+    
+    // Check if user quoted a message
+    if (!quotedMessage) {
+      return m.reply('please reply to a status message');
+    }
+    
+    // Verify it's a status message
+    if (!m.quoted?.chat?.endsWith('@broadcast')) {
+      return m.reply('that message is not a status! please reply to a status message.');
+    }
+    
+    // Download the media first
+    const mediaBuffer = await dave.downloadMediaMessage(m.quoted);
+    if (!mediaBuffer || mediaBuffer.length === 0) {
+      return m.reply('could not download the status media. it may have expired.');
+    }
+    
+    // Determine media type and prepare payload
+    let payload;
+    let mediaType;
+    
+    if (quotedMessage.imageMessage) {
+      mediaType = 'image';
+      payload = {
+        image: mediaBuffer,
+        caption: quotedMessage.imageMessage.caption || 'saved status image',
+        mimetype: 'image/jpeg'
+      };
+    } 
+    else if (quotedMessage.videoMessage) {
+      mediaType = 'video';
+      payload = {
+        video: mediaBuffer,
+        caption: quotedMessage.videoMessage.caption || 'saved status video',
+        mimetype: 'video/mp4'
+      };
+    } 
+    else {
+      return m.reply('only image and video statuses can be saved!');
+    }
+    
+    // Send to user's DM
+    await dave.sendMessage(
+      m.sender, 
+      payload,
+      { quoted: m }
+    );
+    
+    // Confirm in chat
+    return m.reply(`${mediaType} saved by VENOM-XMD`);
+    
+  } catch (error) {
+    console.error('Save error:', error);
+    if (error.message.includes('404') || error.message.includes('not found')) {
+      return m.reply('the status may have expired or been deleted.');
+    }
+    return m.reply('failed to save status. error: ' + error.message);
+  }
+}
+break;
+//==================================================//     
+        case "disp-90": { 
+                 if (!m.isGroup) return reply (mess.group); 
+                 
+                 if (!isAdmins) return reply (mess.admin); 
+  
+                     await dave.groupToggleEphemeral(m.chat, 90*24*3600); 
+ m.reply('Dissapearing messages successfully turned on for 90 days!'); 
+ } 
+ break; 
+//==================================================//         
+        case "disp-off": { 
+                 if (!m.isGroup) return reply (mess.group); 
+             
+                 if (!isAdmins) return reply (mess.admin); 
+  
+                     await dave.groupToggleEphemeral(m.chat, 0); 
+ m.reply('Dissapearing messages successfully turned off!'); 
+ }
+   break;
+       
+//==================================================//  
+        case "disp-1": { 
+                 if (!m.isGroup) return reply (mess.group); 
+                
+                 if (!isAdmins) return reply (mess.admin); 
+  
+                     await dave.groupToggleEphemeral(m.chat, 1*24*3600); 
+ m.reply('Dissapearing messages successfully turned on for 24hrs!'); 
+ } 
+ break; 
+//==================================================//  
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//     
 default:
 if (budy.startsWith('>')) {
