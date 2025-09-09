@@ -118,10 +118,6 @@ supreme.sendMessage(from, { text : teks }, { quoted : m })
 const reaction = async (jidss, emoji) => {
 supreme.sendMessage(jidss, { react: { text: emoji, key: m.key }})}
 
-//if (global.autoread) {
-  supreme.readMessages([m.key]);
-}//
-
 if (global.autoTyping) {
   supreme.sendPresenceUpdate("composing", from);
 }
@@ -2724,16 +2720,16 @@ const path = require("path");
             m.reply("sorry but the API endpoint didn't respond correctly. Try again later.");
             continue;
           }
-		ffmpeg(response.data)
+                ffmpeg(response.data)
             .toFormat("mp3")
             .save(outputPath)
             .on("end", async () => {
-              await dave.sendMessage(
+              await supreme.sendMessage(
                 m.chat,
                 {
                   document: { url: outputPath },
                   mimetype: "audio/mp3",
-		  caption: "",
+                  caption: "",
                   fileName: outputFileName,
                 },
                 { quoted: m }
@@ -2753,12 +2749,12 @@ const path = require("path");
    }
 
     // If no APIs succeeded
-    m.reply("An error occurred. All APIs might be down or unable to process the request at the moment.");
+    m.reply("An error occurred. All APIs might be down or unable to process the request.");
   } catch (error) {
     m.reply("Download failed\n" + error.message);
   }
 }
-	  break;
+          break;
 	  
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 case "gcjid":
