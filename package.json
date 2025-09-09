@@ -1,3 +1,14 @@
+{
+"name": "dave-md",
+"version": "1.2.4",
+"description": "WhatsApp simple bot",
+"main": "main.js",
+"scripts": {
+"code": "node main.js",
+"start": "node run.js"
+},
+"author": "",
+"license": "ISC",
 "dependencies": {
   "@adiwajshing/keyed-db": "^0.2.4",
   "@ffmpeg/ffmpeg": "^0.12.15",
