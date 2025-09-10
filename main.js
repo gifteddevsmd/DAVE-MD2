@@ -14,6 +14,7 @@ const { addWelcome, delWelcome, isWelcomeOn, addGoodbye, delGoodBye, isGoodByeOn
 // Command imports
 const tagAllCommand = require('./commands/tagall');const getppCommand =require('./commands/getpp');
 const { handleAntitagCommand, handleTagDetection } = require('./commands/antitag');
+const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./commands/autoread');
 const { handleAntideleteCommand, handleMessageRevocation, storeMessage } = require('./commands/antidelete');
 const helpCommand = require('./commands/help');
 const banCommand = require('./commands/ban');
@@ -533,6 +534,11 @@ async function handleMessages(sock, messageUpdate, printLog) {
             /*case userMessage === '.uptime':
            //     await aliveCommand(sock, chatId, message);
             //    break;*/
+           
+            case userMessage.startsWith('.autoread'):
+                await autoreadCommand(sock, chatId, message);
+                commandExecuted = true;
+                break;
             case userMessage.startsWith('.blur'):
                 const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
                 await blurCommand(sock, chatId, message, quotedMessage);
