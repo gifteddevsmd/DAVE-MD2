@@ -14,6 +14,7 @@ const { addWelcome, delWelcome, isWelcomeOn, addGoodbye, delGoodBye, isGoodByeOn
 // Command imports
 const tagAllCommand = require('./commands/tagall');const getppCommand =require('./commands/getpp');
 const { handleAntitagCommand, handleTagDetection } = require('./commands/antitag');
+const { miscCommand, handleHeart } = require('./commands/misc');
 const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./commands/autoread');
 const { handleAntideleteCommand, handleMessageRevocation, storeMessage } = require('./commands/antidelete');
 const helpCommand = require('./commands/help');
@@ -748,7 +749,12 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage === '.setpp':
                 await setProfilePicture(sock, chatId, message);
                 break;
-              case userMessage === '.getpp':
+              
+            case userMessage.startsWith('.music'):
+                await playCommand(sock, chatId, message);
+                break;
+
+            case userMessage === '.getpp':
                await getppCommand(sock, chatId, message);
               break;            
                 
