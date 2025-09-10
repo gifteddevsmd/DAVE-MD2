@@ -1,4 +1,4 @@
-const axios = require('axios');
+/*const axios = require('axios');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { uploadImage } = require('../lib/uploadImage');
 
@@ -195,5 +195,5 @@ async function miscCommand(sock, chatId, message, args) {
 }
 
 module.exports = { miscCommand, handleHeart };
-
+/*
 
