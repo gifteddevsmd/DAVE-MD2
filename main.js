@@ -13,6 +13,7 @@ const { addWelcome, delWelcome, isWelcomeOn, addGoodbye, delGoodBye, isGoodByeOn
 
 // Command imports
 const tagAllCommand = require('./commands/tagall');const getppCommand =require('./commands/getpp');
+const { handleAntitagCommand, handleTagDetection } = require('./commands/antitag');
 const { handleAntideleteCommand, handleMessageRevocation, storeMessage } = require('./commands/antidelete');
 const helpCommand = require('./commands/help');
 const banCommand = require('./commands/ban');
@@ -205,11 +206,12 @@ async function handleMessages(sock, messageUpdate, printLog) {
         }
 
         // List of admin commands
-        const adminCommands = ['.mute', '.unmute', '.ban', '.unban', '.promote', '.demote', '.kick', '.tagall', '.antilink'];
+        const adminCommands = ['.mute', '.unmute', '.ban', '.unban', '.promote', '.demote', '.kick', '.tagall', '.antilink', '.antitag'];
         const isAdminCommand = adminCommands.some(cmd => userMessage.startsWith(cmd));
 
+
         // List of owner commands
-        const ownerCommands = ['.mode', '.autostatus', '.antidelete', '.cleartmp', '.setpp', '.clearsession', '.areact', '.autoreact'];
+        const ownerCommands = ['.mode', '.autostatus', '.antidelete', '.cleartmp', '.setpp', '.clearsession', '.areact','.autoread', '.autoreact'];
         const isOwnerCommand = ownerCommands.some(cmd => userMessage.startsWith(cmd));
 
         let isSenderAdmin = false;
