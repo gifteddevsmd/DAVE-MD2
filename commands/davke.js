@@ -1,4 +1,4 @@
-const axios = require('axios');
+*/const axios = require('axios');
 
 const ANIMU_BASE = 'https://api.some-random-api.com/animu';
 
@@ -72,6 +72,6 @@ async function animeCommand(sock, chatId, message, args) {
     }
 }
 
-module.exports = { animeCommand };
+module.exports = { animeCommand };/*
 
 
