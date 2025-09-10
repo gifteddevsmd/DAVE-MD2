@@ -195,5 +195,5 @@ async function miscCommand(sock, chatId, message, args) {
 }
 
 module.exports = { miscCommand, handleHeart };
-/*
+*/
 
