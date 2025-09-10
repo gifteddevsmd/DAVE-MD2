@@ -37,7 +37,7 @@ async function stickerCommand(sock, chatId, message) {
                 isForwarded: false,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '@newsletter',
-                    newsletterName: 'June MD',
+                    newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
                     serverMessageId: -1
                 }
             }
@@ -59,7 +59,7 @@ async function stickerCommand(sock, chatId, message) {
                     isForwarded: false,
                     forwardedNewsletterMessageInfo: {
                         newsletterJid: '@newsletter',
-                        newsletterName: 'june MD',
+                        newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
                         serverMessageId: -1
                     }
                 }
@@ -109,7 +109,7 @@ async function stickerCommand(sock, chatId, message) {
         // Create metadata
         const json = {
             'sticker-pack-id': crypto.randomBytes(32).toString('hex'),
-            'sticker-pack-name': settings.packname || 'June md',
+            'sticker-pack-name': settings.packname || '𝙳𝙰𝚅𝙴-𝙼𝙳',
             'emojis': ['🤖']
         };
 
@@ -147,7 +147,7 @@ async function stickerCommand(sock, chatId, message) {
                 isForwarded: false,
                 forwardedNewsletterMessageInfo: {
                     newsletterJid: '@newsletter',
-                    newsletterName: 'June MD',
+                    newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
                     serverMessageId: -1
                 }
             }
