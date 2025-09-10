@@ -406,6 +406,25 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 }
                 await handleAntilinkCommand(sock, chatId, userMessage, senderId, isSenderAdmin);
                 break;
+          
+
+             case userMessage.startsWith('.antitag'):
+                if (!isGroup) {
+                    await sock.sendMessage(chatId, {
+                        text: 'This command can only be used in groups.',
+                        ...channelInfo
+                    });
+                    return;
+                }
+                if (!isBotAdmin) {
+                    await sock.sendMessage(chatId, {
+                        text: 'Please make the bot an admin first.',
+                        ...channelInfo
+                    });
+                    return;
+                }
+                await handleAntitagCommand(sock, chatId, userMessage, senderId, isSenderAdmin);
+                break;
             case userMessage === '.meme':
                 await memeCommand(sock, chatId, message);
                 break;
