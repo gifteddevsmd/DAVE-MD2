@@ -53,6 +53,16 @@
 
 ---
 
+## 📥 Download ZIP
+
+<p align="center">
+  <a href="https://github.com/giftdee/DAVE-MD/archive/refs/heads/main.zip">
+    <img src="https://img.shields.io/badge/Download--ZIP-orange?style=for-the-badge&logo=github" alt="Download ZIP">
+  </a>
+</p>
+
+---
+
 ## Contact / Support
 
 [![WhatsApp Channel](https://img.shields.io/badge/Join-Channel-green?style=for-the-badge&logo=whatsapp)](https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k)  
