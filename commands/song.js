@@ -41,14 +41,14 @@ function logAxiosError(prefix, error) {
 	}
 }
 
-// PrinceTech YT-MP3 API reply
+// PrinceTech YT-MP3 API client
 const princeApi = {
     base: 'https://api.princetechn.com/api/download/ytmp3',
-    apikey: process.env.PRINCE_API_KEY || 'prince',
+    apikey: process.env.PRINCE_API_KEY || 'prince_tech_api_azfsbshfb',
     async fetchMeta(videoUrl) {
         const params = new URLSearchParams({ apikey: this.apikey, url: videoUrl });
         const url = `${this.base}?${params.toString()}`;
-        
+
         const { data } = await axios.get(url, {
             timeout: 20000,
             headers: { 'user-agent': 'Mozilla/5.0', accept: 'application/json' }
