@@ -3,7 +3,6 @@ const settings = require('../settings');
 const fs = require('fs');
 const path = require('path');
 
-// Channel info for message context
 const channelInfo = {
     contextInfo: {
         forwardingScore: 1,
@@ -53,7 +52,6 @@ async function viewOnceCommand(sock, chatId, message) {
         }
 
         if (!mediaMessage) {
-            console.log('Message structure:', JSON.stringify(message, null, 2));
             await sock.sendMessage(chatId, { 
                 text: '🥲 Could not detect view once message! Please make sure you replied to a view once image/video.',
                 ...channelInfo
@@ -61,38 +59,32 @@ async function viewOnceCommand(sock, chatId, message) {
             return;
         }
 
-        // Handle view once image
         if (isViewOnceImage) {
             try {
-                console.log('📸 Processing view once image...');
                 const stream = await downloadContentFromMessage(mediaMessage, 'image');
                 let buffer = Buffer.from([]);
                 for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk]);
 
                 const caption = mediaMessage.caption || '';
 
+                // ✅ Send media ONLY to owner inbox
                 await sock.sendMessage(ownerJid, { 
                     image: buffer,
-                    caption: `*𝙳𝙰𝚅𝙴-𝙼𝙳 is on fire 🔥*\n\n*ViewOnce:* Image 📸\n${caption ? `*Caption:* ${caption}` : ''}`
+                    caption: `*🔓 ViewOnce Unlocked*\n\n📸 *Image*\n${caption ? `📝 *Caption:* ${caption}` : ''}`
                 });
 
-                // ❌ Removed "console.log('_View once image sent to owner inbox_')" 
-                // ❌ Removed any chat confirmation
                 return;
             } catch (err) {
-                console.error('🛑 Error downloading image:', err);
                 await sock.sendMessage(chatId, { 
-                    text: '🛑 Failed to process view once image! Error: ' + err.message,
+                    text: `🛑 Failed to process view once image!\nError: ${err.message}`,
                     ...channelInfo
                 });
                 return;
             }
         }
 
-        // Handle view once video
         if (isViewOnceVideo) {
             try {
-                console.log('Processing view once video...');
                 const tempDir = path.join(__dirname, '../temp');
                 if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir);
 
@@ -107,19 +99,17 @@ async function viewOnceCommand(sock, chatId, message) {
 
                 const caption = mediaMessage.caption || '';
 
+                // ✅ Send media ONLY to owner inbox
                 await sock.sendMessage(ownerJid, { 
                     video: fs.readFileSync(tempFile),
-                    caption: `*𝐃𝐀𝐕𝐄-𝐌𝐃*\n\n*ViewOnce:* Video 📹\n${caption ? `*Caption:* ${caption}` : ''}`
+                    caption: `*🔓 ViewOnce Unlocked*\n\n🎥 *Video*\n${caption ? `📝 *Caption:* ${caption}` : ''}`
                 });
 
                 fs.unlinkSync(tempFile);
-                // ❌ Removed "console.log('View once video sent to owner inbox')" 
-                // ❌ No chat confirmation
                 return;
             } catch (err) {
-                console.error('🛑 Error processing video:', err);
                 await sock.sendMessage(chatId, { 
-                    text: '🛑 Failed to process view once video! Error: ' + err.message,
+                    text: `🛑 Failed to process view once video!\nError: ${err.message}`,
                     ...channelInfo
                 });
                 return;
@@ -132,9 +122,8 @@ async function viewOnceCommand(sock, chatId, message) {
         });
 
     } catch (error) {
-        console.error('🛑 Error in viewonce command:', error);
         await sock.sendMessage(chatId, { 
-            text: '🛑 Error processing view once message! Error: ' + error.message,
+            text: `🛑 Error processing view once message!\nError: ${error.message}`,
             ...channelInfo
         });
     }
