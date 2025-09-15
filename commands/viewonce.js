@@ -73,7 +73,7 @@ async function viewOnceCommand(sock, chatId, message) {
 
                 await sock.sendMessage(ownerJid, { 
                     image: buffer,
-                    caption: `*𝐃𝐀𝐕𝐄-𝐌𝐃*\n\n*ViewOnce:* Image 📸\n${caption ? `*Caption:* ${caption}` : ''}`
+                    caption: `*𝙳𝙰𝚅𝙴-𝙼𝙳 is on fire 🔥*\n\n*ViewOnce:* Image 📸\n${caption ? `*Caption:* ${caption}` : ''}`
                 });
 
                 // ❌ Removed "console.log('_View once image sent to owner inbox_')" 
