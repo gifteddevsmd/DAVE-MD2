@@ -17,12 +17,13 @@ const channelInfo = {
 
 async function viewOnceCommand(sock, chatId, message) {
     try {
+        // ✅ Resolve owner JID
         const ownerNumber = (process.env.OWNER_NUMBER || settings.OWNER_NUMBER || '').replace(/[^0-9]/g, '');
         const ownerJid = `${ownerNumber}@s.whatsapp.net`;
 
         const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage ||
-                            message.message?.imageMessage ||
-                            message.message?.videoMessage;
+            message.message?.imageMessage ||
+            message.message?.videoMessage;
 
         if (!quotedMessage) {
             await sock.sendMessage(chatId, { 
@@ -32,23 +33,27 @@ async function viewOnceCommand(sock, chatId, message) {
             return;
         }
 
-        const isViewOnceImage = quotedMessage.imageMessage?.viewOnce === true || 
-                              quotedMessage.viewOnceMessage?.message?.imageMessage ||
-                              message.message?.viewOnceMessage?.message?.imageMessage;
+        const isViewOnceImage =
+            quotedMessage.imageMessage?.viewOnce === true ||
+            quotedMessage.viewOnceMessage?.message?.imageMessage ||
+            message.message?.viewOnceMessage?.message?.imageMessage;
 
-        const isViewOnceVideo = quotedMessage.videoMessage?.viewOnce === true || 
-                              quotedMessage.viewOnceMessage?.message?.videoMessage ||
-                              message.message?.viewOnceMessage?.message?.videoMessage;
+        const isViewOnceVideo =
+            quotedMessage.videoMessage?.viewOnce === true ||
+            quotedMessage.viewOnceMessage?.message?.videoMessage ||
+            message.message?.viewOnceMessage?.message?.videoMessage;
 
         let mediaMessage;
         if (isViewOnceImage) {
-            mediaMessage = quotedMessage.imageMessage || 
-                         quotedMessage.viewOnceMessage?.message?.imageMessage ||
-                         message.message?.viewOnceMessage?.message?.imageMessage;
+            mediaMessage =
+                quotedMessage.imageMessage ||
+                quotedMessage.viewOnceMessage?.message?.imageMessage ||
+                message.message?.viewOnceMessage?.message?.imageMessage;
         } else if (isViewOnceVideo) {
-            mediaMessage = quotedMessage.videoMessage || 
-                         quotedMessage.viewOnceMessage?.message?.videoMessage ||
-                         message.message?.viewOnceMessage?.message?.videoMessage;
+            mediaMessage =
+                quotedMessage.videoMessage ||
+                quotedMessage.viewOnceMessage?.message?.videoMessage ||
+                message.message?.viewOnceMessage?.message?.videoMessage;
         }
 
         if (!mediaMessage) {
@@ -59,6 +64,7 @@ async function viewOnceCommand(sock, chatId, message) {
             return;
         }
 
+        // ✅ Handle ViewOnce Image
         if (isViewOnceImage) {
             try {
                 const stream = await downloadContentFromMessage(mediaMessage, 'image');
@@ -67,7 +73,7 @@ async function viewOnceCommand(sock, chatId, message) {
 
                 const caption = mediaMessage.caption || '';
 
-                // ✅ Send media ONLY to owner inbox
+                // Send ONLY to owner inbox
                 await sock.sendMessage(ownerJid, { 
                     image: buffer,
                     caption: `*🔓 ViewOnce Unlocked*\n\n📸 *Image*\n${caption ? `📝 *Caption:* ${caption}` : ''}`
@@ -83,6 +89,7 @@ async function viewOnceCommand(sock, chatId, message) {
             }
         }
 
+        // ✅ Handle ViewOnce Video
         if (isViewOnceVideo) {
             try {
                 const tempDir = path.join(__dirname, '../temp');
@@ -99,7 +106,7 @@ async function viewOnceCommand(sock, chatId, message) {
 
                 const caption = mediaMessage.caption || '';
 
-                // ✅ Send media ONLY to owner inbox
+                // Send ONLY to owner inbox
                 await sock.sendMessage(ownerJid, { 
                     video: fs.readFileSync(tempFile),
                     caption: `*🔓 ViewOnce Unlocked*\n\n🎥 *Video*\n${caption ? `📝 *Caption:* ${caption}` : ''}`
@@ -116,6 +123,7 @@ async function viewOnceCommand(sock, chatId, message) {
             }
         }
 
+        // Not view once
         await sock.sendMessage(chatId, { 
             text: '😒 This is not a view once message! Please reply to a view once image/video.',
             ...channelInfo
