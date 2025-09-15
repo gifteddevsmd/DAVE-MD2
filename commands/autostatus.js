@@ -16,32 +16,53 @@ const channelInfo = {
 // Path to store auto status configuration
 const configPath = path.join(__dirname, '../data/autoStatus.json');
 
-// Initialize config file if it doesn't exist
-if (!fs.existsSync(configPath)) {
-    fs.writeFileSync(configPath, JSON.stringify({ 
-        enabled: false, 
+// Initialize config file if missing or broken
+function initConfig() {
+    const defaultConfig = {
+        enabled: false,
         reactOn: false,
-        emoji: "💚" // default emoji
-    }));
+        emoji: "💚"
+    };
+
+    try {
+        if (!fs.existsSync(configPath)) {
+            fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
+            return defaultConfig;
+        }
+
+        const content = fs.readFileSync(configPath);
+        return JSON.parse(content);
+    } catch (e) {
+        // fallback if corrupted
+        fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
+        return defaultConfig;
+    }
+}
+
+function saveConfig(config) {
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
 }
 
 async function autoStatusCommand(sock, chatId, msg, args) {
     try {
         if (!msg.key.fromMe) {
             await sock.sendMessage(chatId, { 
-                text: 'This command can only be used by the owner!',
+                text: '⚠️ This command can only be used by the bot owner!',
                 ...channelInfo
             });
             return;
         }
 
-        let config = JSON.parse(fs.readFileSync(configPath));
+        let config = initConfig();
 
         if (!args || args.length === 0) {
-            const status = config.enabled ? 'enabled' : 'disabled';
-            const reactStatus = config.reactOn ? `enabled (emoji: ${config.emoji})` : 'disabled';
+            const status = config.enabled ? '✅ Enabled' : '❌ Disabled';
+            const reactStatus = config.reactOn 
+                ? `✅ Enabled (Emoji: ${config.emoji})` 
+                : '❌ Disabled';
+
             await sock.sendMessage(chatId, { 
-                text: `🔄 *Auto Status Settings*\n\n📱 *Auto Status View:* ${status}\n💫 *Status Reactions:* ${reactStatus}\n\n*Commands:*\n.autostatus on - Enable auto status view\n.autostatus off - Disable auto status view\n.autostatus react on/off - Enable/disable reactions\n.autostatus emoji ❤️ - Change reaction emoji`,
+                text: `🔄 *Auto Status Settings*\n\n📱 *Auto Status View:* ${status}\n💫 *Status Reactions:* ${reactStatus}\n\n*Available Commands:*\n.autostatus on - Enable auto status view\n.autostatus off - Disable auto status view\n.autostatus react on/off - Enable or disable reactions\n.autostatus emoji ❤️ - Change default reaction emoji`,
                 ...channelInfo
             });
             return;
@@ -51,52 +72,56 @@ async function autoStatusCommand(sock, chatId, msg, args) {
 
         if (command === 'on') {
             config.enabled = true;
-            fs.writeFileSync(configPath, JSON.stringify(config));
+            saveConfig(config);
             await sock.sendMessage(chatId, { 
                 text: '✅ Auto status view has been enabled!',
                 ...channelInfo
             });
+
         } else if (command === 'off') {
             config.enabled = false;
-            fs.writeFileSync(configPath, JSON.stringify(config));
+            saveConfig(config);
             await sock.sendMessage(chatId, { 
                 text: '❌ Auto status view has been disabled!',
                 ...channelInfo
             });
+
         } else if (command === 'react') {
             if (!args[1]) {
                 await sock.sendMessage(chatId, { 
-                    text: 'Please specify on/off for reactions!\nUse: .autostatus react on/off',
+                    text: 'Please specify `on` or `off`\nExample: `.autostatus react on`',
                     ...channelInfo
                 });
                 return;
             }
             const reactCommand = args[1].toLowerCase();
             config.reactOn = reactCommand === 'on';
-            fs.writeFileSync(configPath, JSON.stringify(config));
+            saveConfig(config);
             await sock.sendMessage(chatId, { 
                 text: config.reactOn 
-                    ? `💫 Status reactions have been enabled! (emoji: ${config.emoji})`
-                    : '❌ Status reactions have been disabled!',
+                    ? `💫 Status reactions enabled! Current emoji: ${config.emoji}`
+                    : '❌ Status reactions disabled!',
                 ...channelInfo
             });
+
         } else if (command === 'emoji') {
             if (!args[1]) {
                 await sock.sendMessage(chatId, { 
-                    text: 'Please provide an emoji!\nExample: .autostatus emoji 😂',
+                    text: 'Please provide an emoji!\nExample: `.autostatus emoji 😂`',
                     ...channelInfo
                 });
                 return;
             }
             config.emoji = args[1];
-            fs.writeFileSync(configPath, JSON.stringify(config));
+            saveConfig(config);
             await sock.sendMessage(chatId, { 
                 text: `✅ Status reaction emoji updated to: ${config.emoji}`,
                 ...channelInfo
             });
+
         } else {
             await sock.sendMessage(chatId, { 
-                text: '❌ Invalid command! Use:\n.autostatus on/off\n.autostatus react on/off\n.autostatus emoji ❤️',
+                text: '❌ Invalid command!\nUse:\n.autostatus on/off\n.autostatus react on/off\n.autostatus emoji ❤️',
                 ...channelInfo
             });
         }
@@ -111,11 +136,7 @@ async function autoStatusCommand(sock, chatId, msg, args) {
 }
 
 function getConfig() {
-    try {
-        return JSON.parse(fs.readFileSync(configPath));
-    } catch (e) {
-        return { enabled: false, reactOn: false, emoji: "💚" };
-    }
+    return initConfig();
 }
 
 function isAutoStatusEnabled() {
@@ -131,7 +152,6 @@ async function reactToStatus(sock, statusKey) {
         const config = getConfig();
         if (!config.reactOn) return;
 
-        // random delay 1-3s to avoid spamming
         const delay = Math.floor(Math.random() * 2000) + 1000;
         await new Promise(resolve => setTimeout(resolve, delay));
 
@@ -150,24 +170,24 @@ async function handleStatusUpdate(sock, status) {
     try {
         if (!isAutoStatusEnabled()) return;
 
-        await new Promise(resolve => setTimeout(resolve, 1000)); // small delay before reading
+        await new Promise(resolve => setTimeout(resolve, 1000)); // delay before marking as read
 
-        if (status.messages && status.messages.length > 0) {
+        if (status.messages?.length) {
             const msg = status.messages[0];
-            if (msg.key && msg.key.remoteJid === 'status@broadcast') {
+            if (msg.key?.remoteJid === 'status@broadcast') {
                 await sock.readMessages([msg.key]);
                 await reactToStatus(sock, msg.key);
-                return;
             }
+            return;
         }
 
-        if (status.key && status.key.remoteJid === 'status@broadcast') {
+        if (status.key?.remoteJid === 'status@broadcast') {
             await sock.readMessages([status.key]);
             await reactToStatus(sock, status.key);
             return;
         }
 
-        if (status.reaction && status.reaction.key.remoteJid === 'status@broadcast') {
+        if (status.reaction?.key?.remoteJid === 'status@broadcast') {
             await sock.readMessages([status.reaction.key]);
             await reactToStatus(sock, status.reaction.key);
             return;
