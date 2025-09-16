@@ -10,10 +10,11 @@ global.developer = "254104260236"
 global.bot = ""
 global.ownername    = 'GIFTED DAVE'
 global.devname = "Dave"
+botOwner: 'dave', // Your name
 global.ownername = process.env.OWNER_NAME ||'Dave'
 global.botname = "𝐃𝐀𝐕𝐄-𝐌𝐃"
-global.versisc = "2"
-global.packname = "reply-md"
+global.versisc = "1.2.4"
+global.packname = "dave-md"
 //~~~~~~~~~~~ Settings Sosmed ~~~~~~~~~~~//
 global.linkwa = "https://wa.me/254104260236"
 global.linkyt = "https://www.youtube.com/Davke"
