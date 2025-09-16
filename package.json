@@ -22,6 +22,7 @@
     "api-dylux": "^1.8.5",
     "aptoide-scraper": "^1.0.1",
     "awesome-phonenumber": "^5.9.0",
+    "axios": "^1.8.4",
     "badadvice": "^1.0.0",
     "chalk": "^4.1.2",
     "chatgpt-scraper": "^1.0.1",
