@@ -23,8 +23,8 @@ async function autoreadCommand(sock, chatId, message) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '@newsletter',
-                        newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
+                        newsletterJid: '120363161513685998@newsletter',
+                        newsletterName: 'KnightBot MD',
                         serverMessageId: -1
                     }
                 }
@@ -54,8 +54,8 @@ async function autoreadCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '@newsletter',
-                            newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
+                            newsletterJid: '120363161513685998@newsletter',
+                            newsletterName: 'KnightBot MD',
                             serverMessageId: -1
                         }
                     }
@@ -77,8 +77,8 @@ async function autoreadCommand(sock, chatId, message) {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '@newsletter',
-                    newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
+                    newsletterJid: '120363161513685998@newsletter',
+                    newsletterName: 'KnightBot MD',
                     serverMessageId: -1
                 }
             }
