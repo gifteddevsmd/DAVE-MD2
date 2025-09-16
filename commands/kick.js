@@ -42,7 +42,7 @@ async function kickCommand(sock, chatId, senderId, mentionedJids, message) {
     // Check if any of the users to kick is the bot itself
     if (usersToKick.includes(botId)) {
         await sock.sendMessage(chatId, { 
-            text: "I can't kick myself! 🤖"
+            text: "I can't kick myself! 🙃"
         }, { quoted: message });
         return;
     }
