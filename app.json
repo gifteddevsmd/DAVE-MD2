@@ -20,11 +20,6 @@
       "value": "true",
       "required": false
     },
-    "AUTO_READ": {
-      "description": "Type true if you want bot to read incoming messages else false",
-      "value": "false",
-      "required": false
-    },
     "SESSION_ID": {
       "description": "Put your session ID here(should start with dave~)",
       "value": "",
