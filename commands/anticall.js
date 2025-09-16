@@ -1,5 +1,4 @@
 const fs = require('fs');
-
 const ANTICALL_PATH = './data/anticall.json';
 
 function readState() {
@@ -24,21 +23,28 @@ async function anticallCommand(sock, chatId, message, args) {
     const state = readState();
     const sub = (args || '').trim().toLowerCase();
 
-    if (!sub || (sub !== 'on' && sub !== 'off' && sub !== 'status')) {
-        await sock.sendMessage(chatId, { text: '*ANTICALL*\n\n.anticall on  - Enable auto-block on incoming calls\n.anticall off - Disable anticall\n.anticall status - Show current status' }, { quoted: message });
+    if (!sub || !['on', 'off', 'status'].includes(sub)) {
+        await sock.sendMessage(chatId, { 
+            text: `*📵 ANTICALL COMMANDS*\n\n` +
+                  `• .anticall on – Enable auto-block on incoming calls\n` +
+                  `• .anticall off – Disable anticall\n` +
+                  `• .anticall status – Show current status`
+        }, { quoted: message });
         return;
     }
 
     if (sub === 'status') {
-        await sock.sendMessage(chatId, { text: `Anticall is currently *${state.enabled ? 'ON' : 'OFF'}*.` }, { quoted: message });
+        await sock.sendMessage(chatId, { 
+            text: `📌 Anticall is currently *${state.enabled ? 'ON ✅' : 'OFF ❌'}*.` 
+        }, { quoted: message });
         return;
     }
 
     const enable = sub === 'on';
     writeState(enable);
-    await sock.sendMessage(chatId, { text: `Anticall is now *${enable ? 'ENABLED' : 'DISABLED'}*.` }, { quoted: message });
+    await sock.sendMessage(chatId, { 
+        text: `✅ Anticall has been *${enable ? 'ENABLED' : 'DISABLED'}*.` 
+    }, { quoted: message });
 }
 
 module.exports = { anticallCommand, readState };
-
-
