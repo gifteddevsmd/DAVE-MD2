@@ -113,8 +113,8 @@ const settingsCommand = require('./commands/settings');
 // Global settings
 global.packname = settings.packname;
 global.author = settings.author;
-global.channelLink = "https://whatsapp.com/channel/0029Va90zAnIHphOuO8Msp3A";
-global.ytch = "Mr Unique Hacker";
+global.channelLink = "https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k";
+global.ytch = "Dave";
 
 // Add this near the top of main.js with other global configurations
 const channelInfo = {
@@ -122,8 +122,8 @@ const channelInfo = {
         forwardingScore: 1,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363161513685998@newsletter',
-            newsletterName: 'KnightBot MD',
+            newsletterJid: '120363400480173280@newsletter',
+            newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
             serverMessageId: -1
         }
     }
