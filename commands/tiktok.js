@@ -60,10 +60,10 @@ async function tiktokCommand(sock, chatId, message) {
         try {
             // Try multiple APIs in sequence
             const apis = [
-                `https://api.princetechn.com/api/download/tiktok?apikey=prince&url=${encodeURIComponent(url)}`,
-                `https://api.princetechn.com/api/download/tiktokdlv2?apikey=prince&url=${encodeURIComponent(url)}`,
-                `https://api.princetechn.com/api/download/tiktokdlv3?apikey=prince&url=${encodeURIComponent(url)}`,
-                `https://api.princetechn.com/api/download/tiktokdlv4?apikey=prince&url=${encodeURIComponent(url)}`,
+                `https://api.princetechn.com/api/download/tiktok?apikey=prince_tech_api_azfsbshfb&url=${encodeURIComponent(url)}`,
+                `https://api.princetechn.com/api/download/tiktokdlv2?apikey=prince_tech_api_azfsbshfb&url=${encodeURIComponent(url)}`,
+                `https://api.princetechn.com/api/download/tiktokdlv3?apikey=prince_tech_api_azfsbshfb&url=${encodeURIComponent(url)}`,
+                `https://api.princetechn.com/api/download/tiktokdlv4?apikey=prince_tech_api_azfsbshfb&url=${encodeURIComponent(url)}`,
                 `https://api.dreaded.site/api/tiktok?url=${encodeURIComponent(url)}`
             ];
 
@@ -146,7 +146,7 @@ async function tiktokCommand(sock, chatId, message) {
                     
                     const videoBuffer = Buffer.from(videoResponse.data);
                     
-                    const caption = title ? `𝙳𝙰𝚅𝙴-𝙼𝙳 is on fire🔥\n\n📝 Title: ${title}` : "𝙳𝙰𝚅𝙴-𝙼𝙳 is on fire🔥";
+                    const caption = title ? `𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗬 𝗞𝗡𝗜𝗚𝗛𝗧-𝗕𝗢𝗧\n\n📝 Title: ${title}` : "𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗬 𝗞𝗡𝗜𝗚𝗛𝗧-𝗕𝗢𝗧";
                     
                     await sock.sendMessage(chatId, {
                         video: videoBuffer,
@@ -181,7 +181,7 @@ async function tiktokCommand(sock, chatId, message) {
                     console.error(`Failed to download video: ${downloadError.message}`);
                     // Fallback to URL method
                     try {
-                        const caption = title ? `𝙳𝙰𝚅𝙴-𝙼𝙳 is on fire 🔥\n\n📝 Title: ${title}` : "𝙳𝙰𝚅𝙴-𝙼𝙳 is on fire 🔥";
+                        const caption = title ? `𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗬 𝗞𝗡𝗜𝗚𝗛𝗧-𝗕𝗢𝗧\n\n📝 Title: ${title}` : "𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗬 𝗞𝗡𝗜𝗚𝗛𝗧-𝗕𝗢𝗧";
                         
                         await sock.sendMessage(chatId, {
                             video: { url: videoUrl },
