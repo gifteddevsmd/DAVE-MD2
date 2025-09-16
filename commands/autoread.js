@@ -18,7 +18,7 @@ async function autoreadCommand(sock, chatId, message) {
         // Check if sender is the owner (bot itself)
         if (!message.key.fromMe) {
             await sock.sendMessage(chatId, {
-                text: '❌ This command is only available for the owner!',
+                text: 'This command is only available for the owner!',
                 contextInfo: {
                     forwardingScore: 1,
                     isForwarded: true,
@@ -54,8 +54,8 @@ async function autoreadCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: '@newsletter',
+                            newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
                             serverMessageId: -1
                         }
                     }
@@ -72,13 +72,13 @@ async function autoreadCommand(sock, chatId, message) {
         
         // Send confirmation message
         await sock.sendMessage(chatId, {
-            text: `✅ Auto-read has been ${config.enabled ? 'enabled' : 'disabled'}!`,
+            text: `Auto-read has been ${config.enabled ? 'enabled' : 'disabled'}!`,
             contextInfo: {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: '@newsletter',
+                    newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
                     serverMessageId: -1
                 }
             }
