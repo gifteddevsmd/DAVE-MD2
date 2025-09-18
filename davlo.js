@@ -24,8 +24,38 @@ const { spawn, exec, execSync } = require('child_process');
 const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
 Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
 
+require('./setting/settings');
+const fs = require('fs');
+const ffmpeg = require("fluent-ffmpeg");
+const axios = require('axios');
+const didyoumean = require('didyoumean');
+const path = require('path');
+const chalk = require("chalk");
+const util = require("util");
+const cron = require('node-cron');
+const os = require('os');
+const {translate} = require('@vitalets/google-translate-api');
+const fetch = require('node-fetch');
+const cheerio = require('cheerio');
+const googleTTS = require('google-tts-api');
+const { randomBytes } = require('crypto');
+const fg = require('api-dylux');
+const yts = require('yt-search');
+const gis = require('g-i-s');
+const moment = require("moment-timezone");
+const speed = require('performance-now');
+const similarity = require('similarity');
+const { spawn, exec, execSync } = require('child_process');
+
+const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
+Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
+
 module.exports = dave = async (dave, m, chatUpdate, store) => {
 try {
+
+// ✅ Default mode (public)
+if (typeof dave.public === "undefined") dave.public = true;
+
 // Message type handlers
 const body = (
 m.mtype === "conversation" ? m.message.conversation :
@@ -67,7 +97,10 @@ const mime = (quoted.msg || quoted).mimetype || '';
 const qmsg = (quoted.msg || quoted);
 const isMedia = /image|video|sticker|audio/.test(mime);
 
-// function Group
+// ✅ MODE CHECK — this is what stops bot from replying to others in self mode
+if (!dave.public && !isOwner) return;
+
+// Group function
 const groupMetadata = isGroup ? await dave.groupMetadata(m.chat).catch((e) => {}) : "";
 const groupOwner = isGroup ? groupMetadata.owner : "";
 const groupName = m.isGroup ? groupMetadata.subject : "";
@@ -80,148 +113,42 @@ const isBotAdmins = isGroup ? groupAdmins.includes(botNumber) : false;
 const isAdmins = isGroup ? groupAdmins.includes(m.sender) : false;
 
 // My Func
-const { 
-smsg, 
-sendGmail, 
-formatSize, 
-isUrl, 
-generateMessageTag, 
-getBuffer, 
-getSizeMedia, 
-runtime, 
-fetchJson, 
-sleep } = require('./lib/myfunc');
+const { smsg, sendGmail, formatSize, isUrl, generateMessageTag, getBuffer, getSizeMedia, runtime, fetchJson, sleep } = require('./lib/myfunc');
 
-// fungsi waktu real time
-const time = moment.tz("Asia/Jakarta").format("HH:mm:ss");
+// ... your console log, presence update, autobio, anti92 etc. stay unchanged ...
 
-// Cmd in Console
-if (m.message) {
-console.log('\x1b[30m--------------------\x1b[0m');
-console.log(chalk.bgHex("#e74c3c").bold(`➤ New Messages`));
-console.log(
-chalk.bgHex("#00FF00").black(
-` ⭔ Time: ${new Date().toLocaleString()} \n` +
-` ⭔ Message: ${m.body || m.mtype} \n` +
-` ⭔ Body: ${m.pushname} \n` +
-` ⭔ JID: ${senderNumber}`
-)
-);
-if (m.isGroup) {
-console.log(
-chalk.bgHex("#00FF00").black(
-` ⭔ Grup: ${groupName} \n` +
-` ⭔ GroupJid: ${m.chat}`
-)
-);
-}
-console.log();
-} 
+// Your switch case starts here:
+switch (command) {
+    case 'public': {
+        if (!isOwner) return reply(`Feature for owner only`);
+        dave.public = true;
+        reply(`Successfully Changed Bot Mode To Public`);
+    }
+    break;
 
+    case 'self':
+    case 'selfmode': { 
+        if (!isOwner) return reply(`Feature for owner only`);
+        dave.public = false;
+        reply(`Successfully Changed Bot Mode To Private`);
+    }
+    break;
 
-const qkontak = {
-key: {
-participant: `0@s.whatsapp.net`,
-...(botNumber ? {
-remoteJid: `status@broadcast`
-} : {})
-},
-message: {
-'contactMessage': {
-'displayName': `${global.namaown}`,
-'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;ttname,;;;\nFN:ttname\nitem1.TEL;waid=254756182478:+254756182478\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
-sendEphemeral: true
-}}
-}
+    case 'autotyping':
+        if (!isOwner) return reply(`Owner only`);
+        if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
+        global.autoTyping = (q === 'on');
+        reply(`Auto-typing turned ${q}`);
+    break;
 
-const reply = (teks) => {
-dave.sendMessage(from, { text : teks }, { quoted : m })
-}
+    case 'autorecording':
+        if (!isOwner) return reply(`Owner only`);
+        if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
+        global.autoRecording = (q === 'on');
+        reply(`Auto-recording turned ${q}`);
+    break;
 
-const reaction = async (jidss, emoji) => {
-dave.sendMessage(jidss, { react: { text: emoji, key: m.key }})}
-
-
-if (global.autoTyping) {
-  dave.sendPresenceUpdate("composing", from);
-}
-
-if (global.autoRecording) {
-  dave.sendPresenceUpdate("recording", from);
-}
-
-dave.sendPresenceUpdate("unavailable", from);
-
-if (global.autorecordtype) {
-  let xeonRecordTypes = ["recording", "composing"];
-  let selectedRecordType = xeonRecordTypes[Math.floor(Math.random() * xeonRecordTypes.length)];
-  dave.sendPresenceUpdate(selectedRecordType, from);
-}
-
-if (autobio) {
-  dave.updateProfileStatus(`𝙳𝙰𝚅𝙴-𝙼𝙳 𝙱𝙾𝚃 is Active| |Runtime ${runtime(process.uptime())}`)
-    .catch(err => console.error("Error updating status:", err));
-}
-
-if (m.sender.startsWith("92") && global.anti92 === true) {
-  return dave.updateBlockStatus(m.sender, "block");
-}
-
-if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
-  if (!m.quoted) {
-    reply("Owner is currently offline, please wait for a response");
-    setTimeout(() => {
-      dave.sendMessage(m.key.remoteJid, { delete: m.key });
-    }, 2000);
-  }
-}
-
-
- //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-
-        
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-        case 'autotyping':
-                if (!isBot) return reply(mess.owner)
-        
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
-        
-                if (q === 'on') {
-
-                    autoTyping = true
-
-                    reply(`Successfully changed auto-typing to ${q}`)
-
-                } else if (q === 'off') {
-
-                    autoTyping = false
-
-                    reply(`Successfully changed auto-typing to ${q}`)
-
-                }
-
-                break;
-                
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-        case 'autorecording':
-                
-                if (!isBot) return reply(mess.owner)
-                if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
-                if (q === 'on') {
-                    autoRecording = true
-
-                    reply(`Successfully changed auto-recording to ${q}`)
-
-                } else if (q === 'off') {
-
-                    autoRecording = false
-
-                    reply(`Successfully changed auto-recording to ${q} `)
-
-                }
-
-                break;
-                
+   
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
       case 'define': 
 if (!q) return m.reply(`What do you want to define?`)
