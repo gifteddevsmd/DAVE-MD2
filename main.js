@@ -122,7 +122,7 @@ const channelInfo = {
         forwardingScore: 1,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363400480173280@newsletter',
+            newsletterJid: '@newsletter',
             newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
             serverMessageId: -1
         }
