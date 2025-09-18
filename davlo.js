@@ -24,6 +24,9 @@ const { spawn, exec, execSync } = require('child_process');
 const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
 Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
 
+// ✅ Always Online Variable
+let alwaysOnline = false;
+
 module.exports = dave = async (dave, m, chatUpdate, store) => {
 try {
 
@@ -115,39 +118,20 @@ if (m.message) {
   console.log();
 }
 
-const qkontak = {
-  key: {
-    participant: `0@s.whatsapp.net`,
-    ...(botNumber ? { remoteJid: `status@broadcast` } : {})
-  },
-  message: {
-    'contactMessage': {
-      'displayName': `${global.namaown}`,
-      'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;ttname,;;;\nFN:ttname\nitem1.TEL;waid=254756182478:+254756182478\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
-      sendEphemeral: true
-    }
-  }
-};
-
-const reply = (teks) => {
-  dave.sendMessage(from, { text: teks }, { quoted: m });
-};
-
-const reaction = async (jidss, emoji) => {
-  dave.sendMessage(jidss, { react: { text: emoji, key: m.key } });
-};
+const reply = (teks) => dave.sendMessage(from, { text: teks }, { quoted: m });
+const reaction = async (jidss, emoji) => dave.sendMessage(jidss, { react: { text: emoji, key: m.key } });
 
 // ================== AUTO FEATURES ==================
+if (alwaysOnline) {
+  await dave.sendPresenceUpdate("available", from);
+}
+
 if (global.autoTyping) {
   dave.sendPresenceUpdate("composing", from);
 }
 
 if (global.autoRecording) {
   dave.sendPresenceUpdate("recording", from);
-}
-
-if (global.alwaysOnline) {
-  await dave.sendPresenceUpdate("available", from);
 }
 
 dave.sendPresenceUpdate("unavailable", from);
@@ -170,9 +154,7 @@ if (m.sender.startsWith("92") && global.anti92 === true) {
 if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
   if (!m.quoted) {
     reply("Owner is currently offline, please wait for a response");
-    setTimeout(() => {
-      dave.sendMessage(m.key.remoteJid, { delete: m.key });
-    }, 2000);
+    setTimeout(() => dave.sendMessage(m.key.remoteJid, { delete: m.key }), 2000);
   }
 }
 
@@ -198,20 +180,14 @@ switch (command) {
     }
     break;
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-case 'alwaysonline': {
-    if (!isBot) return reply(mess.owner)
-    if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+    case 'alwaysonline': {
+        if (!isOwner) return reply(`Feature for owner only`);
+        if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
 
-    if (q === 'on') {
-        alwaysOnline = true
-        reply(`Successfully changed Always Online mode to ${q}`)
-    } else if (q === 'off') {
-        alwaysOnline = false
-        reply(`Successfully changed Always Online mode to ${q}`)
+        alwaysOnline = (q === 'on');
+        reply(`Always Online mode turned ${q}`);
     }
-}
-break;
+    break;
 
     case 'autotyping':
         if (!isOwner) return reply(`Owner only`);
@@ -226,8 +202,7 @@ break;
         global.autoRecording = (q === 'on');
         reply(`Auto-recording turned ${q}`);
     break;
-
-   
+ 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
       case 'define': 
 if (!q) return m.reply(`What do you want to define?`)
