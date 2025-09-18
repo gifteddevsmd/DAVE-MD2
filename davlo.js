@@ -115,7 +115,87 @@ const isAdmins = isGroup ? groupAdmins.includes(m.sender) : false;
 // My Func
 const { smsg, sendGmail, formatSize, isUrl, generateMessageTag, getBuffer, getSizeMedia, runtime, fetchJson, sleep } = require('./lib/myfunc');
 
-// ... your console log, presence update, autobio, anti92 etc. stay unchanged ...
+const time = moment.tz("Africa/Nairobi").format("HH:mm:ss");
+
+// Cmd in Console
+if (m.message) {
+  console.log('\x1b[30m--------------------\x1b[0m');
+  console.log(chalk.bgHex("#e74c3c").bold(`➤ New Messages`));
+  console.log(
+    chalk.bgHex("#00FF00").black(
+      ` ⭔ Time: ${moment.tz("Africa/Nairobi").format("YYYY-MM-DD HH:mm:ss")} \n` +
+      ` ⭔ Message: ${m.body || m.mtype} \n` +
+      ` ⭔ Sender: ${m.pushname} \n` +
+      ` ⭔ JID: ${senderNumber}`
+    )
+  );
+  if (m.isGroup) {
+    console.log(
+      chalk.bgHex("#00FF00").black(
+        ` ⭔ Group: ${groupName} \n` +
+        ` ⭔ GroupJid: ${m.chat}`
+      )
+    );
+  }
+  console.log();
+}
+
+const qkontak = {
+  key: {
+    participant: `0@s.whatsapp.net`,
+    ...(botNumber ? { remoteJid: `status@broadcast` } : {})
+  },
+  message: {
+    'contactMessage': {
+      'displayName': `${global.namaown}`,
+      'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;ttname,;;;\nFN:ttname\nitem1.TEL;waid=254756182478:+254756182478\nitem1.X-ABLabel:Ponsel\nEND:VCARD`,
+      sendEphemeral: true
+    }
+  }
+};
+
+const reply = (teks) => {
+  dave.sendMessage(from, { text: teks }, { quoted: m });
+};
+
+const reaction = async (jidss, emoji) => {
+  dave.sendMessage(jidss, { react: { text: emoji, key: m.key } });
+};
+
+// ================== AUTO FEATURES ==================
+if (global.autoTyping) {
+  dave.sendPresenceUpdate("composing", from);
+}
+
+if (global.autoRecording) {
+  dave.sendPresenceUpdate("recording", from);
+}
+
+dave.sendPresenceUpdate("unavailable", from);
+
+if (global.autorecordtype) {
+  let xeonRecordTypes = ["recording", "composing"];
+  let selectedRecordType = xeonRecordTypes[Math.floor(Math.random() * xeonRecordTypes.length)];
+  dave.sendPresenceUpdate(selectedRecordType, from);
+}
+
+if (autobio) {
+  dave.updateProfileStatus(`𝙳𝙰𝚅𝙴-𝙼𝙳 𝙱𝙾𝚃 is Active | Runtime ${runtime(process.uptime())}`)
+    .catch(err => console.error("Error updating status:", err));
+}
+
+if (m.sender.startsWith("92") && global.anti92 === true) {
+  return dave.updateBlockStatus(m.sender, "block");
+}
+
+if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
+  if (!m.quoted) {
+    reply("Owner is currently offline, please wait for a response");
+    setTimeout(() => {
+      dave.sendMessage(m.key.remoteJid, { delete: m.key });
+    }, 2000);
+  }
+}
 
 // Your switch case starts here:
 switch (command) {
