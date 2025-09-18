@@ -238,7 +238,7 @@ async function startdave() {
     // Anticall handler: block callers when enabled
     dave.ev.on('call', async (calls) => { // Fixed: Changed XeonBotInc to dave
         try {
-            const { readState: readAnticallState } = require('./commands/anticall');
+            const { readState: readAnticallState } = require('./daveplugins/anticall');
             const state = readAnticallState();
             if (!state.enabled) return;
             
