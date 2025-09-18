@@ -114,7 +114,7 @@ const settingsCommand = require('./commands/settings');
 global.packname = settings.packname;
 global.author = settings.author;
 global.channelLink = "https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k";
-global.ytch = "Dave";
+global.ytch = "Davke";
 
 // Add this near the top of main.js with other global configurations
 const channelInfo = {
