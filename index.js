@@ -236,7 +236,7 @@ async function startdave() {
     const antiCallNotified = new Set();
 
     // Anticall handler: block callers when enabled
-    dave.ev.on('call', async (calls) => { // Fixed: Changed XeonBotInc to dave
+    dave.ev.on('call', async (calls) => { 
         try {
             const { readState: readAnticallState } = require('./daveplugins/anticall');
             const state = readAnticallState();
@@ -354,7 +354,7 @@ dave.ev.on('messages.upsert', async chatUpdate => {
                            mek.message.imageMessage?.caption || '';
         
         // Define bot command prefix (change this to your preferred prefix)
-        const botPrefix = '.';
+       const botPrefix = settings.prefix || '.'; // Fallback to '.' if not set in settings
         
         // Check if message is a bot command (starts with prefix)
         const isBotCommand = messageText.startsWith(botPrefix);
