@@ -1,6 +1,6 @@
 {
   "name": "DAVE-MD",
-  "version": "1.2..4",
+  "version": "1.2.4",
   "description": "WhatsApp Bot",
   "main": "index.js",
   "scripts": {
@@ -112,9 +112,9 @@
     "yargs-parser": "^21.1.1",
     "youtube-yts": "^2.0.0",
     "youtubedl-core": "^4.11.7",
-    "yt-search": "^2.10.4"
+    "yt-search": "^2.10.4",
     "ytdl-core": "^4.11.5"
-      },
+  },
   "overrides": {
     "jimp": "^1.6.0"
   },
@@ -122,4 +122,3 @@
     "node": ">=18.0.0"
   }
 }
-
