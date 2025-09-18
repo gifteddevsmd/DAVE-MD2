@@ -115,9 +115,6 @@
     "yt-search": "^2.10.4",
     "ytdl-core": "^4.11.5"
   },
-  "overrides": {
-    "jimp": "^1.6.0"
-  },
   "engines": {
     "node": ">=18.0.0"
   }
