@@ -334,13 +334,40 @@ dave.ev.on('messages.upsert', async chatUpdate => {
     try {
         const mek = chatUpdate.messages[0]
         if (!mek.message) return
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+        
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? 
+            mek.message.ephemeralMessage.message : mek.message
+        
+        // Handle status broadcasts first
         if (mek.key && mek.key.remoteJid === 'status@broadcast') {
             await handleStatus(dave, chatUpdate);
             return;
         }
+        
+        // Ignore messages that aren't meant for the bot
         if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
+        
+        // Extract message text to check if it's a command
+        const messageText = mek.message.conversation || 
+                           mek.message.extendedTextMessage?.text || 
+                           mek.message.imageMessage?.caption || '';
+        
+        // Define bot command prefix (change this to your preferred prefix)
+        const botPrefix = '.';
+        
+        // Check if message is a bot command (starts with prefix)
+        const isBotCommand = messageText.startsWith(botPrefix);
+        
+        // Also check for mentions of the bot
+        const botNumber = dave.user.id.split(':')[0];
+        const botMention = `@${botNumber}`;
+        const isBotMentioned = messageText.includes(botMention);
+        
+        // Ignore messages that are not commands or mentions
+        if (!isBotCommand && !isBotMentioned && !mek.key.fromMe) {
+            return;
+        }
 
         // Clear message retry cache to prevent memory bloat
         if (dave?.msgRetryCounterCache) {
@@ -351,10 +378,18 @@ dave.ev.on('messages.upsert', async chatUpdate => {
             await handleMessages(dave, chatUpdate, true)
         } catch (err) {
             console.error("Error in handleMessages:", err)
-            // Only try to send error message if we have a valid chatId
-            if (mek.key && mek.key.remoteJid) {
+            
+            // Only send error messages for command-related errors
+            const isCommandError = err.message && (
+                err.message.includes('command') || 
+                err.message.includes('invalid') ||
+                err.message.includes('not found') ||
+                err.message.includes('prefix')
+            );
+            
+            if (isCommandError && isBotCommand && mek.key && mek.key.remoteJid) {
                 await dave.sendMessage(mek.key.remoteJid, {
-                    text: '❌ An error occurred while processing your message.',
+                    text: '❌ Command error: ' + err.message,
                     contextInfo: {
                         forwardingScore: 1,
                         isForwarded: true,
@@ -369,9 +404,9 @@ dave.ev.on('messages.upsert', async chatUpdate => {
         }
     } catch (err) {
         console.error("Error in messages.upsert:", err)
+        // Don't send any messages to users for general processing errors
     }
 })
-
     dave.decodeJid = (jid) => {
         if (!jid) return jid;
         if (/:\d+@/gi.test(jid)) {
