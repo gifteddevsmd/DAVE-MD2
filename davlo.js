@@ -204,25 +204,29 @@ switch (command) {
     break;
  
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-      case 'define': 
-if (!q) return m.reply(`What do you want to define?`)
-try {
-targetfine = await axios.get(`http://api.urbandictionary.com/v0/define?term=${q}`)
-if (!targetfine) return reply(mess.error)
-const reply = `
+      case 'define': {
+    if (!q) return m.reply(`What do you want to define?`);
+    try {
+        // Make sure we are inside an async function
+        let targetfine = await axios.get(`http://api.urbandictionary.com/v0/define?term=${q}`);
+        if (!targetfine?.data?.list?.length) return m.reply(`No definition found for "${q}"`);
+
+        const replyText = `
 *${themeemoji} Word:* ${q}
 *${themeemoji} Definition:* ${targetfine.data.list[0].definition
     .replace(/\[/g, "")
     .replace(/\]/g, "")}
 *${themeemoji} Example:* ${targetfine.data.list[0].example
     .replace(/\[/g, "")
-    .replace(/\]/g, "")}`
-   dave.sendMessage(m.chat,{text:reply},{quoted:m})
-} catch (err) {
-    console.log(err)
-    return m.reply(`*${q}* isn't a valid text`)
+    .replace(/\]/g, "")}`;
+
+        dave.sendMessage(m.chat, { text: replyText }, { quoted: m });
+    } catch (err) {
+        console.error(err);
+        return m.reply(`*${q}* isn't a valid text`);
     }
-    break    
+}
+break;
 
  //======================================================\\ 
 
