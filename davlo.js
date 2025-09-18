@@ -24,32 +24,6 @@ const { spawn, exec, execSync } = require('child_process');
 const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
 Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
 
-require('./setting/settings');
-const fs = require('fs');
-const ffmpeg = require("fluent-ffmpeg");
-const axios = require('axios');
-const didyoumean = require('didyoumean');
-const path = require('path');
-const chalk = require("chalk");
-const util = require("util");
-const cron = require('node-cron');
-const os = require('os');
-const {translate} = require('@vitalets/google-translate-api');
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-const googleTTS = require('google-tts-api');
-const { randomBytes } = require('crypto');
-const fg = require('api-dylux');
-const yts = require('yt-search');
-const gis = require('g-i-s');
-const moment = require("moment-timezone");
-const speed = require('performance-now');
-const similarity = require('similarity');
-const { spawn, exec, execSync } = require('child_process');
-
-const { downloadContentFromMessage, proto, generateWAMessage, getContentType, prepareWAMessageMedia, generateWAMessageFromContent, GroupSettingChange, jidDecode, WAGroupMetadata, emitGroupParticipantsUpdate, emitGroupUpdate, generateMessageID, jidNormalizedUser, generateForwardMessageContent, WAGroupInviteMessageGroupMetadata, GroupMetadata, Headers, delay, WA_DEFAULT_EPHEMERAL, WADefault, getAggregateVotesInPollMessage, generateWAMessageContent, areJidsSameUser, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, makeWaconnet, makeInMemoryStore, MediaType, WAMessageStatus, downloadAndSaveMediaMessage, AuthenticationState, initInMemoryKeyStore, MiscMessageGenerationOptions, useSingleFileAuthState, BufferJSON, WAMessageProto, MessageOptions, WAFlag, WANode, WAMetric, ChatModification, MessageTypeProto, WALocationMessage, ReconnectMode, WAContextInfo, ProxyAgent, waChatKey, MimetypeMap, MediaPathMap, WAContactMessage, WAContactsArrayMessage, WATextMessage, WAMessageContent, WAMessage, BaileysError, WA_MESSAGE_STATUS_TYPE, MediaConnInfo, URL_REGEX, WAUrlInfo, WAMediaUpload, mentionedJid, processTime, Browser, MessageType,
-Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectReason, WAconnet, getStream, WAProto, isBaileys, AnyMessageContent, templateMessage, InteractiveMessage, Header } = require("@whiskeysockets/baileys");
-
 module.exports = dave = async (dave, m, chatUpdate, store) => {
 try {
 
@@ -97,7 +71,7 @@ const mime = (quoted.msg || quoted).mimetype || '';
 const qmsg = (quoted.msg || quoted);
 const isMedia = /image|video|sticker|audio/.test(mime);
 
-// ✅ MODE CHECK — this is what stops bot from replying to others in self mode
+// ✅ MODE CHECK — stop replying to non-owners in self mode
 if (!dave.public && !isOwner) return;
 
 // Group function
@@ -115,6 +89,7 @@ const isAdmins = isGroup ? groupAdmins.includes(m.sender) : false;
 // My Func
 const { smsg, sendGmail, formatSize, isUrl, generateMessageTag, getBuffer, getSizeMedia, runtime, fetchJson, sleep } = require('./lib/myfunc');
 
+// 🕒 Use Nairobi Time
 const time = moment.tz("Africa/Nairobi").format("HH:mm:ss");
 
 // Cmd in Console
@@ -171,6 +146,10 @@ if (global.autoRecording) {
   dave.sendPresenceUpdate("recording", from);
 }
 
+if (global.alwaysOnline) {
+  await dave.sendPresenceUpdate("available", from);
+}
+
 dave.sendPresenceUpdate("unavailable", from);
 
 if (global.autorecordtype) {
@@ -197,6 +176,11 @@ if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.ow
   }
 }
 
+} catch (err) {
+  console.error(err);
+}
+}
+
 // Your switch case starts here:
 switch (command) {
     case 'public': {
@@ -213,6 +197,21 @@ switch (command) {
         reply(`Successfully Changed Bot Mode To Private`);
     }
     break;
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+case 'alwaysonline': {
+    if (!isBot) return reply(mess.owner)
+    if (args.length < 1) return reply(`Example ${prefix + command} on/off`)
+
+    if (q === 'on') {
+        alwaysOnline = true
+        reply(`Successfully changed Always Online mode to ${q}`)
+    } else if (q === 'off') {
+        alwaysOnline = false
+        reply(`Successfully changed Always Online mode to ${q}`)
+    }
+}
+break;
 
     case 'autotyping':
         if (!isOwner) return reply(`Owner only`);
