@@ -229,6 +229,18 @@ break;
 
  //======================================================\\ 
 
+case "subject": case "changesubject": { 
+    if (!m.isGroup) throw group; 
+    if (!isBotAdmin) throw botAdmin; 
+    if (!isAdmin) throw admin; 
+    if (!text) throw 'Provide the text for the group subject.'; 
+
+    await dave.groupUpdateSubject(m.chat, text); 
+   reply('Group name successfully updated!'); 
+} 
+break;
+
+
 case "invite": case "linkgroup": { 
                  if (!m.isGroup) return reply(mess.group); 
                 
