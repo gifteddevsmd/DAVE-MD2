@@ -116,8 +116,13 @@ if (m.message) {
   console.log();
 }
 
-const reply = (teks) => dave.sendMessage(from, { text: teks }, { quoted: m });
-const reaction = async (jidss, emoji) => dave.sendMessage(jidss, { react: { text: emoji, key: m.key } });
+const reply = (teks) => {
+dave.sendMessage(from, { text : teks }, { quoted : m })
+}
+
+const reaction = async (jidss, emoji) => {
+  dave.sendMessage(jidss, { react: { text: emoji, key: m.key }})
+}
 
 // ================== AUTO FEATURES ==================
 if (alwaysOnline) {
@@ -152,17 +157,13 @@ if (m.sender.startsWith("92") && global.anti92 === true) {
 if (m.message.extendedTextMessage?.contextInfo?.mentionedJid?.includes(global.owner + "@s.whatsapp.net")) {
   if (!m.quoted) {
     reply("Owner is currently offline, please wait for a response");
-    setTimeout(() => dave.sendMessage(m.key.remoteJid, { delete: m.key }), 2000);
+    setTimeout(() => {
+      dave.sendMessage(m.key.remoteJid, { delete: m.key });
+    }, 2000);
   }
 }
 
-} catch (err) {
-  console.error(err);
-}
-}
-
-// Your switch case starts here:
-switch (command) {
+switch (command) {      
     case 'public': {
         if (!isOwner) return reply(`Feature for owner only`);
         dave.public = true;
