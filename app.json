@@ -1,5 +1,5 @@
 {
-  "name": "June md",
+  "name": "dave md",
   "description": "A WhatsApp bot based on Baileysjs library (Ts+Js) with Multi Device support",
   "repository": "https://github.com/giftdee/DAVE-MD",
   "logo": "https://files.catbox.moe/u1hquf.jpg",
@@ -18,11 +18,6 @@
     "AUTO_STATUS": {
       "description": "Type true if you want bot to view status else false",
       "value": "true",
-      "required": false
-    },
-    "AUTO_READ": {
-      "description": "Type true if you want bot to read incoming messages else false",
-      "value": "false",
       "required": false
     },
     "SESSION_ID": {
