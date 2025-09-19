@@ -27,7 +27,8 @@
     "@hapi/boom": "^10.0.1",
     "@types/node": "^18.0.6",
     "@vitalets/google-translate-api": "^9.2.0",
-    "@whiskeysockets/baileys": "npm:@vreden/meta@latest",
+    "@whiskeysockets/baileys":
+   "github:Tennor-modz/MD-Baileys",
     "axios": "^1.8.4",
     "acrcloud": "^1.4.0",
     "anime-wallpaper": "^1.0.2",
