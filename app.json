@@ -5,7 +5,7 @@
   "logo": "https://files.catbox.moe/u1hquf.jpg",
   "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"],
   "env": {
-        "OWNER_NAME": {
+    "OWNER_NAME": {
       "description": "enter your owner name here",
       "value": "Dave",
       "required": true
