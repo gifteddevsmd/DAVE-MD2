@@ -833,7 +833,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
          //   case userMessage.startsWith('.autotyping'):
             //    await autotypingCommand(sock, chatId, message);
             //    commandExecuted = true;
-                break;
+             //   break;
             case userMessage.startsWith('.autoread'):
                 await autoreadCommand(sock, chatId, message);
                 commandExecuted = true;
