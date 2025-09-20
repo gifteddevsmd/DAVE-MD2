@@ -12,18 +12,16 @@ if (!fs.existsSync(TEMP_MEDIA_DIR)) {
     fs.mkdirSync(TEMP_MEDIA_DIR, { recursive: true });
 }
 
-// Load config
 function loadAntideleteConfig() {
     try {
         if (!fs.existsSync(CONFIG_PATH))
-            return { enabled: false, mode: 'private' }; // default private
+            return { enabled: false, mode: 'private' };
         return JSON.parse(fs.readFileSync(CONFIG_PATH));
     } catch {
         return { enabled: false, mode: 'private' };
     }
 }
 
-// Save config
 function saveAntideleteConfig(config) {
     try {
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
@@ -32,7 +30,6 @@ function saveAntideleteConfig(config) {
     }
 }
 
-// Command Handler
 async function handleAntideleteCommand(sock, chatId, message, match) {
     if (!message.key.fromMe) {
         return sock.sendMessage(chatId, { text: '*Only the bot owner can use this command.*' });
@@ -108,7 +105,7 @@ async function storeMessage(message) {
             mediaType,
             mediaPath,
             sender,
-            group: message.key.remoteJid.endsWith('@g.us') ? message.key.remoteJid : null,
+            chat: message.key.remoteJid,
             timestamp: new Date().toISOString()
         });
 
@@ -117,7 +114,6 @@ async function storeMessage(message) {
     }
 }
 
-// Handle message deletion
 async function handleMessageRevocation(sock, revocationMessage) {
     try {
         const config = loadAntideleteConfig();
@@ -125,43 +121,43 @@ async function handleMessageRevocation(sock, revocationMessage) {
 
         const messageId = revocationMessage.message.protocolMessage.key.id;
         const deletedBy = revocationMessage.participant || revocationMessage.key.participant || revocationMessage.key.remoteJid;
-        const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
 
-        if (deletedBy.includes(sock.user.id) || deletedBy === ownerNumber) return;
+        const botJid = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+        if (deletedBy === botJid) return; // Ignore if bot itself deleted
 
         const original = messageStore.get(messageId);
         if (!original) return;
 
+        // ✅ Ignore if you deleted your own message
+        if (deletedBy === original.sender && original.sender === botJid) return;
+
         const sender = original.sender;
         const senderName = sender.split('@')[0];
-        const groupName = original.group ? (await sock.groupMetadata(original.group)).subject : '';
+        const chat = original.chat;
 
         const time = new Date().toLocaleString('en-US', {
-            timeZone: 'Asia/Kolkata',
-            hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit',
+            timeZone: 'Africa/Nairobi',
+            hour12: true,
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
             day: '2-digit', month: '2-digit', year: 'numeric'
         });
 
         let text = `*🔰 ANTIDELETE REPORT 🔰*\n\n` +
             `*🗑️ Deleted By:* @${deletedBy.split('@')[0]}\n` +
             `*👤 Sender:* @${senderName}\n` +
-            `*📱 Number:* ${sender}\n` +
             `*🕒 Time:* ${time}\n`;
 
-        if (groupName) text += `*👥 Group:* ${groupName}\n`;
         if (original.content) text += `\n*💬 Deleted Message:*\n${original.content}`;
 
-        // Send either to owner (private mode) or chat (public mode)
-        const targetJid = config.mode === 'public'
-            ? (original.group || sender)
-            : ownerNumber;
+        // ✅ Determine where to send
+        const targetJid = config.mode === 'public' ? chat : botJid;
 
         await sock.sendMessage(targetJid, {
             text,
             mentions: [deletedBy, sender]
         });
 
-        // Media sending
+        // Send media if available
         if (original.mediaType && fs.existsSync(original.mediaPath)) {
             const mediaOptions = {
                 caption: `*Deleted ${original.mediaType}*\nFrom: @${senderName}`,
@@ -169,21 +165,14 @@ async function handleMessageRevocation(sock, revocationMessage) {
             };
 
             try {
-                switch (original.mediaType) {
-                    case 'image':
-                        await sock.sendMessage(targetJid, { image: { url: original.mediaPath }, ...mediaOptions });
-                        break;
-                    case 'sticker':
-                        await sock.sendMessage(targetJid, { sticker: { url: original.mediaPath }, ...mediaOptions });
-                        break;
-                    case 'video':
-                        await sock.sendMessage(targetJid, { video: { url: original.mediaPath }, ...mediaOptions });
-                        break;
-                }
+                if (original.mediaType === 'image')
+                    await sock.sendMessage(targetJid, { image: { url: original.mediaPath }, ...mediaOptions });
+                if (original.mediaType === 'sticker')
+                    await sock.sendMessage(targetJid, { sticker: { url: original.mediaPath }, ...mediaOptions });
+                if (original.mediaType === 'video')
+                    await sock.sendMessage(targetJid, { video: { url: original.mediaPath }, ...mediaOptions });
             } catch (err) {
-                await sock.sendMessage(targetJid, {
-                    text: `⚠️ Error sending media: ${err.message}`
-                });
+                console.error('Media send error:', err);
             }
 
             try { fs.unlinkSync(original.mediaPath); } catch {}
