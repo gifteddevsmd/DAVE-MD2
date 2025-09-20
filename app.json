@@ -5,10 +5,10 @@
   "logo": "https://files.catbox.moe/u1hquf.jpg",
   "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"],
   "env": {
-    "OWNER_NAME": {
-      "description": "Enter your owner name here",
-      "value": "dave",
-      "required": false
+        "OWNER_NAME": {
+      "description": "enter your owner name here",
+      "value": "Dave",
+      "required": true
     },
     "BOT_PREFIX": {
       "description": "Put your bot prefix of desire here",
