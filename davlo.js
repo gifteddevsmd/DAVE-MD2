@@ -27,6 +27,9 @@ Presence, WA_MESSAGE_STUB_TYPES, Mimetype, relayWAMessage, Browsers, DisconnectR
 module.exports = dave = async (dave, m, chatUpdate, store) => {
 try {
 
+// define fallback at the top of davlo.js
+let alwaysOnline = false; // default, change based on your toggle system
+
 // Message type handlers
 const body = (
 m.mtype === "conversation" ? m.message.conversation :
