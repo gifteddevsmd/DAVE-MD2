@@ -5,15 +5,15 @@ if (fs.existsSync('.env')) require('dotenv').config({ path: __dirname + '/.env' 
 global.SESSION_ID = process.env.SESSION_ID || '' 
 
 //~~~~~~~~~~~ Owner / Developer Settings ~~~~~~~~~~~//
-global.owner = process.env.OWNER_NUMBER || "254104260236"
-global.developer = process.env.DEV_NUMBER || "254104260236"
-
-global.ownername = process.env.OWNER_NAME || "GIFTED DAVE"
-global.devname = process.env.DEV_NAME || "GIFTED DAVE"
-
-global.botname = process.env.BOT_NAME || "𝐃𝐀𝐕𝐄-𝐌𝐃"
-global.versisc = process.env.BOT_VERSION || "1.2.4"
-global.packname = process.env.BOT_PACKNAME || "dave-md"
+global.owner = process.env.OWNER_NUMBER || '254104260236'
+global.developer = process.env.DEV_NUMBER || '254104260236'
+global.ownername = process.env.OWNER_NAME ||'dave'
+global.ownername = process.env.OWNER_NAME || 'GIFTED DAVE'
+global.devname = process.env.DEV_NAME || 'GIFTED DAVE'
+global.ownername    = 'GIFTED DAVE'
+global.botname = process.env.BOT_NAME || '𝐃𝐀𝐕𝐄-𝐌𝐃'
+global.versisc = process.env.BOT_VERSION || '1.2.4'
+global.packname = process.env.BOT_PACKNAME || 'dave-md'
 
 //~~~~~~~~~~~ Social Links ~~~~~~~~~~~//
 global.linkwa = process.env.LINK_WA || "https://wa.me/254104260236"
