@@ -74,7 +74,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/MADE%20BY-DAVE-blueviolet?style=for-the-badge&logo=github" style="border-radius: 50%;">
-  <img src="https://img.shields.io/badge/VERSION-1.0-green?style=for-the-badge&logo=npm" style="border-radius: 50%;">
+  <img src="https://img.shields.io/badge/VERSION-1.2.4-green?style=for-the-badge&logo=npm" style="border-radius: 50%;">
   <img src="https://img.shields.io/badge/BOT%20POWER-🔥%20100%25-red?style=for-the-badge" style="border-radius: 50%;">
 </p>
 
