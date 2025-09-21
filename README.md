@@ -73,7 +73,7 @@
 <p align="center">© 2025 Gifted Dave - DAVE-MD</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/MADE%20BY-KINGVON-blueviolet?style=for-the-badge&logo=github" style="border-radius: 50%;">
+  <img src="https://img.shields.io/badge/MADE%20BY-DAVE-blueviolet?style=for-the-badge&logo=github" style="border-radius: 50%;">
   <img src="https://img.shields.io/badge/VERSION-1.0-green?style=for-the-badge&logo=npm" style="border-radius: 50%;">
   <img src="https://img.shields.io/badge/BOT%20POWER-🔥%20100%25-red?style=for-the-badge" style="border-radius: 50%;">
 </p>
@@ -81,7 +81,7 @@
 <p align="center">
   <img 
     src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" 
-    alt="KINGVON MD Logo" 
+    alt="𝙳𝙰𝚅𝙴-𝙼𝙳 Logo" 
     width="230" 
     style="
       border-radius: 50%;
@@ -92,5 +92,5 @@
   <br><br>
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=FFD700&center=true&vCenter=true&random=false&width=435&lines=KINGVON+MD+%F0%9F%94%A5;WhatsApp+Bot+by+KINGVON+Power+is+%F0%9F%92%AF;Built+For+you+%F0%9F%94%AB" alt="Typing SVG" />
   <br>
-  <b><i>✨Welcome to KINGVON MD✨ 𝐌𝐎𝐎𝐃 𝐀𝐅𝐓𝐄𝐑 𝐃𝐄𝐏𝐋𝐎𝐘𝐈𝐍𝐆 𝐓𝐇𝐄 𝐁𝐎𝐓</i></b>
+  <b><i>✨Welcome to 𝙳𝙰𝚅𝙴-𝙼𝙳✨ 𝐌𝐎𝐎𝐃 𝐀𝐅𝐓𝐄𝐑 𝐃𝐄𝐏𝐋𝐎𝐘𝐈𝐍𝐆 𝐓𝐇𝐄 𝐁𝐎𝐓</i></b>
 </p>
