@@ -90,7 +90,7 @@
     "
   />
   <br><br>
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=FFD700&center=true&vCenter=true&random=false&width=435&lines=KINGVON+MD+%F0%9F%94%A5;WhatsApp+Bot+by+KINGVON+Power+is+%F0%9F%92%AF;Built+For+you+%F0%9F%94%AB" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=24&pause=1000&color=FFD700&center=true&vCenter=true&random=false&width=435&lines=DAVE+MD+%F0%9F%94%A5;WhatsApp+Bot+by+DAVE+Power+is+%F0%9F%92%AF;Built+For+you+%F0%9F%94%AB" alt="Typing SVG" />
   <br>
   <b><i>✨Welcome to 𝙳𝙰𝚅𝙴-𝙼𝙳✨ 𝐌𝐎𝐎𝐃 𝐀𝐅𝐓𝐄𝐑 𝐃𝐄𝐏𝐋𝐎𝐘𝐈𝐍𝐆 𝐓𝐇𝐄 𝐁𝐎𝐓</i></b>
 </p>
