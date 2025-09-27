@@ -89,6 +89,8 @@
     "path": "^0.12.7",
     "performance-now": "^2.1.0",
     "phin": "^3.7.1",
+    "pg-hstore": "^2.3.4",
+    "pg": "^8.11.3",
     "pino": "^8.21.0",
     "prompt-sync": "^4.2.0",
     "qrcode": "^1.5.4",
