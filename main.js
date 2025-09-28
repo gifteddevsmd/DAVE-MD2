@@ -892,7 +892,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage === '.jid': await groupJidCommand(sock, chatId, message);
                 break;
             //case userMessage.startsWith('.autotyping'):
-                await autotypingCommand(sock, chatId, message);
+             //   await autotypingCommand(sock, chatId, message);
                 //commandExecuted = true;
                // break;
             case userMessage.startsWith('.autoread'):
