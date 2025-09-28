@@ -38,7 +38,7 @@ const cleanTempFolderIfLarge = () => {
     try {
         const sizeMB = getFolderSizeInMB(TEMP_MEDIA_DIR);
 
-        if (sizeMB > 100) {
+        if (sizeMB > 200) {
             const files = fs.readdirSync(TEMP_MEDIA_DIR);
             for (const file of files) {
                 const filePath = path.join(TEMP_MEDIA_DIR, file);
@@ -98,8 +98,8 @@ async function handleAntideleteCommand(sock, chatId, message, match) {
     return sock.sendMessage(chatId, { text: `*Antidelete ${match === 'on' ? 'enabled' : 'disabled'}*` }, {quoted:message});
 }
 
-// Store incoming messages
-async function storeMessage(message) {
+// Store incoming messages (also handles anti-view-once by forwarding immediately)
+async function storeMessage(sock, message) {
     try {
         const config = loadAntideleteConfig();
         if (!config.enabled) return; // Don't store if antidelete is disabled
@@ -110,11 +110,30 @@ async function storeMessage(message) {
         let content = '';
         let mediaType = '';
         let mediaPath = '';
+        let isViewOnce = false;
 
         const sender = message.key.participant || message.key.remoteJid;
 
-        // Detect content
-        if (message.message?.conversation) {
+        // Detect content (including view-once wrappers)
+        const viewOnceContainer = message.message?.viewOnceMessageV2?.message || message.message?.viewOnceMessage?.message;
+        if (viewOnceContainer) {
+            // unwrap view-once content
+            if (viewOnceContainer.imageMessage) {
+                mediaType = 'image';
+                content = viewOnceContainer.imageMessage.caption || '';
+                const buffer = await downloadContentFromMessage(viewOnceContainer.imageMessage, 'image');
+                mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.jpg`);
+                await writeFile(mediaPath, buffer);
+                isViewOnce = true;
+            } else if (viewOnceContainer.videoMessage) {
+                mediaType = 'video';
+                content = viewOnceContainer.videoMessage.caption || '';
+                const buffer = await downloadContentFromMessage(viewOnceContainer.videoMessage, 'video');
+                mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.mp4`);
+                await writeFile(mediaPath, buffer);
+                isViewOnce = true;
+            }
+        } else if (message.message?.conversation) {
             content = message.message.conversation;
         } else if (message.message?.extendedTextMessage?.text) {
             content = message.message.extendedTextMessage.text;
@@ -135,6 +154,13 @@ async function storeMessage(message) {
             const buffer = await downloadContentFromMessage(message.message.videoMessage, 'video');
             mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.mp4`);
             await writeFile(mediaPath, buffer);
+        } else if (message.message?.audioMessage) {
+            mediaType = 'audio';
+            const mime = message.message.audioMessage.mimetype || '';
+            const ext = mime.includes('mpeg') ? 'mp3' : (mime.includes('ogg') ? 'ogg' : 'mp3');
+            const buffer = await downloadContentFromMessage(message.message.audioMessage, 'audio');
+            mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.${ext}`);
+            await writeFile(mediaPath, buffer);
         }
 
         messageStore.set(messageId, {
@@ -146,11 +172,32 @@ async function storeMessage(message) {
             timestamp: new Date().toISOString()
         });
 
+        // Anti-ViewOnce: forward immediately to owner if captured
+        if (isViewOnce && mediaType && fs.existsSync(mediaPath)) {
+            try {
+                const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+                const senderName = sender.split('@')[0];
+                const mediaOptions = {
+                    caption: `*Anti-ViewOnce ${mediaType}*
+From: @${senderName}`,
+                    mentions: [sender]
+                };
+                if (mediaType === 'image') {
+                    await sock.sendMessage(ownerNumber, { image: { url: mediaPath }, ...mediaOptions });
+                } else if (mediaType === 'video') {
+                    await sock.sendMessage(ownerNumber, { video: { url: mediaPath }, ...mediaOptions });
+                }
+                // Cleanup immediately for view-once forward
+                try { fs.unlinkSync(mediaPath); } catch {}
+            } catch (e) {
+                // ignore
+            }
+        }
+
     } catch (err) {
         console.error('storeMessage error:', err);
     }
 }
-
 // Handle message deletion
 async function handleMessageRevocation(sock, revocationMessage) {
     try {
@@ -159,28 +206,15 @@ async function handleMessageRevocation(sock, revocationMessage) {
 
         const messageId = revocationMessage.message.protocolMessage.key.id;
         const deletedBy = revocationMessage.participant || revocationMessage.key.participant || revocationMessage.key.remoteJid;
-        
-        // ✅ FIX: Better detection of who deleted the message
         const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
-        
-        // ✅ IMPROVED: Check if the deletion was done by the bot itself or owner
-        const isDeletedByBot = deletedBy === sock.user.id;
-        const isDeletedByOwner = deletedBy === ownerNumber;
-        
-        // ✅ ALSO CHECK: If the original message was from the owner (don't notify about owner's own deletions)
+
+        if (deletedBy.includes(sock.user.id) || deletedBy === ownerNumber) return;
+
         const original = messageStore.get(messageId);
         if (!original) return;
-        
-        const originalSender = original.sender;
-        const isOriginalFromOwner = originalSender === ownerNumber;
-        
-        // ✅ ONLY IGNORE if the deletion was done by the owner on their own messages
-        if ((isDeletedByOwner && isOriginalFromOwner) || isDeletedByBot) {
-            messageStore.delete(messageId); // Clean up anyway
-            return;
-        }
 
-        const senderName = originalSender.split('@')[0];
+        const sender = original.sender;
+        const senderName = sender.split('@')[0];
         const groupName = original.group ? (await sock.groupMetadata(original.group)).subject : '';
 
         const time = new Date().toLocaleString('en-US', {
@@ -189,10 +223,10 @@ async function handleMessageRevocation(sock, revocationMessage) {
             day: '2-digit', month: '2-digit', year: 'numeric'
         });
 
-        let text = `*ANTIDELETE NOTE*\n\n` +
+        let text = `*🔰 ANTIDELETE REPORT 🔰*\n\n` +
             `*🗑️ Deleted By:* @${deletedBy.split('@')[0]}\n` +
-            `*👤 Original Sender:* @${senderName}\n` +
-            `*📱 Number:* ${originalSender}\n` +
+            `*👤 Sender:* @${senderName}\n` +
+            `*📱 Number:* ${sender}\n` +
             `*🕒 Time:* ${time}\n`;
 
         if (groupName) text += `*👥 Group:* ${groupName}\n`;
@@ -203,14 +237,14 @@ async function handleMessageRevocation(sock, revocationMessage) {
 
         await sock.sendMessage(ownerNumber, {
             text,
-            mentions: [deletedBy, originalSender]
+            mentions: [deletedBy, sender]
         });
 
         // Media sending
         if (original.mediaType && fs.existsSync(original.mediaPath)) {
             const mediaOptions = {
                 caption: `*Deleted ${original.mediaType}*\nFrom: @${senderName}`,
-                mentions: [originalSender]
+                mentions: [sender]
             };
 
             try {
@@ -230,6 +264,14 @@ async function handleMessageRevocation(sock, revocationMessage) {
                     case 'video':
                         await sock.sendMessage(ownerNumber, {
                             video: { url: original.mediaPath },
+                            ...mediaOptions
+                        });
+                        break;
+                    case 'audio':
+                        await sock.sendMessage(ownerNumber, {
+                            audio: { url: original.mediaPath },
+                            mimetype: 'audio/mpeg',
+                            ptt: false,
                             ...mediaOptions
                         });
                         break;
