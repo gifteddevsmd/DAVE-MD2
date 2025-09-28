@@ -309,7 +309,25 @@ dave.ev.on('messages.reaction', async (reaction) => {
     dave.ev.on('group-participants.update', async (update) => {
         await handleGroupParticipantUpdate(dave, update);
     });
-            
+         
+
+dave.ev.on('messages.upsert', async chatUpdate => {
+        //console.log(JSON.stringify(chatUpdate, undefined, 2))
+        try {
+            mek = chatUpdate.messages[0]
+            if (!mek.message) return
+            mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+            if (mek.key && mek.key.remoteJid === 'status@broadcast') return
+            if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+            if (mek.key.id.startsWith('Xeon') && mek.key.id.length === 16) return
+            if (mek.key.id.startsWith('BAE5')) return
+            m = smsg(dave, mek, store)
+            require("./davlo")(dave, m, chatUpdate, store)
+        } catch (err) {
+            console.log(err)
+        }
+    })
+   
     // Message handling
 dave.ev.on('messages.upsert', async chatUpdate => {
         try {
