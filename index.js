@@ -24,7 +24,6 @@ const store = require('./lib/lightweight_store')
 store.readFromFile()
 const settings = require('./settings')
 setInterval(() => store.writeToFile(), settings.storeWriteInterval || 10000)
-
 //------------------------------------------------------//
 let phoneNumber = "254798570132"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
@@ -314,46 +313,63 @@ dave.ev.on('messages.reaction', async (reaction) => {
     // Message handling
 dave.ev.on('messages.upsert', async chatUpdate => {
     try {
-        const mek = chatUpdate.messages[0]
-        if (!mek.message) return
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+        const mek = chatUpdate.messages[0];
+        if (!mek.message) return;
+
+        // Handle ephemeral messages
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') 
+            ? mek.message.ephemeralMessage.message 
+            : mek.message;
+
+        // Ignore status broadcasts
+        if (mek.key?.remoteJid === 'status@broadcast') {
             await handleStatus(dave, chatUpdate);
             return;
         }
-        if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
-        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
 
-        // Clear message retry cache to prevent memory bloat
-        if (dave?.msgRetryCounterCache) {
-            dave.msgRetryCounterCache.clear()
-        }
+        // Ignore messages if bot is not public and not from owner
+        if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
+
+        // Ignore messages with random short IDs
+        if (mek.key.id?.startsWith('BAE5') && mek.key.id.length === 16) return;
+
+        // Clear retry cache
+        if (dave?.msgRetryCounterCache) dave.msgRetryCounterCache.clear();
+
+        // Dynamic prefix per chat (fallback to global)
+        const jid = mek.key.remoteJid;
+        const chatPrefix = db.data?.chats?.[jid]?.prefix || global.PREFIX || '.';
+
+        // Get message text
+        const msgText = mek.message.conversation || mek.message.extendedTextMessage?.text || '';
+
+        // Ignore messages not starting with the prefix
+        if (!msgText.startsWith(chatPrefix)) return;
 
         try {
-            await handleMessages(dave, chatUpdate, true)
+            await handleMessages(dave, chatUpdate, true);
         } catch (err) {
-            console.error("Error in handleMessages:", err)
-            // Only try to send error message if we have a valid chatId
-            if (mek.key && mek.key.remoteJid) {
-                await dave.sendMessage(mek.key.remoteJid, {
+            console.error("Error in handleMessages:", err);
+            if (jid) {
+                await dave.sendMessage(jid, {
                     text: '❌ An error occurred while processing your message.',
                     contextInfo: {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
                             newsletterJid: '@newsletter',
-                            newsletterName: '𝙳𝙰𝚅𝙴-𝙼𝙳',
+                            newsletterName: 'DAVE-MD',
                             serverMessageId: -1
                         }
                     }
                 }).catch(console.error);
             }
         }
-    } catch (err) {
-        console.error("Error in messages.upsert:", err)
-    }
-})
 
+    } catch (err) {
+        console.error("Error in messages.upsert:", err);
+    }
+});
     dave.decodeJid = (jid) => {
         if (!jid) return jid;
         if (/:\d+@/gi.test(jid)) {
