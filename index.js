@@ -311,6 +311,14 @@ dave.ev.on('messages.reaction', async (reaction) => {
     });
          
 
+// Load settings (supports both settings.js and setting/settings.js)
+let settings;
+try {
+    settings = require('./setting/settings.js');
+} catch {
+    settings = require('./settings.js');
+}
+
 dave.ev.on('messages.upsert', async chatUpdate => {
     try {
         const mek = chatUpdate.messages[0];
@@ -335,11 +343,12 @@ dave.ev.on('messages.upsert', async chatUpdate => {
         // Prepare message object (like smsg)
         const m = smsg(dave, mek, store);
 
-        // Determine if it's a command or mention
-        const messageText = mek.message.conversation || 
-                            mek.message.extendedTextMessage?.text || 
+        // Extract text from message
+        const messageText = mek.message.conversation ||
+                            mek.message.extendedTextMessage?.text ||
                             mek.message.imageMessage?.caption || '';
 
+        // Determine if it is a command or mention
         const botPrefix = settings.prefix || '.';
         const isBotCommand = messageText.startsWith(botPrefix);
         const isBotMention = messageText.includes(`@${dave.user.id.split(':')[0]}`);
@@ -347,50 +356,18 @@ dave.ev.on('messages.upsert', async chatUpdate => {
         // Exit early if not a command or mention
         if (!isBotCommand && !isBotMention && !mek.key.fromMe) return;
 
-        // ✅ First: run davlo.js commands
+        // Process commands without sending fallback messages
         try {
             await require("./davlo")(dave, m, chatUpdate, store);
-        } catch(err) {
-            console.error("Error in davlo.js:", err);
-            if (isBotCommand && mek.key?.remoteJid) {
-                await dave.sendMessage(mek.key.remoteJid, { 
-                    text: 'An error occurred while processing your message (davlo.js).',
-                    contextInfo: {
-                        forwardingScore: 1,
-                        isForwarded: false,
-                        forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363400480173280@newsletter',
-                            newsletterName: '𝐃𝐀𝐕𝐄-𝐌𝐃',
-                            serverMessageId: -1
-                        }
-                    }
-                }).catch(console.error);
-            }
-        }
-
-        // ✅ Second: run other commands (handleMessages)
-        try {
             await handleMessages(dave, chatUpdate, true);
         } catch(err) {
-            console.error("Error in handleMessages:", err);
-            if (isBotCommand && mek.key?.remoteJid) {
-                await dave.sendMessage(mek.key.remoteJid, { 
-                    text: "🙂Don't worry Dave got you covered (handleMessages).",
-                    contextInfo: {
-                        forwardingScore: 1,
-                        isForwarded: false,
-                        forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363400480173280@newsletter',
-                            newsletterName: '𝐃𝐀𝐕𝐄-𝐌𝐃',
-                            serverMessageId: -1
-                        }
-                    }
-                }).catch(console.error);
-            }
+            console.error("Error processing command:", err);
+            // ❌ No error messages sent to users
         }
 
     } catch (err) {
         console.error("Error in messages.upsert:", err);
+        // ❌ No error messages sent to users
     }
 });
 
