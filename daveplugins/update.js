@@ -198,7 +198,7 @@ async function updateCommand(sock, chatId, message, senderIsSudo, zipOverride) {
         try {
             delete require.cache[require.resolve('../settings')];
             const v = require('../settings').version || '';
-            await sock.sendMessage(chatId, { text: `✅ Update done (v${v}). Restarting…` }, { quoted: message });
+            await sock.sendMessage(chatId, { text: `✅ Update done (v${v}). Enjoy your day…` }, { quoted: message });
         } catch {
             await sock.sendMessage(chatId, { text: '✅ Restarted successfully\nType .ping to check latest version.' }, { quoted: message });
         }
