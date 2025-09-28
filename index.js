@@ -376,7 +376,7 @@ dave.ev.on('messages.upsert', async chatUpdate => {
             console.error("Error in handleMessages:", err);
             if (isBotCommand && mek.key?.remoteJid) {
                 await dave.sendMessage(mek.key.remoteJid, { 
-                    text: '🙂Don't worry Dave got you covered (handleMessages).',
+                    text: "🙂Don't worry Dave got you covered (handleMessages).",
                     contextInfo: {
                         forwardingScore: 1,
                         isForwarded: false,
