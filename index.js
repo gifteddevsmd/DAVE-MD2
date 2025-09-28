@@ -312,64 +312,41 @@ dave.ev.on('messages.reaction', async (reaction) => {
             
     // Message handling
 dave.ev.on('messages.upsert', async chatUpdate => {
-    try {
-        const mek = chatUpdate.messages[0];
-        if (!mek.message) return;
-
-        // Handle ephemeral messages
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') 
-            ? mek.message.ephemeralMessage.message 
-            : mek.message;
-
-        // Ignore status broadcasts
-        if (mek.key?.remoteJid === 'status@broadcast') {
-            await handleStatus(dave, chatUpdate);
-            return;
-        }
-
-        // Ignore messages if bot is not public and not from owner
-        if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
-
-        // Ignore messages with random short IDs
-        if (mek.key.id?.startsWith('BAE5') && mek.key.id.length === 16) return;
-
-        // Clear retry cache
-        if (dave?.msgRetryCounterCache) dave.msgRetryCounterCache.clear();
-
-        // Dynamic prefix per chat (fallback to global)
-        const jid = mek.key.remoteJid;
-        const chatPrefix = db.data?.chats?.[jid]?.prefix || global.PREFIX || '.';
-
-        // Get message text
-        const msgText = mek.message.conversation || mek.message.extendedTextMessage?.text || '';
-
-        // Ignore messages not starting with the prefix
-        if (!msgText.startsWith(chatPrefix)) return;
-
         try {
-            await handleMessages(dave, chatUpdate, true);
-        } catch (err) {
-            console.error("Error in handleMessages:", err);
-            if (jid) {
-                await dave.sendMessage(jid, {
-                    text: '❌ An error occurred while processing your message.',
-                    contextInfo: {
-                        forwardingScore: 1,
-                        isForwarded: true,
-                        forwardedNewsletterMessageInfo: {
-                            newsletterJid: '@newsletter',
-                            newsletterName: 'DAVE-MD',
-                            serverMessageId: -1
-                        }
-                    }
-                }).catch(console.error);
+            const mek = chatUpdate.messages[0]
+            if (!mek.message) return
+            mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+            if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+                await handleStatus(dave, chatUpdate);
+                return;
             }
+            if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+            if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
+            
+            try {
+                await handleMessages(dave, chatUpdate, true)
+            } catch (err) {
+                console.error("Error in handleMessages:", err)
+                if (mek.key && mek.key.remoteJid) {
+                    await dave.sendMessage(mek.key.remoteJid, { 
+                        text: '❌ An error occurred while processing your message.',
+                        contextInfo: {
+                            forwardingScore: 1,
+                            isForwarded: false,
+                            forwardedNewsletterMessageInfo: {
+                                newsletterJid: '120363400480173280@newsletter',
+                                newsletterName: '𝐃𝐀𝐕𝐄-𝐌𝐃',
+                                serverMessageId: -1
+                            }
+                        }
+                    }).catch(console.error);
+                }
+            }
+        } catch (err) {
+            console.error("Error in messages.upsert:", err)
         }
+    }) 
 
-    } catch (err) {
-        console.error("Error in messages.upsert:", err);
-    }
-});
     dave.decodeJid = (jid) => {
         if (!jid) return jid;
         if (/:\d+@/gi.test(jid)) {
