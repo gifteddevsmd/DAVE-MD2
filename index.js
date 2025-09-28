@@ -312,62 +312,49 @@ dave.ev.on('messages.reaction', async (reaction) => {
          
 
 dave.ev.on('messages.upsert', async chatUpdate => {
-        //console.log(JSON.stringify(chatUpdate, undefined, 2))
-        try {
-            mek = chatUpdate.messages[0]
-            if (!mek.message) return
-            mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-            if (mek.key && mek.key.remoteJid === 'status@broadcast') return
-            if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
-            if (mek.key.id.startsWith('Xeon') && mek.key.id.length === 16) return
-            if (mek.key.id.startsWith('BAE5')) return
-            m = smsg(dave, mek, store)
-            require("./davlo")(dave, m, chatUpdate, store)
-        } catch (err) {
-            console.log(err)
-        }
-    })
-   
-    // Message handling
-dave.ev.on('messages.upsert', async chatUpdate => {
     try {
-        const mek = chatUpdate.messages[0]
-        if (!mek.message) return
-        
-        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? 
-            mek.message.ephemeralMessage.message : mek.message
-        
-        // Handle status broadcasts first
-        if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+        const mek = chatUpdate.messages[0];
+        if (!mek.message) return;
+
+        // Handle ephemeral messages
+        mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') 
+            ? mek.message.ephemeralMessage.message 
+            : mek.message;
+
+        // Ignore status broadcasts
+        if (mek.key?.remoteJid === 'status@broadcast') {
             await handleStatus(dave, chatUpdate);
             return;
         }
-        
+
         // Ignore messages that aren't meant for the bot
-        if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
-        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
-        
-        // ✅ ADD THIS: Check if it's actually a bot command before processing
+        if (!dave.public && !mek.key.fromMe && chatUpdate.type === 'notify') return;
+        if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return;
+        if (mek.key.id.startsWith('Xeon') && mek.key.id.length === 16) return;
+
+        // Prepare the message object (like smsg)
+        const m = smsg(dave, mek, store);
+
+        // Determine if it's a command or mention
         const messageText = mek.message.conversation || 
-                           mek.message.extendedTextMessage?.text || 
-                           mek.message.imageMessage?.caption || '';
-        
-        const botPrefix = settings.prefix || '.'; // Get from settings
+                            mek.message.extendedTextMessage?.text || 
+                            mek.message.imageMessage?.caption || '';
+
+        const botPrefix = settings.prefix || '.';
         const isBotCommand = messageText.startsWith(botPrefix);
         const isBotMention = messageText.includes(`@${dave.user.id.split(':')[0]}`);
-        
-        // ✅ IGNORE non-command messages completely
-        if (!isBotCommand && !isBotMention && !mek.key.fromMe) {
-            return; // Exit early - don't process non-commands
-        }
-        
+
+        // Exit early if not a command or mention
+        if (!isBotCommand && !isBotMention && !mek.key.fromMe) return;
+
+        // Call davlo.js logic directly
         try {
-            await handleMessages(dave, chatUpdate, true)
-        } catch (err) {
-            console.error("Error in handleMessages:", err)
-            
-            // ✅ ONLY send errors for actual command messages
-            if (isBotCommand && mek.key && mek.key.remoteJid) {
+            await require("./davlo")(dave, m, chatUpdate, store);
+        } catch(err) {
+            console.error("Error in davlo.js:", err);
+
+            // Only notify if it's a command
+            if (isBotCommand && mek.key?.remoteJid) {
                 await dave.sendMessage(mek.key.remoteJid, { 
                     text: 'An error occurred while processing your message.',
                     contextInfo: {
@@ -382,10 +369,11 @@ dave.ev.on('messages.upsert', async chatUpdate => {
                 }).catch(console.error);
             }
         }
+
     } catch (err) {
-        console.error("Error in messages.upsert:", err)
+        console.error("Error in messages.upsert:", err);
     }
-})
+});
 
     dave.decodeJid = (jid) => {
         if (!jid) return jid;
