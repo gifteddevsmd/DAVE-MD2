@@ -1,0 +1,47 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "nixpacksPlan": {
+      "providers": ["nodejs"],
+      "phases": {
+        "setup": {
+          "nixPkgs": ["nodejs-18_x", "ffmpeg"]
+        }
+      }
+    }
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "restartPolicy": "ON_FAILURE",
+    "environmentVariables": {
+      "PORT": "10000",
+      "SESSION_ID": {
+        "description": "Put your WhatsApp session ID here (should start with dave~)",
+        "required": true,
+        "value": ""
+      },
+      "OWNER_NAME": {
+        "description": "Enter your owner name here",
+        "required": true,
+        "value": "Dave"
+      },
+      "BOT_PREFIX": {
+        "description": "Set your bot prefix",
+        "required": false,
+        "value": "."
+      },
+      "AUTO_STATUS": {
+        "description": "Set to true if you want the bot to auto view statuses",
+        "required": false,
+        "value": "true"
+      }
+    },
+    "volumes": [
+      {
+        "name": "session_data",
+        "path": "/app/Session"
+      }
+    ]
+  }
+}
