@@ -1,6 +1,23 @@
 services:
-  - type: worker
-    name: dave-md
+  - type: web
+    name: dave-xmd
     env: docker
-    region: Frankfurt
+    region: frankfurt
     plan: free
+    buildCommand: "npm install"
+    startCommand: "node index.js"
+    envVars:
+      - key: OWNER_NAME
+        value: "Dave"
+        required: true
+      - key: BOT_PREFIX
+        value: "."
+        required: false
+      - key: AUTO_STATUS
+        value: "true"
+        required: false
+      - key: SESSION_ID
+        value: ""
+        required: true
+    ports:
+      - port: 3000
