@@ -332,7 +332,7 @@ dave.ev.on('messages.upsert', async chatUpdate => {
         if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return;
         if (mek.key.id.startsWith('Xeon') && mek.key.id.length === 16) return;
 
-        // Prepare the message object (like smsg)
+        // Prepare message object (like smsg)
         const m = smsg(dave, mek, store);
 
         // Determine if it's a command or mention
@@ -347,16 +347,35 @@ dave.ev.on('messages.upsert', async chatUpdate => {
         // Exit early if not a command or mention
         if (!isBotCommand && !isBotMention && !mek.key.fromMe) return;
 
-        // Call davlo.js logic directly
+        // ✅ First: run davlo.js commands
         try {
             await require("./davlo")(dave, m, chatUpdate, store);
         } catch(err) {
             console.error("Error in davlo.js:", err);
-
-            // Only notify if it's a command
             if (isBotCommand && mek.key?.remoteJid) {
                 await dave.sendMessage(mek.key.remoteJid, { 
-                    text: 'An error occurred while processing your message.',
+                    text: 'An error occurred while processing your message (davlo.js).',
+                    contextInfo: {
+                        forwardingScore: 1,
+                        isForwarded: false,
+                        forwardedNewsletterMessageInfo: {
+                            newsletterJid: '120363400480173280@newsletter',
+                            newsletterName: '𝐃𝐀𝐕𝐄-𝐌𝐃',
+                            serverMessageId: -1
+                        }
+                    }
+                }).catch(console.error);
+            }
+        }
+
+        // ✅ Second: run other commands (handleMessages)
+        try {
+            await handleMessages(dave, chatUpdate, true);
+        } catch(err) {
+            console.error("Error in handleMessages:", err);
+            if (isBotCommand && mek.key?.remoteJid) {
+                await dave.sendMessage(mek.key.remoteJid, { 
+                    text: 'An error occurred while processing your message (handleMessages).',
                     contextInfo: {
                         forwardingScore: 1,
                         isForwarded: false,
