@@ -159,15 +159,28 @@ async function handleMessageRevocation(sock, revocationMessage) {
 
         const messageId = revocationMessage.message.protocolMessage.key.id;
         const deletedBy = revocationMessage.participant || revocationMessage.key.participant || revocationMessage.key.remoteJid;
+        
+        // ✅ FIX: Better detection of who deleted the message
         const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
-
-        if (deletedBy.includes(sock.user.id) || deletedBy === ownerNumber) return;
-
+        
+        // ✅ IMPROVED: Check if the deletion was done by the bot itself or owner
+        const isDeletedByBot = deletedBy === sock.user.id;
+        const isDeletedByOwner = deletedBy === ownerNumber;
+        
+        // ✅ ALSO CHECK: If the original message was from the owner (don't notify about owner's own deletions)
         const original = messageStore.get(messageId);
         if (!original) return;
+        
+        const originalSender = original.sender;
+        const isOriginalFromOwner = originalSender === ownerNumber;
+        
+        // ✅ ONLY IGNORE if the deletion was done by the owner on their own messages
+        if ((isDeletedByOwner && isOriginalFromOwner) || isDeletedByBot) {
+            messageStore.delete(messageId); // Clean up anyway
+            return;
+        }
 
-        const sender = original.sender;
-        const senderName = sender.split('@')[0];
+        const senderName = originalSender.split('@')[0];
         const groupName = original.group ? (await sock.groupMetadata(original.group)).subject : '';
 
         const time = new Date().toLocaleString('en-US', {
@@ -178,8 +191,8 @@ async function handleMessageRevocation(sock, revocationMessage) {
 
         let text = `*ANTIDELETE NOTE*\n\n` +
             `*🗑️ Deleted By:* @${deletedBy.split('@')[0]}\n` +
-            `*👤 Sender:* @${senderName}\n` +
-            `*📱 Number:* ${sender}\n` +
+            `*👤 Original Sender:* @${senderName}\n` +
+            `*📱 Number:* ${originalSender}\n` +
             `*🕒 Time:* ${time}\n`;
 
         if (groupName) text += `*👥 Group:* ${groupName}\n`;
@@ -190,14 +203,14 @@ async function handleMessageRevocation(sock, revocationMessage) {
 
         await sock.sendMessage(ownerNumber, {
             text,
-            mentions: [deletedBy, sender]
+            mentions: [deletedBy, originalSender]
         });
 
         // Media sending
         if (original.mediaType && fs.existsSync(original.mediaPath)) {
             const mediaOptions = {
                 caption: `*Deleted ${original.mediaType}*\nFrom: @${senderName}`,
-                mentions: [sender]
+                mentions: [originalSender]
             };
 
             try {
