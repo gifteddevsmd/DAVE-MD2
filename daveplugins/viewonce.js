@@ -1,4 +1,4 @@
-const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
+
 
 async function viewonceCommand(context) {
     const { client, m } = context;
