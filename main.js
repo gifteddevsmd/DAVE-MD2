@@ -16,6 +16,7 @@ const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./davepl
 
 // Command imports
 const tagAllCommand = require('./daveplugins/tagall');
+const { pmblockerCommand, readState: readPmBlockerState } = require('./daveplugins/pmblocker');
 const helpCommand = require('./daveplugins/help');
 const banCommand = require('./daveplugins/ban');
 const { promoteCommand } = require('./daveplugins/promote');
@@ -204,6 +205,14 @@ async function handleMessages(sock, messageUpdate, printLog) {
             return;
         }
 
+        /*  // Basic message response in private chat
+          if (!isGroup && (userMessage === 'hi' || userMessage === 'hello' || userMessage === 'bot' || userMessage === 'hlo' || userMessage === 'hey' || userMessage === 'bro')) {
+              await sock.sendMessage(chatId, {
+                  text: 'Hi, How can I help you?\nYou can use .menu for more info and commands.',
+                  ...channelInfo
+              });
+              return;
+          } */
 
         if (!message.key.fromMe) incrementMessageCount(chatId, senderId);
 
@@ -281,6 +290,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 }
             }
         }
+
         // Check owner status for owner commands
         if (isOwnerCommand) {
             if (!message.key.fromMe && !senderIsSudo) {
@@ -304,7 +314,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 commandExecuted = true;
                 break;
             }
-            case userMessage.startsWith('.kick'):
+case userMessage.startsWith('.kick'):
                 const mentionedJidListKick = message.message.extendedTextMessage?.contextInfo?.mentionedJid || [];
                 await kickCommand(sock, chatId, senderId, mentionedJidListKick, message);
                 break;
@@ -385,6 +395,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     }, { quoted: message });
                     return;
                 }
+
                 if (action !== 'public' && action !== 'private') {
                     await sock.sendMessage(chatId, {
                         text: 'Usage: .mode public/private\n\nExample:\n.mode public - Allow everyone to use bot\n.mode private - Restrict to owner only',
@@ -592,6 +603,11 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage === '.ping':
                 await pingCommand(sock, chatId, message);
                 break;
+
+           case userMessage === '.getpp':
+               await getppCommand(sock, chatId, message);
+              break;
+                
             case userMessage === '.alive':
                 await aliveCommand(sock, chatId, message);
                 break;
@@ -675,7 +691,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     await sock.sendMessage(chatId, { text: 'This command can only be used in groups.', ...channelInfo }, { quoted: message });
                     return;
                 }
-
                 // Check if sender is admin or bot owner
                 const chatbotAdminStatus = await isAdmin(sock, chatId, senderId);
                 if (!chatbotAdminStatus.isSenderAdmin && !message.key.fromMe) {
@@ -891,10 +906,6 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case userMessage === '.jid': await groupJidCommand(sock, chatId, message);
                 break;
-            //case userMessage.startsWith('.autotyping'):
-             //   await autotypingCommand(sock, chatId, message);
-                //commandExecuted = true;
-               // break;
             case userMessage.startsWith('.autoread'):
                 await autoreadCommand(sock, chatId, message);
                 commandExecuted = true;
@@ -1056,6 +1067,8 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 commandExecuted = true;
                 break;
             case userMessage.startsWith('.update'):
+            case userMessage.startsWith('.start'):
+            case userMessage.startsWith('.restart'):
                 {
                     const parts = rawText.trim().split(/\s+/);
                     const zipArg = parts[1] && parts[1].startsWith('http') ? parts[1] : '';
@@ -1176,3 +1189,5 @@ module.exports = {
         await handleStatusUpdate(sock, status);
     }
 };
+
+            
