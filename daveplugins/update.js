@@ -240,7 +240,7 @@ async function updateCommand(sock, chatId, message, senderIsSudo, zipOverride) {
 
     try {
         if (!isSimpleRestart) {
-             await sock.sendMessage(chatId, { text: '_Updating bot database. please wait…_' }, { quoted: message });
+             await sock.sendMessage(chatId, { text: '_𝙳𝙰𝚅𝙴-𝙼𝙳 db is under update. please wait…_' }, { quoted: message });
              if (await hasGitRepo()) {
                  const { oldRev, newRev, alreadyUpToDate, commits, files } = await updateViaGit();
                  const summary = alreadyUpToDate ? `✅ Already up to date: ${newRev}` : `✅ Updated to ${newRev}`;
