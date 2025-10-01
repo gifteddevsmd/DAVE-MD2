@@ -2,7 +2,8 @@ const settings = require("../settings");
 
 async function aliveCommand(sock, chatId, message) {
     try {
-        const message1 = `🤖 *𝙳𝙰𝚅𝙴-𝙼𝙳 is Online!*\n\n` +
+        const message1 = `🤖 *➤ ✦ 𝙊𝙪𝙩 𝙤𝙛 𝙥𝙡𝙖𝙣, 𝙤𝙪𝙩 𝙤𝙛 𝙗𝙪𝙨𝙞𝙣𝙚𝙨𝙨 ✦
+!*\n\n` +
                         `✨ *Version:* ${settings.version}\n` +
                         `🟢 *Status:* Running Smoothly\n\n` +
                         `📌 Type *.menu* to see all commands.`;
