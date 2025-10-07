@@ -5,26 +5,11 @@
   "logo": "https://files.catbox.moe/u1hquf.jpg",
   "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"],
   "env": {
-    "OWNER_NAME": {
-      "description": "enter your owner name here",
-      "value": "Dave",
-      "required": true
-    },
-    "BOT_PREFIX": {
-      "description": "Put your bot prefix of desire here",
-      "value": ".",
-      "required": false
-    },
-    "AUTO_STATUS": {
-      "description": "Type true if you want bot to view status else false",
-      "value": "true",
-      "required": false
-    },
     "SESSION_ID": {
-      "description": "Put your session ID here(should start with dave~)",
+      "description": "Put your session ID here (should start with DAVE-MD)",
       "value": "",
       "required": true
-        }
+    }
   },
 
   "addons": [
