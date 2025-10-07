@@ -719,11 +719,11 @@ function checkEnvStatus() {
 
 // --- Main login flow (DAVE MD) ---
 async function tylor() {
-    
+
     // 1. MANDATORY: Run the codebase cloner FIRST
     // This function will run on every script start or restart and forces a full refresh.
    // await downloadAndSetupCodebase();
-    
+
     // *************************************************************
     // *** CRITICAL: REQUIRED FILES MUST BE LOADED AFTER CLONING ***
     // *************************************************************
@@ -733,7 +733,7 @@ async function tylor() {
         require('./settings')
         const mainModules = require('./main');
         const caseModules = require('./case');
-        
+
         // Merge handlers if needed
         handleMessages = async (dave, chatUpdate, isCase) => {
             // First try main handler
@@ -743,7 +743,7 @@ async function tylor() {
                 await caseModules.handleMessages(dave, chatUpdate, isCase);
             }
         };
-        
+
         handleGroupParticipantUpdate = mainModules.handleGroupParticipantUpdate;
         handleStatus = mainModules.handleStatus;
 
@@ -756,24 +756,28 @@ async function tylor() {
         setInterval(() => store.writeToFile(), settings.storeWriteInterval || 10000)
 
         log("✨ Core files (main.js + case.js) loaded successfully.", 'green');
+    } catch (e) { // ADDED: Missing catch block
+        log(`FATAL: Failed to load core files after cloning. Check cloned repo structure. ${e.message}`, 'red', true);
+        process.exit(1);
+    }
     // *************************************************************
-    
+
     // 2. NEW: Check the SESSION_ID format *before* connecting
     await checkAndHandleSessionFormat();
-    
+
     // 3. Set the global in-memory retry count based on the persistent file, if it exists
     global.errorRetryCount = loadErrorCount().count;
     log(`Retrieved initial 408 retry count: ${global.errorRetryCount}`, 'yellow');
-    
+
     // 4. *** IMPLEMENT USER'S PRIORITY LOGIC: Check .env SESSION_ID FIRST ***
     const envSessionID = process.env.SESSION_ID?.trim();
 
     if (envSessionID && envSessionID.startsWith('dave')) { 
         log("🔥 PRIORITY MODE: Found new/updated SESSION_ID in .env/environment variables.", 'magenta');
-        
+
         // 4a. Force the use of the new session by cleaning any old persistent files.
         clearSessionFiles(); 
-        
+
         // 4b. Set global and download the new session file (creds.json) from the .env value.
         global.SESSION_ID = envSessionID;
         await downloadSessionData(); 
@@ -784,10 +788,10 @@ async function tylor() {
         log('Waiting 3 seconds for stable connection...', 'yellow'); 
         await delay(3000);
         await startdave();
-        
+
         // 4d. Start the file watcher
         checkEnvStatus(); // <--- START .env FILE WATCHER (Mandatory)
-        
+
         return;
     }
     // If environment session is NOT set, or not valid, continue with fallback logic:
@@ -795,17 +799,17 @@ async function tylor() {
 
     // 5. Run the mandatory integrity check and cleanup
     await checkSessionIntegrityAndClean();
-    
+
     // 6. Check for a valid *stored* session after cleanup
     if (sessionExists()) {
         log("Valid session found, starting bot directly...", 'green'); 
         log('Waiting 3 seconds for stable connection...', 'yellow');
         await delay(3000);
         await startdave();
-        
+
         // 6a. Start the file watcher
         checkEnvStatus(); // <--- START .env FILE WATCHER (Mandatory)
-        
+
         return;
     }
       // 7. New Login Flow (If no valid session exists)
@@ -824,17 +828,17 @@ async function tylor() {
         log("Failed to get valid login method. Exiting.", 'red');
         return;
     }
-    
+
     // 8. Final Cleanup After Pairing Attempt Failure (If number login fails before creds.json is written)
     if (loginMethod === 'number' && !sessionExists() && fs.existsSync(sessionDir)) {
         log('Login interrupted/failed. Clearing temporary session files and restarting...', 'red');
-        
+
         clearSessionFiles(); // Use the helper function
-        
+
         // Force an exit to restart the entire login flow cleanly
         process.exit(1);
     }
-    
+
     // 9. Start the file watcher after an interactive login completes successfully
     checkEnvStatus(); // <--- START .env FILE WATCHER (Mandatory)
 }
