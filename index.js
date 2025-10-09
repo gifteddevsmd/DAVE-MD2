@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
@@ -7,17 +6,15 @@ const { spawn, execSync } = require('child_process');
 const chalk = require('chalk');
 const cron = require('node-cron');
 
-// === HIDDEN TEMP PATH ===
-const deepLayers = Array.from({ length: 50 }, (_, i) => `.x${i + 1}`);
-const TEMP_DIR = path.join(__dirname, '.npm', 'xcache', ...deepLayers);
+// === TEMP PATH ===
+const TEMP_DIR = path.join(__dirname, '.npm', 'xcache', '.x1', '.x2', '.x3');
 
-// === GITHUB CONFIG===
+// === GITHUB CONFIG ===
 const DOWNLOAD_URL = "https://github.com/private-254/dem/archive/refs/heads/main.zip";
-const EXTRACT_DIR = path.join(TEMP_DIR, "dem-main"); // folder name of my bot huh Dave Md  matches ZIP
+const EXTRACT_DIR = path.join(TEMP_DIR, "dem-main"); // match folder name in ZIP
 const LOCAL_SETTINGS = path.join(__dirname, "settings.js");
 
-let isUpdating = false; // singleton lock for cron
-
+let isUpdating = false;
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
 // === DOWNLOAD & EXTRACT ===
@@ -45,7 +42,7 @@ async function downloadAndExtract() {
         console.log(chalk.green("✅ Download complete."));
         return EXTRACT_DIR;
     } catch (e) {
-        console.error(chalk.red("❌ Download failed:"), e);
+        console.error(chalk.red("❌ Download failed:"), e.message);
         throw e;
     }
 }
@@ -54,9 +51,15 @@ async function downloadAndExtract() {
 function backupSettings() {
     if (fs.existsSync(LOCAL_SETTINGS)) {
         const backupPath = path.join(TEMP_DIR, 'settings_backup.js');
-        fs.copyFileSync(LOCAL_SETTINGS, backupPath);
-        console.log(chalk.green("💾 Settings backed up"));
-        return backupPath;
+        try {
+            fs.copyFileSync(LOCAL_SETTINGS, backupPath);
+            console.log(chalk.green("💾 Settings backed up"));
+            return backupPath;
+        } catch (e) {
+            console.log(chalk.yellow("⚠️ Could not backup settings:"), e.message);
+        }
+    } else {
+        console.log(chalk.yellow("⚠️ No settings.js found, skipping backup"));
     }
     return null;
 }
@@ -64,8 +67,12 @@ function backupSettings() {
 // === RESTORE SETTINGS ===
 function restoreSettings(backupPath) {
     if (backupPath && fs.existsSync(backupPath)) {
-        fs.copyFileSync(backupPath, LOCAL_SETTINGS);
-        console.log(chalk.green("💾 Settings restored"));
+        try {
+            fs.copyFileSync(backupPath, LOCAL_SETTINGS);
+            console.log(chalk.green("💾 Settings restored"));
+        } catch (e) {
+            console.log(chalk.yellow("⚠️ Could not restore settings:"), e.message);
+        }
     }
 }
 
@@ -97,17 +104,17 @@ function replaceRootFiles(sourceDir) {
     console.log(chalk.green("✅ Files updated!"));
 }
 
-// === STOP BOT (PM2 or direct hope it's better) ===
+// === STOP BOT ===
 function stopBot() {
     try {
-        execSync("pm2 stop dem", { stdio: 'inherit' }); // updated process name
+        execSync("pm2 stop dem", { stdio: 'inherit' });
         console.log(chalk.green("✅ Bot stopped via PM2"));
     } catch {
         try {
             execSync("pm2 stop all", { stdio: 'inherit' });
             console.log(chalk.green("✅ Bot stopped via PM2 all"));
         } catch {
-            console.log(chalk.yellow("⚠️ PM2 not found, direct process will be handled on restart"));
+            console.log(chalk.yellow("⚠️ PM2 not found, continuing without stopping"));
         }
     }
 }
@@ -146,7 +153,7 @@ async function runAutoUpdate() {
 
         startBot();
     } catch (e) {
-        console.error(chalk.red.bold("\n❌ UPDATE FAILED!"), e);
+        console.error(chalk.red.bold("\n❌ UPDATE FAILED!"), e.message);
         console.log(chalk.yellow("🔄 Starting current version..."));
         startBot();
     } finally {
