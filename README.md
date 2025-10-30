@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/giftdee"><img title="Author" src="https://img.shields.io/badge/Author-Gifted--Dave-red.svg?style=for-the-badge&logo=github"></a>
+  <a href="https://github.com/giftdee"><img tite="Author" src="https://img.shields.io/badge/Author-Gifted--Dave-red.svg?style=for-the-badge&logo=github"></a>
 </p>
 
 ---
