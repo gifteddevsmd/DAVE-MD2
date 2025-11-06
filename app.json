@@ -1,36 +1,43 @@
 {
-  "name": "dave md",
-  "description": "A WhatsApp bot based on Baileysjs library (Ts+Js) with Multi Device support",
-  "repository": "https://github.com/giftdee/DAVE-MD",
-  "logo": "https://files.catbox.moe/u1hquf.jpg",
-  "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"],
-  "env": {
-    "SESSION_ID": {
-      "description": "Put your session ID here (should start with DAVE-MD)",
-      "value": "",
-      "required": true
-    }
-  },
-
+  "name": "June-md",
+  "description": "dave, your friendly assistant bot with nodejs!",
+  "logo": "https://h.uguu.se/GiYWpWoC.jpg",
+  "keywords": [],
+  "repository": "https://github.com/gifteddevsmd/DAVE-MD2",
+  "stack": "container",
   "addons": [
     {
-      "plan": "heroku-postgresql",
-      "description": "Free PostgreSQL database for storing bot data."
+      "plan": "heroku-postgresql"
     }
   ],
-
+  "scripts": {
+    "start": "node index.js"
+  },
+"env": {
+  "SESSION_ID": {
+    "description": "Must begin with 'dave~'.",
+    "value": "",
+    "required": true
+  }
+},  
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "standard-2x"
+    }
+  },
   "buildpacks": [
     {
-      "url": "heroku/nodejs",
-      "description": "Node.js runtime for running the bot."
+      "url": "heroku/nodejs"
     },
     {
-      "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git",
-      "description": "WebP support for image processing."
+      "url": "https://github.com/DuckyTeam/heroku-buildpack-imagemagick.git"
     },
     {
-      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest",
-      "description": "FFmpeg for audio/video processing."
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest"
+    },
+    {
+      "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
     }
   ]
 }
