@@ -70,6 +70,7 @@
     "tough-cookie": "^5.0.0",
     "translate-google-api": "^1.0.4",
     "ws": "^8.17.1",
+    "wa-sticker-formatter": "^4.4.4",
     "yargs": "^17.6.0",
     "yargs-parser": "^21.1.1",
     "youtube-yts": "^2.0.0",
