@@ -15,7 +15,7 @@
   },
 "env": {
   "SESSION_ID": {
-    "description": "Must begin with 'dave~'.",
+    "description": "Must begin with 'DAVE-MD:~'.",
     "value": "",
     "required": true
   }
