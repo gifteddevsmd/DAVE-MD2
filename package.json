@@ -1,6 +1,6 @@
 {
   "name": "DAVE-MD",
-  "version": "2.5.9",
+  "version": "2.5.1",
   "description": "WhatsApp Bot",
   "main": "index.js",
   "scripts": {
