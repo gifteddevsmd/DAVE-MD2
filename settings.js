@@ -1,25 +1,24 @@
- const settings = {
+const settings = {
 
-  botName: "Dave Md",
+  botName: process.env.BOT_NAME || "Dave md",
 
-  ownerNumber: '',
+  ownerNumber: process.env.OWNER_NUMBER || '',
 
-  packname: 'Dave-Tech',
+ botOwner: process.env.BOT_OWNER || 'Davetech',
 
-  prefix: '.',
+  packname: process.env.PACKNAME || 'DAVE-MD',
 
-  defaultReaction: '✅',  
+  prefix: process.env.PREFIX || '.',
+
+  defaultReaction: '✅',
 
   errorReaction: '❌',
 
- watermark: "©Dave Tech!",
-
-  botOwner: 'Dave', //Ur-Name
+  watermark: "©Dave Tech!",
 
   description: "This is a bot for managing group commands and automating tasks.",
 
   giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq', 
-
 };
 
 export default settings;
