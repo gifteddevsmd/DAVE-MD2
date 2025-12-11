@@ -1,5 +1,5 @@
 {
-  "name": "Gift-X",
+  "name": "Dvae-Md",
   "description": "aaah take and fix it",
   "logo": "https://files.catbox.moe/60lx1p.jpg",
   "keywords": ["whatsapp", "bot", "gift-md", "baileys", "whatsapp-bot"],
@@ -18,7 +18,7 @@
 
   "env": {
     "SESSION_ID": {
-      "description": "Session id (must begin with 'DAVE-AI:~'). feom the bot web.",
+      "description": "Session id (must begin with 'DAVE-AI:~'). from the bot web.",
       "value": "",
       "required": true
     },
