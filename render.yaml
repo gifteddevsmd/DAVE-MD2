@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: worker
     name: dave-xmd
     env: docker
     region: frankfurt
