@@ -7,8 +7,8 @@
     <img src="https://img.shields.io/badge/Get-Pair_Code-purple?style=for-the-badge&logo=whatsapp" alt="Get Pair Code" width="200">
   </a>
 
-  <a href="https://github.com/gifteddevsmd/Dave-MD2/fork">
-    <img src="https://img.shields.io/badge/Fork-Dave--MD-blue?style=for-the-badge&logo=github" alt="Fork Dave-MD" width="200">
+  <a href="https://github.com/gifteddevsmd/DAVE-MD2/fork">
+    <img src="https://img.shields.io/badge/Fork-DAVE--MD-blue?style=for-the-badge&logo=github" alt="Fork Dave-MD" width="200">
   </a>
 
   <a href="https://www.davexbotsweb.zone.id/">
