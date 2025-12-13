@@ -8,7 +8,7 @@
   </a>
 
   <a href="https://github.com/gifteddevsmd/Dave-MD2/fork">
-    <img src="https://img.shields.io/badge/Fork-Dave--MD-blue?style=for-the-badge&logo=github" alt="Fork Dave-Ai" width="200">
+    <img src="https://img.shields.io/badge/Fork-Dave--MD-blue?style=for-the-badge&logo=github" alt="Fork Dave-MD" width="200">
   </a>
 
   <a href="https://www.davexbotsweb.zone.id/">
