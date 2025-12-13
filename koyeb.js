@@ -5,12 +5,12 @@ RUN sudo dnf -y update &&\
     sudo dnf install -y git ffmpeg ImageMagick nodejs yarnpkg libwebp &&\
     sudo dnf clean all -y
 
-RUN git clone https://github.com/giftdee/DAVE-MD
+RUN git clone https://github.com/gifteddevsmd/DAVE-MD2 
 
 
-WORKDIR /root/DAVE-MD
+WORKDIR /root/DAVE-MD2
 
-COPY ./root/DAVE-MD
+COPY ./root/DAVE-MD2 
 
 RUN yarn install
 
