@@ -1,8 +1,8 @@
 {
-  "name": "Dvae-Md",
-  "description": "aaah take and fix it",
+  "name": "Dave-X",
+  "description": "Simple Whatsapp bot by Dave",
   "logo": "https://files.catbox.moe/60lx1p.jpg",
-  "keywords": ["whatsapp", "bot", "gift-md", "baileys", "whatsapp-bot"],
+  "keywords": ["whatsapp-bot", "nodejs", "baileys"],
   "repository": "https://github.com/gifteddevsmd/DAVE-MD2",
   "stack": "container",
 
@@ -12,52 +12,23 @@
     }
   ],
 
-  "scripts": {
-    "start": "node --expose-gc --max-old-space-size=280 --optimize-for-size --gc-interval=100 index.js"
-  },
-
   "env": {
     "SESSION_ID": {
-      "description": "Session id (must begin with 'DAVE-AI:~'). from the bot web.",
+      "description": "Your pairing session ID (must begin with 'DAVE-AI:~'). Get it from the pairing site.",
       "value": "",
       "required": true
     },
-    "OWNER_NUMBER": {
+    "PAIR_NUMBER": {
       "description": "Bot owner's WhatsApp number (with country code, no + or spaces). Example: 254104260236",
       "value": "",
       "required": true
-    },
-    "BOT_NAME": {
-      "description": "Your bot's display name",
-      "value": "Dave Md",
-      "required": false
-    },
-    "PREFIX": {
-      "description": "Command prefix (default: .)",
-      "value": ".",
-      "required": false
-    },
-    "PACKNAME": {
-      "description": "Sticker pack name",
-      "value": "Dave Tech",
-      "required": false
-    },
-    "BOT_OWNER": {
-      "description": "Your name/username",
-      "value": "Dave Tech",
-      "required": false
-    },
-    "MODE": {
-      "description": "Bot mode: 'public' or 'private'",
-      "value": "public",
-      "required": false
     }
   },
 
   "formation": {
     "worker": {
       "quantity": 1,
-      "size": "standard-2x"
+      "size": "basic"
     }
   },
 
