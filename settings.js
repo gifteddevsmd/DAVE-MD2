@@ -1,24 +1,16 @@
 const settings = {
-
-  botName: process.env.BOT_NAME || "Dave md",
-
-  ownerNumber: process.env.OWNER_NUMBER || '',
-
- botOwner: process.env.BOT_OWNER || 'Davetech',
-
-  packname: process.env.PACKNAME || 'DAVE-MD',
-
-  prefix: process.env.PREFIX || '.',
-
-  defaultReaction: '✅',
-
-  errorReaction: '❌',
-
-  watermark: "©Dave Tech!",
-
+  packname: '',
+  author: '‎',
+  botName: "DAVE-X",
+  botOwner: 'Dave', // Your name
+  ownerNumber: '254104260236', //Set your number here without + symbol, just add country code & number without any space
+  giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq',
+  commandMode: "public",
+  maxStoreMessages: 20, 
+  storeWriteInterval: 10000,
   description: "This is a bot for managing group commands and automating tasks.",
-
-  giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq', 
+  version: "2.6.4",
+  updateZipUrl: "https://github.com/private-254/dem/archive/refs/heads/main.zip",
 };
 
-export default settings;
+module.exports = settings;
