@@ -1,37 +1,31 @@
 {
-  "name": "Dave-X",
-  "description": "Simple Whatsapp bot by Dave",
-  "logo": "https://files.catbox.moe/60lx1p.jpg",
-  "keywords": ["whatsapp-bot", "nodejs", "baileys"],
+  "name": "DAVE-X",
+  "description": "Dave X, simple Whatsapp bot by Dave!",
+  "logo": "https://h.uguu.se/GiYWpWoC.jpg",
+  "keywords": [],
   "repository": "https://github.com/gifteddevsmd/DAVE-MD2",
   "stack": "container",
-
   "addons": [
     {
       "plan": "heroku-postgresql"
     }
   ],
-
-  "env": {
-    "SESSION_ID": {
-      "description": "Your pairing session ID (must begin with 'DAVE-AI:~'). Get it from the pairing site.",
-      "value": "",
-      "required": true
-    },
-    "PAIR_NUMBER": {
-      "description": "Bot owner's WhatsApp number (with country code, no + or spaces). Example: 254104260236",
-      "value": "",
-      "required": true
-    }
+  "scripts": {
+    "start": "node index.js"
   },
-
+"env": {
+  "SESSION_ID": {
+    "description": "Must begin with 'DAVE-AI:~'.",
+    "value": "",
+    "required": true
+  }
+},  
   "formation": {
     "worker": {
       "quantity": 1,
       "size": "basic"
     }
   },
-
   "buildpacks": [
     {
       "url": "heroku/nodejs"
