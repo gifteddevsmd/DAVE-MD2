@@ -1,7 +1,7 @@
 {
   "name": "Dave-x",
-  "version": "3.1.1",
-  "description": "Simple nodejs WhatsApp Bot",
+  "version": "3.1.2",
+  "description": "Simple nodejs WhatsApp Bot by Dave Tech",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
