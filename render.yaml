@@ -1,6 +1,6 @@
 services:
   - type: worker
-    name: dave-xmd
+    name: dave-x
     env: docker
     region: frankfurt
     plan: free
