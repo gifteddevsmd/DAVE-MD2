@@ -18,7 +18,7 @@
 
 ## 📡 DEPLOYMENT SITES
 
-<p align="center">Deploy your <strong>DAVE-MD Bot</strong> with one click on your favorite hosting platforms.</p>
+<p align="center">Deploy your <strong>DAVE-X Bot</strong> with one click on your favorite hosting platforms.</p>
 
 <div align="center">
   <table>
