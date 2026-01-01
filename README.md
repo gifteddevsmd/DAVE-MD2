@@ -12,7 +12,7 @@
   </a>
 
   <a href="https://www.davexbotsweb.zone.id/">
-    <img src="https://img.shields.io/badge/Deploy-Dave--Ai-green?style=for-the-badge&logo=heroku" alt="Deploy Dave-Ai" width="200">
+    <img src="https://img.shields.io/badge/Deploy-DAVE--X-green?style=for-the-badge&logo=heroku" alt="Deploy DAVE-X" width="200">
   </a>
 </p>
 
