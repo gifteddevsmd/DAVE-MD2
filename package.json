@@ -44,7 +44,7 @@
     "g-i-s": "^2.1.7",
     "human-readable": "^0.2.1",
     "jsdom": "^22.1.0",
-    "jimp": "^0.16.3",  // REMOVE THIS LINE
+    "jimp": "^0.16.3",  
     "javascript-obfuscator": "^4.1.0",
     "libphonenumber-js": "^1.11.18",
     "libsignal": "^2.0.1",
